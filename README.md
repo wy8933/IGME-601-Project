@@ -2,7 +2,14 @@
 
 ## Course number: IGME 601
 
-\*\*Everyone edit this line for testing purposes\*\* "teehee!!" - Matt
+
+
+
+
+I love making conflicts
+
+
+
 
 ## Semester year
 
