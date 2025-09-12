@@ -4,8 +4,7 @@
 
 
 
-\*\*Everyone edit this line for testing purposes\*\* "Hello World!" - Matt
-
+I love making conflicts
 
 
 ## Semester year
