@@ -4,7 +4,7 @@
 
 
 
-\*\*Everyone edit this line for testing purposes\*\* "Hello World but EVIL!!!" - Andrew
+\*\*Everyone edit this line for testing purposes\*\* "Hello World!" - Weijie
 
 
 
