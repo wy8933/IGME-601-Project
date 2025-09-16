@@ -1,0 +1,128 @@
+using TMPro;
+using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEditor;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
+
+public class Journal_UI : MonoBehaviour
+{
+    public List <GameObject> rulesList;
+    public List <Task> taskList;
+    public GameObject[] pages;
+    [SerializeField] private Transform taskContainer;
+    [SerializeField] private GameObject taskPrefab;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+    /// <summary>
+    /// Global Add rule method that can be called when player picks up scrap of paper. 
+    /// Will add the gameObject specified into the journal under the rules page
+    /// </summary>
+    /// <param name="rule"></param>
+    public void AddRule(GameObject prefab, string description, string title)
+    {
+        GameObject rule = Instantiate(prefab, prefab.transform);
+        rulesList.Add(rule);
+    }
+
+    /// <summary>
+    /// Global Add rule method that can be called when player gets a new task. 
+    /// Will add the gameObject specified into the journal under the tasks page
+    /// </summary>
+    /// <param name="task"></param>
+    public void AddTask(string description, string title)
+    {
+        GameObject taskObj = Instantiate(taskPrefab, taskContainer);
+        Task task = taskObj.GetComponent<Task>();
+
+        task.Description = description;
+        task.Title = title;
+        
+        taskList.Add(task);
+    }
+    // Button functions
+    /// <summary>
+    /// Used for tabs to open the passed in page and closes all other pages effectively swapping the contents of the journal. 
+    /// </summary>
+    /// <param name="page"></param>
+    public void OpenPage(GameObject page)
+    {
+        for (int i = 0; i < pages.Length; i++)
+        {
+            if (pages[i] == page)
+            {
+                pages[i].SetActive(true);
+            }
+            else
+            {
+                pages[i].SetActive(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Arrow method to increase slider by 20% of sliders max value
+    /// </summary>
+    /// <param name="slider"></param>
+    public void SliderArrowUp(Slider slider)
+    {
+        float amount = slider.maxValue/20;
+        slider.value += amount;  
+    }
+
+    /// <summary>
+    /// Arrow method to decrease slider by 20% of sliders max value
+    /// </summary>
+    /// <param name="slider"></param>
+    public void SliderArrowDown(Slider slider)
+    {
+        float amount = slider.maxValue / 20;
+        slider.value -= amount;
+    }
+
+    /// <summary>
+    /// Hides the journal and resumes play
+    /// </summary>
+    public void Resume()
+    {
+        this.gameObject.SetActive(false);
+        // Resume Logic
+    }
+
+    /// <summary>
+    /// Loads the Main Menu scene
+    /// </summary>
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    /// <summary>
+    /// Checks if the game is playing in editor or build and then closes the game.
+    /// </summary>
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
+    }
+
+    public void TestTask()
+    {
+        AddTask("KILL EVERYONE", "kill");
+    }
+
+    public void CompleteTest()
+    {
+        Debug.Log(taskList.Count + " tasks" + taskList[0].Description);
+        taskList[0].CompleteTask();
+        taskList.RemoveAt(0);
+    }
+}
