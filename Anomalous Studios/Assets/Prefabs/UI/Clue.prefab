@@ -306,8 +306,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3474639314473172199}
   - component: {fileID: 1602349108806564450}
+  - component: {fileID: 6739786284258444911}
   m_Layer: 5
-  m_Name: Rule
+  m_Name: Clue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -360,6 +361,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6739786284258444911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8182281537450156745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79767115cf95f747aa113c6e2576bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  descriptionText: {fileID: 5580649351609395104}
 --- !u!1 &8792034243250357295
 GameObject:
   m_ObjectHideFlags: 0

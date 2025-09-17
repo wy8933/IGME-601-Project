@@ -8,28 +8,19 @@ using Unity.VisualScripting;
 
 public class Journal_UI : MonoBehaviour
 {
-    public List <GameObject> rulesList;
+    public List <Clue> cluesList;
     public List <Task> taskList;
     public GameObject[] pages;
     [SerializeField] private Transform taskContainer;
+    [SerializeField] private Transform ruleContainer;
     [SerializeField] private GameObject taskPrefab;
+    [SerializeField] private GameObject cluePrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
     }
-    /// <summary>
-    /// Global Add rule method that can be called when player picks up scrap of paper. 
-    /// Will add the gameObject specified into the journal under the rules page
-    /// </summary>
-    /// <param name="rule"></param>
-    public void AddRule(GameObject prefab, string description, string title)
-    {
-        GameObject rule = Instantiate(prefab, prefab.transform);
-        rulesList.Add(rule);
-    }
-
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
     /// Will add the gameObject specified into the journal under the tasks page
@@ -44,6 +35,21 @@ public class Journal_UI : MonoBehaviour
         task.Title = title;
         
         taskList.Add(task);
+    }
+    /// <summary>
+    /// Global Add rule method that can be called when player gets a new task. 
+    /// Will add the gameObject specified into the journal under the tasks page
+    /// </summary>
+    /// <param name="task"></param>
+    public void AddClue(string description, string title)
+    {
+        GameObject clueObj = Instantiate(cluePrefab, ruleContainer);
+        Clue clue = clueObj.GetComponent<Clue>();
+
+        clue.Description = description;
+        clue.Title = title;
+
+        cluesList.Add(clue);
     }
     // Button functions
     /// <summary>
@@ -124,5 +130,17 @@ public class Journal_UI : MonoBehaviour
         Debug.Log(taskList.Count + " tasks" + taskList[0].Description);
         taskList[0].CompleteTask();
         taskList.RemoveAt(0);
+    }
+
+    public void TestClue()
+    {
+        AddClue("KILL EVERYONE", "kill");
+    }
+
+    public void CompleteClue()
+    {
+        Debug.Log(cluesList.Count + " clues" + cluesList[0].Description);
+        cluesList[0].gameObject.SetActive(false);
+        cluesList.RemoveAt(0);
     }
 }
