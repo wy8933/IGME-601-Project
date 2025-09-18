@@ -100,6 +100,8 @@ public class PlayerController : MonoBehaviour
 
         // Lean Left/Right
         LeanLeftRight();
+
+        ScanInteractables();
     }
 
     private void FixedUpdate()
@@ -281,9 +283,9 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        if (!_inJournal)
+        if (!_inJournal && IInteractable.Target != null)
         {
-            Debug.Log("Interact Key Triggered!");
+            IInteractable.Target.Interact();
         }
     }
 
@@ -449,5 +451,28 @@ public class PlayerController : MonoBehaviour
     void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
         _isCrouching = false;
+    }
+
+    /// <summary>
+    /// Finds objects within range that can be interacted with and highlights the item
+    /// </summary>
+    private void ScanInteractables()
+    {
+        // Scans the area for ANY colliders, not just interactables - allows walls to occlude items
+        float interactRange = 5.0f;
+
+        // Looks for an object, makes sure its an interactable, and that it is usable
+        if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
+            out RaycastHit hit, interactRange) &&
+            hit.collider.TryGetComponent<IInteractable>(out IInteractable obj) &&
+            obj.CanInteract)
+        {
+            IInteractable.Target = obj;
+            IInteractable.Target.Highlight();
+        }
+        else
+        {
+            IInteractable.Target = null;
+        }
     }
 }
