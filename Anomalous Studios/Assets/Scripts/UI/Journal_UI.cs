@@ -15,19 +15,7 @@ public class Journal_UI : MonoBehaviour
     [SerializeField] private Transform ruleContainer;
     [SerializeField] private GameObject taskPrefab;
     [SerializeField] private GameObject cluePrefab;
-
-    public void ToggleJournal()
-    {
-        if (gameObject.activeSelf)
-        {
-            Resume();
-        }
-        else
-        {
-            gameObject.SetActive(true);
-            OpenPage(pages[0]);
-        }
-    }
+    [SerializeField] private PlayerController playerController;
 
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
@@ -104,7 +92,7 @@ public class Journal_UI : MonoBehaviour
     /// </summary>
     public void Resume()
     {
-        this.gameObject.SetActive(false);
+        playerController.ToggleJournal();
         // Resume Logic
     }
 

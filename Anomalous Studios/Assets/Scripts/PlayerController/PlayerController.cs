@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
 
     // Journal Variables
     bool _inJournal = false;
+    [SerializeField] Journal_UI journal;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -303,10 +304,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void ToggleJournal()
+    public void ToggleJournal()
     {
         _inJournal = !_inJournal;
-
+        journal.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             Cursor.lockState = CursorLockMode.None;
