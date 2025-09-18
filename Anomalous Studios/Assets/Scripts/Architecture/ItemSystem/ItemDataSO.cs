@@ -7,14 +7,20 @@ namespace ItemSystem
     [CreateAssetMenu(fileName = "ItemDefinitionSO", menuName = "ItemSystem/ItemDefinitionSO")]
     public abstract class ItemDataSO  : ScriptableObject
     {
-        [Tooltip("Definitions")]
+        [Header("Definitions")]
+        [Tooltip("The name of the item")]
         public string itemName;
+        [Tooltip("The id of the item")]
         public int itemID;
+        [Tooltip("The icon of the item that will show in UI")]
         public Sprite itemIcon;
 
         [Header("Use Flags")]
+        [Tooltip("Does the item still have durability left")]
         public bool hasDurability = false;
+        [Tooltip("The remaining durability")]
         public int durability = 1;
+        [Tooltip("Time cooldown between each item use")]
         public float cooldownSeconds = 0f;
 
         /// <summary>

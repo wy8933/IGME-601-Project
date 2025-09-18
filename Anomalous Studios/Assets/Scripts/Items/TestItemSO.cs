@@ -5,7 +5,7 @@ using ItemSystem;
 public class TestItemSO : ItemDataSO
 {
     // You can add as much variable as you want
-
+    [Header("Extra variables for this item")]
     [TextArea] public string message = "Used the item!";
     public bool includeUserName = true;
 
