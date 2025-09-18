@@ -16,11 +16,19 @@ public class Journal_UI : MonoBehaviour
     [SerializeField] private GameObject taskPrefab;
     [SerializeField] private GameObject cluePrefab;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void ToggleJournal()
     {
-        
+        if (gameObject.activeSelf)
+        {
+            Resume();
+        }
+        else
+        {
+            gameObject.SetActive(true);
+            OpenPage(pages[0]);
+        }
     }
+
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
     /// Will add the gameObject specified into the journal under the tasks page
@@ -120,6 +128,7 @@ public class Journal_UI : MonoBehaviour
     #endif
     }
 
+    // Testing
     public void TestTask()
     {
         AddTask("KILL EVERYONE", "kill");
