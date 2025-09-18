@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.Audio;
 
 namespace AudioSystem
 {
@@ -20,9 +21,14 @@ namespace AudioSystem
             { SoundCategory.Music, 1f },
             { SoundCategory.UI, 1f }
         };
-
+        [Header("Audio Source Instance Values")]
         [SerializeField] private GameObject _audioSourcePrefab;
         [SerializeField] private int _initialPoolSize = 10;
+
+        [Header("Audio Mixers")]
+        public AudioMixerGroup musicAudioMixerGroup;
+        public AudioMixerGroup sfxAudioMixerGroup;
+        public AudioMixerGroup uiAudioMixerGroup;
 
         /// <summary>
         /// Pool of available AudioSource objects.
@@ -62,6 +68,20 @@ namespace AudioSystem
         public void Play(SoundDataSO soundData, Vector3? position = null)
         {
             AudioSource source = GetPooledAudioSource();
+
+            switch (soundData.Category) 
+            {
+                case SoundCategory.Music:
+                    source.outputAudioMixerGroup = musicAudioMixerGroup;
+                    break;
+                case SoundCategory.SFX:
+                    source.outputAudioMixerGroup = sfxAudioMixerGroup;
+                    break;
+                case SoundCategory.UI:
+                    source.outputAudioMixerGroup = uiAudioMixerGroup;
+                    break;
+            }
+
             ConfigureSource(source, soundData, position);
             source.Play();
 
@@ -76,7 +96,9 @@ namespace AudioSystem
         /// <param name="volume">New volume (0 to 1).</param>
         public void SetCategoryVolume(SoundCategory category, float volume)
         {
+            Debug.Log("Old volume is: " + _categoryVolumes[category]);
             _categoryVolumes[category] = Mathf.Clamp01(volume);
+            Debug.Log("New volume is: "+ volume);
         }
 
         /// <summary>
