@@ -7,7 +7,7 @@ namespace ItemSystem
     [System.Serializable]
     public struct ItemInstance
     {
-        public ItemDefinitionSO item;
+        public ItemDataSO item;
         public int durabilityLeft;
         public float lastUseTime;
 

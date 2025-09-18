@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ItemTester : MonoBehaviour
 {
-    public ItemDefinitionSO item;
+    public ItemDataSO item;
 
     private ItemInstance _instance;
 

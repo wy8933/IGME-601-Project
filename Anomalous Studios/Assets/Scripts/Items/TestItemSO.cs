@@ -2,7 +2,7 @@ using UnityEngine;
 using ItemSystem;
 
 [CreateAssetMenu(fileName = "TestItemSO", menuName = "ItemSystem/TestItemSO")]
-public class TestItemSO : ItemDefinitionSO
+public class TestItemSO : ItemDataSO
 {
     // You can add as much variable as you want
 

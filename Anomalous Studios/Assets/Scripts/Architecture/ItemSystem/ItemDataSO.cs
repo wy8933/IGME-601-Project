@@ -5,7 +5,7 @@ namespace ItemSystem
     public enum ItemType { SingleUse, Tool, Other}
 
     [CreateAssetMenu(fileName = "ItemDefinitionSO", menuName = "ItemSystem/ItemDefinitionSO")]
-    public abstract class ItemDefinitionSO  : ScriptableObject
+    public abstract class ItemDataSO  : ScriptableObject
     {
         [Tooltip("Definitions")]
         public string itemName;
