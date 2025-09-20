@@ -259,7 +259,7 @@ public class MBS_PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F) && Interaction.Target != null)
             {
-                Interaction.Target.Interact();
+                //Interaction.Target.Interact();
             }
         }
     }
@@ -333,18 +333,18 @@ public class MBS_PlayerController : MonoBehaviour
         // Scans the area for ANY colliders, not just interactables - allows walls to occlude items
         float interactRange = 5.0f;
 
-        // Looks for an object, makes sure its an interactable, and that it is usable
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, 
-            out RaycastHit hit, interactRange) && 
-            hit.collider.TryGetComponent<Interaction>(out Interaction obj) &&
-            obj._canInteract)
-        {
-            Interaction.SetPriorityTarget(obj);
-            Interaction.Target.Highlight();
-        }
-        else
-        {
-            Interaction.SetPriorityTarget(null);
-        }
+        //// Looks for an object, makes sure its an interactable, and that it is usable
+        //if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, 
+        //    out RaycastHit hit, interactRange) && 
+        //    hit.collider.TryGetComponent<Interaction>(out Interaction obj) &&
+        //    obj._canInteract)
+        //{
+        //    Interaction.SetPriorityTarget(obj);
+        //    Interaction.Target.Highlight();
+        //}
+        //else
+        //{
+        //    Interaction.SetPriorityTarget(null);
+        //}
     }
 }

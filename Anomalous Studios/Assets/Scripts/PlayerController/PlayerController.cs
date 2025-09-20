@@ -287,14 +287,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Interact()
-    {
-        if (!_inJournal && Interaction.Target != null)
-        {
-            Interaction.Target.Interact();
-        }
-    }
-
     public void Use()
     {
         if (!_inJournal)
@@ -343,7 +335,7 @@ public class PlayerController : MonoBehaviour
     {
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Jump.performed += OnJumpPerformed;
-        _playerInputActions.Player.Interact.performed += OnInteractPerformed;
+        _playerInputActions.Player.Interact.started += OnInteractStarted;
         _playerInputActions.Player.Use.performed += OnUsePerformed;
         _playerInputActions.Player.Item1Hotbar.performed += OnItem1HotbarPerformed;
         _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
@@ -365,7 +357,7 @@ public class PlayerController : MonoBehaviour
     void OnDisable() 
     {
         _playerInputActions.Player.Jump.performed -= OnJumpPerformed;
-        _playerInputActions.Player.Interact.performed -= OnInteractPerformed;
+        _playerInputActions.Player.Interact.started -= OnInteractStarted;
         _playerInputActions.Player.Use.performed -= OnUsePerformed;
         _playerInputActions.Player.Item1Hotbar.performed -= OnItem1HotbarPerformed;
         _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
@@ -415,9 +407,13 @@ public class PlayerController : MonoBehaviour
         Jump();
     }
 
-    void OnInteractPerformed(InputAction.CallbackContext ctx)
+    void OnInteractStarted(InputAction.CallbackContext ctx)
     {
-        Interact();
+        // TODO: Test edges cases while pulling up the journal
+        if (!_inJournal && Interaction.Target != null)
+        {
+            Interaction.isPressed = true;
+        }
     }
 
     void OnUsePerformed(InputAction.CallbackContext ctx)
@@ -464,13 +460,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ScanInteractables(float interactRange)
     {
-
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
             out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
-            hit.collider.TryGetComponent<Interaction>(out Interaction obj) &&
-            obj._canInteract)
+            hit.collider.TryGetComponent(out Interaction obj) &&
+            obj.canInteract)
         {
             Interaction.SetPriorityTarget(obj);
             Interaction.Target.Highlight();
@@ -479,13 +474,5 @@ public class PlayerController : MonoBehaviour
         {
             Interaction.SetPriorityTarget(null);
         }
-
-        // If target != null and If button is pressed
-        // increment the timer
-
-        // If timer less than zero
-        // call Interact()
-        // else
-        // reset timer
     }
 }

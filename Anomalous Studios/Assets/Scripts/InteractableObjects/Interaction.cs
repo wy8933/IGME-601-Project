@@ -7,7 +7,15 @@ using UnityEngine;
 /// </summary>
 public abstract class Interaction : MonoBehaviour
 {
-    private static float timer = 0f;
+    /// <summary>
+    /// Counts down from the priority object's _holdTime value
+    /// </summary>
+    private static float _timer = 0f;
+
+    /// <summary>
+    /// Stores the held state of the target 
+    /// </summary>
+    public static bool isPressed = false;
 
     /// <summary>
     /// The current highest priority interactable that is accessible by the player. 
@@ -15,16 +23,11 @@ public abstract class Interaction : MonoBehaviour
     public static Interaction? Target { get; private set; }
 
     /// <summary>
-    /// The _holdTime value of the Target object
-    /// </summary>
-    public static float HoldTime { get; private set; }
-
-    /// <summary>
     /// Decides whether an item can be interacted with
     /// TODO: Should this PREVENT an item from becoming a target? OR signal some error SFX in Interact()?
     /// TODO: if _canInteract swaps while holding down F, it should disengage the holding sequence
     /// </summary>
-    public bool _canInteract = true;
+    public bool canInteract = true;
 
     /// <summary>
     /// By default zero; how long it takes the player to hold the interaction until it takes effect
@@ -32,13 +35,42 @@ public abstract class Interaction : MonoBehaviour
     [SerializeField] private float _holdTime = 0f;
 
     /// <summary>
-    /// The public accessor to change the target priority values
+    /// Children of Interaction class MUST call base.Update() to function as anticpated
+    /// </summary>
+    public virtual void Update()
+    {
+        // Only the priority Target ever updates and only when the interact key is pressed
+        if (Target == this && isPressed)
+        {
+            if (_timer <= 0) 
+            { 
+                isPressed = false;
+                Interact();
+            }
+
+            else { _timer -= Time.deltaTime; }
+        }
+    }
+
+    /// <summary>
+    /// The public accessor to change the priority Target's interaction values
     /// </summary>
     /// <param name="obj"></param>
     public static void SetPriorityTarget(Interaction obj)
     {
-        Target = obj;
-        HoldTime = obj != null ? obj._holdTime : 0f;
+        // When the player looks at another interaction, update the priority Target values
+        if (Target != obj)
+        {
+            isPressed = false;
+            Target = obj;
+            _timer = obj != null ? obj._holdTime : 0f;
+        }
+
+        // If the player lets go of the interaction but continues to look at it, reset the timer
+        else if (!isPressed)
+        {
+            _timer = obj != null ? obj._holdTime : 0f;
+        }
     }
 
     /// <summary>
@@ -48,7 +80,7 @@ public abstract class Interaction : MonoBehaviour
     public abstract void Highlight();
 
     /// <summary>
-    /// If CanInteract is true, allows the user to perform interaction
+    /// Performs the unique interaction of this object
     /// </summary>
-    public abstract void Interact();
+    protected abstract void Interact();
 }

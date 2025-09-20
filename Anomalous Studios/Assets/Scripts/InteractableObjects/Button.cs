@@ -9,15 +9,18 @@ public class Button : Interaction
 
     [SerializeField] private Animator _elevator;
 
-    // TODO: check file against style guide
-    
+    public override void Update()
+    {
+        base.Update();
+    }
+
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
         Debug.Log(_name + " Button");
     }
 
-    public override void Interact()
+    protected override void Interact()
     {
         Debug.Log("Interaction: " + _name + " Button Pressed");
 
