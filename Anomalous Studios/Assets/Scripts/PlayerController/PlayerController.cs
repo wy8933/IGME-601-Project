@@ -73,6 +73,9 @@ public class PlayerController : MonoBehaviour
     // Journal Variables
     bool _inJournal = false;
 
+    // Layermasks
+    private int _IgnorePlayerMask;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -90,6 +93,9 @@ public class PlayerController : MonoBehaviour
             DefaultCameraY = PlayerCamera.transform.position.y;
             CrouchCameraY = PlayerCamera.transform.position.y - _crouchOffset;
         }
+
+        // Initialize Playermasks
+        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -101,7 +107,7 @@ public class PlayerController : MonoBehaviour
         // Lean Left/Right
         LeanLeftRight();
 
-        ScanInteractables();
+        ScanInteractables(5.0f);
     }
 
     private void FixedUpdate()
@@ -283,9 +289,9 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        if (!_inJournal && IInteractable.Target != null)
+        if (!_inJournal && Interaction.Target != null)
         {
-            IInteractable.Target.Interact();
+            Interaction.Target.Interact();
         }
     }
 
@@ -456,23 +462,30 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Finds objects within range that can be interacted with and highlights the item
     /// </summary>
-    private void ScanInteractables()
+    private void ScanInteractables(float interactRange)
     {
-        // Scans the area for ANY colliders, not just interactables - allows walls to occlude items
-        float interactRange = 5.0f;
 
-        // Looks for an object, makes sure its an interactable, and that it is usable
+        // Ignores the player's collider when looking for interactions, allowing walls to occlude items
+        // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
-            out RaycastHit hit, interactRange) &&
-            hit.collider.TryGetComponent<IInteractable>(out IInteractable obj) &&
-            obj.CanInteract)
+            out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
+            hit.collider.TryGetComponent<Interaction>(out Interaction obj) &&
+            obj._canInteract)
         {
-            IInteractable.Target = obj;
-            IInteractable.Target.Highlight();
+            Interaction.SetPriorityTarget(obj);
+            Interaction.Target.Highlight();
         }
         else
         {
-            IInteractable.Target = null;
+            Interaction.SetPriorityTarget(null);
         }
+
+        // If target != null and If button is pressed
+        // increment the timer
+
+        // If timer less than zero
+        // call Interact()
+        // else
+        // reset timer
     }
 }
