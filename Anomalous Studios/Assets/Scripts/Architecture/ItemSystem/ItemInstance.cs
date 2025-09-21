@@ -5,7 +5,7 @@ namespace ItemSystem
     public enum ItemUseResult { Success, OnCooldown, NoCharges, Failed }
 
     [System.Serializable]
-    public struct ItemInstance
+    public class ItemInstance: MonoBehaviour
     {
         public ItemDataSO item;
         public int durabilityLeft;
@@ -39,7 +39,7 @@ namespace ItemSystem
             if (durabilityLeft <= 0) return ItemUseResult.NoCharges;
             if (IsOnCooldown) return ItemUseResult.OnCooldown;
 
-            var useSuccessful = item.Use(user, ref this);
+            var useSuccessful = item.Use(user, this);
             if (!useSuccessful) return ItemUseResult.Failed;
 
             lastUseTime = Time.time;
