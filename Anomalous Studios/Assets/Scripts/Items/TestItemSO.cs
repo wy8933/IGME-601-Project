@@ -15,7 +15,7 @@ public class TestItemSO : ItemDataSO
     /// <param name="user"> Who used the Item</param>
     /// <param name="instance">The reference of the item instance</param>
     /// <returns></returns>
-    public override bool Use(GameObject user, ref ItemInstance instance)
+    public override bool Use(GameObject user, ItemInstance instance)
     {
         string who = includeUserName && user != null ? $"[{user.name}] " : "";
         Debug.Log($"{who}{message}");
