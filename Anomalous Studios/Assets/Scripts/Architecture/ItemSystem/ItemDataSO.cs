@@ -29,6 +29,6 @@ namespace ItemSystem
         /// <param name="user"> Who used the Item</param>
         /// <param name="instance">The reference of the item instance</param>
         /// <returns></returns>
-        public abstract bool Use(GameObject user, ref ItemInstance instance);
+        public abstract bool Use(GameObject user, ItemInstance instance);
     }
 }
