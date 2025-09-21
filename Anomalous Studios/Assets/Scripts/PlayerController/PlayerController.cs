@@ -73,6 +73,9 @@ public class PlayerController : MonoBehaviour
     // Journal Variables
     bool _inJournal = false;
 
+    // Layermasks
+    private int _IgnorePlayerMask;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -90,6 +93,9 @@ public class PlayerController : MonoBehaviour
             DefaultCameraY = PlayerCamera.transform.position.y;
             CrouchCameraY = PlayerCamera.transform.position.y - _crouchOffset;
         }
+
+        // Initialize Playermasks
+        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -100,6 +106,8 @@ public class PlayerController : MonoBehaviour
 
         // Lean Left/Right
         LeanLeftRight();
+
+        ScanInteractables(5.0f);
     }
 
     private void FixedUpdate()
@@ -279,14 +287,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Interact()
-    {
-        if (!_inJournal)
-        {
-            Debug.Log("Interact Key Triggered!");
-        }
-    }
-
     public void Use()
     {
         if (!_inJournal)
@@ -335,7 +335,7 @@ public class PlayerController : MonoBehaviour
     {
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Jump.performed += OnJumpPerformed;
-        _playerInputActions.Player.Interact.performed += OnInteractPerformed;
+        _playerInputActions.Player.Interact.started += OnInteractStarted;
         _playerInputActions.Player.Use.performed += OnUsePerformed;
         _playerInputActions.Player.Item1Hotbar.performed += OnItem1HotbarPerformed;
         _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
@@ -357,7 +357,7 @@ public class PlayerController : MonoBehaviour
     void OnDisable() 
     {
         _playerInputActions.Player.Jump.performed -= OnJumpPerformed;
-        _playerInputActions.Player.Interact.performed -= OnInteractPerformed;
+        _playerInputActions.Player.Interact.started -= OnInteractStarted;
         _playerInputActions.Player.Use.performed -= OnUsePerformed;
         _playerInputActions.Player.Item1Hotbar.performed -= OnItem1HotbarPerformed;
         _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
@@ -407,9 +407,13 @@ public class PlayerController : MonoBehaviour
         Jump();
     }
 
-    void OnInteractPerformed(InputAction.CallbackContext ctx)
+    void OnInteractStarted(InputAction.CallbackContext ctx)
     {
-        Interact();
+        // TODO: Test edges cases while pulling up the journal
+        if (!_inJournal && Interaction.Target != null)
+        {
+            Interaction.isPressed = true;
+        }
     }
 
     void OnUsePerformed(InputAction.CallbackContext ctx)
@@ -449,5 +453,26 @@ public class PlayerController : MonoBehaviour
     void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
         _isCrouching = false;
+    }
+
+    /// <summary>
+    /// Finds objects within range that can be interacted with and highlights the item
+    /// </summary>
+    private void ScanInteractables(float interactRange)
+    {
+        // Ignores the player's collider when looking for interactions, allowing walls to occlude items
+        // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
+        if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
+            out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
+            hit.collider.TryGetComponent(out Interaction obj) &&
+            obj.canInteract)
+        {
+            Interaction.SetPriorityTarget(obj);
+            Interaction.Target.Highlight();
+        }
+        else
+        {
+            Interaction.SetPriorityTarget(null);
+        }
     }
 }
