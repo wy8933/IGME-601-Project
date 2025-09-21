@@ -1,50 +1,60 @@
 using UnityEngine;
 
+
 public class EventTester : MonoBehaviour
 {
-    private EventBinding<TestEventNoArgs> _testEventNoArgsBinding;
-    private EventBinding<TestEventWithArgs> _testEventWithArgsBinding;
+    [Header("Initial State")]
+    [SerializeField] private int _startLevelIndex = 0;
+    [SerializeField] private int _startCoins = 0;
+    [SerializeField] private float _startHealth = 100f;
 
-    private void OnEnable()
+    private int _levelIndex;
+    private int _coins;
+    private float _health;
+    private bool _isPaused;
+
+    private void Awake()
     {
-        // Register the events
-        _testEventNoArgsBinding = new EventBinding<TestEventNoArgs>(HandleTestEventNoArgs);
-        EventBus<TestEventNoArgs>.Register(_testEventNoArgsBinding);
-
-        _testEventWithArgsBinding = new EventBinding<TestEventWithArgs>(HandleTestEventWithArgs);
-        EventBus<TestEventWithArgs>.Register(_testEventWithArgsBinding);
-    }
-
-    private void OnDisable()
-    {
-        // DeRegister the events
-        _testEventNoArgsBinding = new EventBinding<TestEventNoArgs>(HandleTestEventNoArgs);
-        EventBus<TestEventNoArgs>.DeRegister(_testEventNoArgsBinding);
-
-        _testEventWithArgsBinding = new EventBinding<TestEventWithArgs>(HandleTestEventWithArgs);
-        EventBus<TestEventWithArgs>.DeRegister(_testEventWithArgsBinding);
+        _levelIndex = _startLevelIndex;
+        _coins = _startCoins;
+        _health = _startHealth;
+        _isPaused = true;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J)) 
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            EventBus<TestEventNoArgs>.Raise(new TestEventNoArgs());
+            _levelIndex++;
+            EventBus<LevelLoaded>.Raise(new LevelLoaded { Index = _levelIndex });
+            Debug.Log($"Raised LevelLoaded : Index={_levelIndex}");
         }
-        if (Input.GetKeyDown(KeyCode.K))
+
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            EventBus<TestEventWithArgs>.Raise(new TestEventWithArgs { health = 100, stuff = 123f });
+            _coins += 5;
+            EventBus<CoinsChanged>.Raise(new CoinsChanged { NewCoins = _coins });
+            Debug.Log($"Raised CoinsChanged : NewCoins={_coins}");
         }
-    }
 
-    private void HandleTestEventNoArgs() 
-    {
-        Debug.Log("Test Event received");
-    }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            EventBus<GamePaused>.RaiseSticky(new GamePaused { IsPaused = _isPaused });
+            Debug.Log($"Raised Sticky GamePaused : IsPaused={_isPaused}");
+        }
 
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            _health = Mathf.Max(0f, _health - 10f);
+            EventBus<HealthChanged>.RaiseScoped(gameObject, new HealthChanged { Value = _health });
+            Debug.Log($" Raised scoped HealthChanged (non-sticky) : {_health}");
+        }
 
-    private void HandleTestEventWithArgs(TestEventWithArgs testEventWithArgs)
-    {
-        Debug.Log($"Test Event received, the variables include Health: {testEventWithArgs.health} and Stuff: {testEventWithArgs.stuff}");
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            _health = Mathf.Clamp(_health + 7.5f, 0f, 100f);
+            EventBus<HealthChanged>.RaiseStickyScoped(gameObject, new HealthChanged { Value = _health });
+            Debug.Log($"Raised stick scoped HealthChanged : {_health}");
+        }
     }
 }

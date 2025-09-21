@@ -1,12 +1,6 @@
 using UnityEngine;
 
-public struct TestEventNoArgs : IEvent
-{
-
-}
-
-public struct TestEventWithArgs : IEvent 
-{
-    public int health;
-    public float stuff;
-}
+public struct LevelLoaded : IEvent { public int Index; }
+public struct CoinsChanged : IEvent { public int NewCoins; }
+public struct HealthChanged : IEvent { public float Value; }
+public struct GamePaused : IEvent { public bool IsPaused; }

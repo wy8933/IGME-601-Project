@@ -8,28 +8,31 @@ internal interface IEventBinding<T>
 
 }
 
-public class EventBinding<T> : IEventBinding<T> where T : IEvent
+public sealed class EventBinding<T> : IEventBinding<T>, IPrioritized, IDisposable where T : IEvent
 {
-    // Init as empty delegate so no need of null check
-    private Action<T> onEvent = _ => { };
-    private Action onEventNoArgs = () => { };
+    private Action<T> _onEvent = _ => { };
+    private Action _onEventNoArgs = () => { };
+    private bool _disposed;
 
-    Action<T> IEventBinding<T>.OnEvent
+    public int Priority { get; set; } = 0;
+
+    Action<T> IEventBinding<T>.OnEvent { get => _onEvent; set => _onEvent = value ?? (_ => { }); }
+    Action IEventBinding<T>.OnEventNoArgs { get => _onEventNoArgs; set => _onEventNoArgs = value ?? (() => { }); }
+
+    public EventBinding(Action<T> onEvent) => _onEvent = onEvent ?? (_ => { });
+    public EventBinding(Action onEventNoArgs) => _onEventNoArgs = onEventNoArgs ?? (() => { });
+    public EventBinding(Action<T> onEvent, int pr) { _onEvent = onEvent ?? (_ => { }); Priority = pr; }
+
+    public void Add(Action<T> onEvent) => _onEvent += onEvent;
+    public void Add(Action onEvent) => _onEventNoArgs += onEvent;
+    public void Remove(Action<T> f) => _onEvent -= f;
+    public void Remove(Action f) => _onEventNoArgs -= f;
+
+    public void Dispose()
     {
-        get => onEvent;
-        set => onEvent = value;
+        if (_disposed) return;
+        _disposed = true;
+        EventBus<T>.DeRegister(this);
     }
-
-    Action IEventBinding<T>.OnEventNoArgs
-    {
-        get => onEventNoArgs;
-        set => onEventNoArgs = value;
-    }
-
-    public EventBinding(Action<T> onEvent) => this.onEvent = onEvent;
-    public EventBinding(Action onEventNoArgs) => this.onEventNoArgs = onEventNoArgs;
-
-    public void Add(Action onEvent) => onEventNoArgs += onEvent;
-    public void Remove(Action onEvent) => onEventNoArgs -= onEvent;
 
 }
