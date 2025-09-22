@@ -5,7 +5,7 @@ namespace ItemSystem
     public enum ItemUseResult { Success, OnCooldown, NoCharges, Failed }
 
     [System.Serializable]
-    public class ItemInstance: MonoBehaviour
+    public class ItemInstance: Interaction
     {
         public ItemDataSO item;
         public int durabilityLeft;
@@ -16,6 +16,9 @@ namespace ItemSystem
 
         public bool IsEmpty => item == null;
         public bool IsOnCooldown => item != null && (Time.time - lastUseTime) < item.cooldownSeconds;
+
+        protected bool _isEquipped = false;
+        protected bool _pickedUp = false;
 
         /// <summary>
         /// Initialize durability when create/assign the instance.
@@ -54,6 +57,42 @@ namespace ItemSystem
                 }
             }
             return ItemUseResult.Success;
+        }
+
+        public override void Highlight()
+        {
+
+        }
+
+        protected override void Interact()
+        {
+
+        }
+
+        public void PickUp()
+        {
+            _pickedUp = true;
+            Equip();
+        }
+
+        public void Equip()
+        {
+            _isEquipped = true;
+        }
+
+        public void UnEquip()
+        {
+            _isEquipped = false;
+        }
+
+        public virtual void Use(GameObject user)
+        {
+            Debug.Log("Called Parent Use()");
+        }
+
+        public virtual void AttachToParent(GameObject parent)
+        {
+            Debug.Log("Called Parent AttachToParent()");
         }
     }
 }
