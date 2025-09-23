@@ -1,93 +1,95 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using ItemSystem;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     // Player Input Actions Class
-    PlayerInputActions _playerInputActions;
+    private PlayerInputActions _playerInputActions;
     // Player Rigidbody and CapsuleCollider
-    Rigidbody _rb;
-    CapsuleCollider _capsuleCollider;
-
-    // Follow Camera
-    public Camera PlayerCamera;
+    private Rigidbody _rb;
+    private CapsuleCollider _capsuleCollider;
 
     // Mouse Sensitivity
-    public float MouseSensitivityX = 1.0f;
-    public float MouseSensitivityY = 1.0f;
+    [Header("Mouse Sensitivity")]
+    [SerializeField] float MouseSensitivityX = 1.0f;
+    [SerializeField] float MouseSensitivityY = 1.0f;
+
+    // Follow Camera
+    [Header("Follow Camera")]
+    [SerializeField] Camera PlayerCamera;
 
     // Camera Yaw & Pitch
-    public float LookYawSpeed = 2.0f;
-    public float LookPitchSpeed = 1.0f;
-    public float LookPitchLimit = 60.0f; 
-    float _rotationX = 0.0f;
+    [Header("Camera Pitch & Yaw")]
+    [SerializeField] float LookYawSpeed = 2.0f;
+    [SerializeField] float LookPitchSpeed = 1.0f;
+    [SerializeField] float LookPitchLimit = 60.0f; 
+    private float _rotationX = 0.0f;
 
     // Camera Lean Left/Right Variables
-    bool _canLean = true;
-    public Transform LeanPivot;
-    float _currentLean;         // Actual value of the lean
-    float _targetLean;          // Will change as player pressed Q or E to lean
-    public float LeanAngle;     // Set the _targetLean depending on LeanAngle       - I found a value of 20 to work best
-    public float LeanSmoothing; // Used to smooth the _currentLean to _targetLean   - I found a value of 0.3 to work best
-    float _leanVelocity;
-    bool _isLeaningLeft;
-    bool _isLeaningRight;
+    private bool _canLean = true;
+    [Header("Leaning")]
+    [SerializeField] Transform LeanPivot;
+    private float _currentLean;         // Actual value of the lean
+    private float _targetLean;          // Will change as player pressed Q or E to lean
+    [SerializeField] float LeanAngle;     // Set the _targetLean depending on LeanAngle       - I found a value of 20 to work best
+    [SerializeField] float LeanSmoothing; // Used to smooth the _currentLean to _targetLean   - I found a value of 0.3 to work best
+    private float _leanVelocity;
+    private bool _isLeaningLeft;
+    private bool _isLeaningRight;
 
     // Movement Variables
-    bool _canMove = true;
+    private bool _canMove = true;
+    [Header("Movement")]
     static public float WalkSpeed = 3.0f;
     static public float RunSpeed = 6.0f;
-    float _walkSpeed = WalkSpeed;
-    float _runSpeed = RunSpeed;
-    Vector2 _moveInput;
+    private float _walkSpeed = WalkSpeed;
+    private float _runSpeed = RunSpeed;
+    private Vector2 _moveInput;
 
     // Sprint Variables
-    bool _canSprint = true;
-    bool _isSprinting = false;
-    public float Stamina = 100.0f;
-    float _staminaDepletionFactor = 20.0f;
-    float _staminaRegenFactor = 5.0f;
-    
+    private bool _canSprint = true;
+    private bool _isSprinting = false;
+    [Header("Sprint Stamina")]
+    [SerializeField] float Stamina = 100.0f;
+    private float _staminaDepletionFactor = 20.0f;
+    private float _staminaRegenFactor = 5.0f;
+
     // Jump Variables
-    public float JumpForce = 3.0f;
-    float _gravity = -9.81f;
-    float _groundedThreshold = 0.05f;
+    [Header("Jump")]
+    [SerializeField] float JumpForce = 3.0f;
+    private float _gravity = -9.81f;
+    private float _groundedThreshold = 0.05f;
 
     // Crouch Variables
-    bool _isCrouching;
-    public float DefaultHeight = 2.0f;
-    public float CrouchHeight = 1.0f;
-    public float CrouchSpeed = 2.0f;
-    float DefaultCameraY;
-    float CrouchCameraY;
-    float _crouchOffset = 0.7f;
+    private bool _isCrouching;
+    [Header("Crouch")]
+    [SerializeField] float DefaultHeight = 2.0f;
+    [SerializeField] float CrouchHeight = 1.0f;
+    [SerializeField] float CrouchSpeed = 2.0f;
+    private float DefaultCameraY;
+    private float CrouchCameraY;
+    private float _crouchOffset = 0.7f;
 
     // Item Hotbar Variables
-    public int SelectedItemIndex = -1;
-    string[] _itemHotbar = new string[4];
+    private int _selectedItemIndex = 0;
+    private GameObject[] _itemHotbar = new GameObject[4];
 
     // Journal Variables
-    bool _inJournal = false;
+    private bool _inJournal = false;
+    [Header("Journal")]
     [SerializeField] Journal_UI journal;
 
     // Layermasks
     private int _IgnorePlayerMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        // Populate hotbar with temporary placeholder items
-        _itemHotbar[0] = "FlashLight";
-        _itemHotbar[1] = "Rusty Key";
-        _itemHotbar[2] = "Batteries";
-        _itemHotbar[3] = "Taco Cat";
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        UnityEngine.Cursor.visible = false;
 
         if (PlayerCamera)
         {
@@ -100,7 +102,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Check Crouch conditions
         CheckCrouch();
@@ -126,7 +128,7 @@ public class PlayerController : MonoBehaviour
         ApplyGravity(Time.fixedDeltaTime);
     }
 
-    void CheckSprint(float dt)
+    private void CheckSprint(float dt)
     {
         if (_isSprinting && !_inJournal)
         {
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("isSprinting: " + _isSprinting);
     }
 
-    void Move(float dt)
+    private void Move(float dt)
     {
         if(!_inJournal)
         {
@@ -173,7 +175,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OrientCameraToRotation(float dt)
+    private void OrientCameraToRotation(float dt)
     {
         if (!_inJournal)
         {
@@ -182,9 +184,10 @@ public class PlayerController : MonoBehaviour
                 Vector2 lookValue = _playerInputActions.Player.Look.ReadValue<Vector2>();
                 Vector2 mouse = new Vector2(MouseSensitivityX * lookValue.x * dt, MouseSensitivityY * lookValue.y * dt);
 
-                transform.rotation *= Quaternion.Euler(0, mouse.x * LookYawSpeed, 0);   // Yaw
+                //transform.rotation *= Quaternion.Euler(0, mouse.x * LookYawSpeed, 0);   // Yaw
+                transform.Rotate(new Vector3(0, mouse.x * LookYawSpeed, 0));              // Yaw
                
-                _rotationX -= mouse.y;
+                _rotationX -= mouse.y * LookPitchSpeed;
                 _rotationX = Mathf.Clamp(_rotationX, -LookPitchLimit, LookPitchLimit);
 
                 if(PlayerCamera != null)
@@ -195,7 +198,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void CheckCrouch()
+    private void CheckCrouch()
     {
         if (!_inJournal)
         {
@@ -231,7 +234,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Jump()
+    private void Jump()
     {
         if (!_inJournal)
         {
@@ -242,7 +245,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void ApplyGravity(float dt)
+    private void ApplyGravity(float dt)
     {
         if (!IsGrounded())
         {
@@ -250,7 +253,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void LeanLeftRight()
+    private void LeanLeftRight()
     {
         if (!_inJournal)
         {
@@ -288,18 +291,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AddItem(GameObject item)
+    {
+        _itemHotbar[_selectedItemIndex] = item;
+        item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
+        Debug.Log("Item added to hotbar! " +  _itemHotbar[_selectedItemIndex].ToString());
+    }
+
     public void Use()
     {
         if (!_inJournal)
         {
-            if (SelectedItemIndex != -1 && _itemHotbar[SelectedItemIndex] != null)
+            Debug.Log(_selectedItemIndex);
+
+            if (_itemHotbar[_selectedItemIndex] != null)
             {
-                Debug.Log("Use Currently Selected {" + SelectedItemIndex + "} item: " + _itemHotbar[SelectedItemIndex]);
-                _itemHotbar[SelectedItemIndex] = null;
+                _itemHotbar[_selectedItemIndex].GetComponent<Flashlight>().Use(this.gameObject);
             }
             else
             {
                 Debug.Log("No Item Selected!");
+            }
+        }
+    }
+
+    private void DropItem()
+    {
+        if (!_inJournal)
+        {
+            if(_itemHotbar[_selectedItemIndex] != null)
+            {
+                Debug.Log("Drop " +  _itemHotbar[_selectedItemIndex]);
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
+                _itemHotbar[_selectedItemIndex] = null;
             }
         }
     }
@@ -310,34 +335,35 @@ public class PlayerController : MonoBehaviour
         journal.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            UnityEngine.Cursor.lockState = CursorLockMode.None;
+            UnityEngine.Cursor.visible = true;
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            UnityEngine.Cursor.visible = false;
         }
     }
 
-    bool IsGrounded()
+    private bool IsGrounded()
     {
         return Mathf.Abs(_rb.linearVelocity.y) < _groundedThreshold;
     }
 
-    void Awake()
+    private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Jump.performed += OnJumpPerformed;
         _playerInputActions.Player.Interact.started += OnInteractStarted;
-        _playerInputActions.Player.Use.performed += OnUsePerformed;
+        _playerInputActions.Player.Drop.performed += OnDropPerformed;
+        _playerInputActions.Player.Use.started += OnUseStarted;
         _playerInputActions.Player.Item1Hotbar.performed += OnItem1HotbarPerformed;
         _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed += OnItem3HotbarPerformed;
@@ -355,11 +381,11 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.LeanRight.canceled += OnLeanRightCanceled;
     }
 
-    void OnDisable() 
+    private void OnDisable() 
     {
         _playerInputActions.Player.Jump.performed -= OnJumpPerformed;
         _playerInputActions.Player.Interact.started -= OnInteractStarted;
-        _playerInputActions.Player.Use.performed -= OnUsePerformed;
+        _playerInputActions.Player.Use.started -= OnUseStarted;
         _playerInputActions.Player.Item1Hotbar.performed -= OnItem1HotbarPerformed;
         _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed -= OnItem3HotbarPerformed;
@@ -368,7 +394,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Disable();
     }
 
-    void OnSprintPerformed(InputAction.CallbackContext ctx)
+    private void OnSprintPerformed(InputAction.CallbackContext ctx)
     {
         if (_canSprint)
         {
@@ -376,82 +402,120 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnSprintCanceled(InputAction.CallbackContext ctx)
+    private void OnSprintCanceled(InputAction.CallbackContext ctx)
     {
         _isSprinting = false;
     }
 
-    void OnLeanLeftPerformed(InputAction.CallbackContext ctx)
+    private void OnLeanLeftPerformed(InputAction.CallbackContext ctx)
     {
         _isLeaningLeft = true;
         _isLeaningRight = false;
     }
 
-    void OnLeanLeftCanceled(InputAction.CallbackContext ctx)
+    private void OnLeanLeftCanceled(InputAction.CallbackContext ctx)
     {
         _isLeaningLeft = false;
     }
 
-    void OnLeanRightPerformed(InputAction.CallbackContext ctx)
+    private void OnLeanRightPerformed(InputAction.CallbackContext ctx)
     {
         _isLeaningRight = true;
         _isLeaningLeft = false;
     }
 
-    void OnLeanRightCanceled(InputAction.CallbackContext ctx)
+    private void OnLeanRightCanceled(InputAction.CallbackContext ctx)
     {
         _isLeaningRight = false;
     }
 
-    void OnJumpPerformed(InputAction.CallbackContext ctx)
+    private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
         Jump();
     }
 
-    void OnInteractStarted(InputAction.CallbackContext ctx)
+    private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
         // TODO: Test edges cases while pulling up the journal
         if (!_inJournal && Interaction.Target != null)
         {
             Interaction.isPressed = true;
+            Interaction.Instigator = this.gameObject; // Save a reference of player inside interacted object
         }
     }
 
-    void OnUsePerformed(InputAction.CallbackContext ctx)
+    private void OnDropPerformed(InputAction.CallbackContext ctx)
+    {
+        DropItem();
+    }
+
+    private void OnUseStarted(InputAction.CallbackContext ctx)
     {
         Use();
     }
 
-    void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)
+    private void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        SelectedItemIndex = 0;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        _selectedItemIndex = 0;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
     }
 
-    void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
+    private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        SelectedItemIndex = 1;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        _selectedItemIndex = 1;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
     }
-    void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
+    private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        SelectedItemIndex = 2;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        _selectedItemIndex = 2;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
     }
 
-    void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
+    private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        SelectedItemIndex = 3;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        _selectedItemIndex = 3;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
     }
 
-    void OnOpenJournalPerformed(InputAction.CallbackContext ctx)
+    private void OnOpenJournalPerformed(InputAction.CallbackContext ctx)
     {
         ToggleJournal();
     }
 
-    void OnCrouchPerformed(InputAction.CallbackContext ctx)
+    private void OnCrouchPerformed(InputAction.CallbackContext ctx)
     {
         _isCrouching = true;
     }
 
-    void OnCrouchCanceled(InputAction.CallbackContext ctx)
+    private void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
         _isCrouching = false;
     }

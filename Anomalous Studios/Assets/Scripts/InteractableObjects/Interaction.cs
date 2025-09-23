@@ -22,6 +22,8 @@ public abstract class Interaction : MonoBehaviour
     /// </summary>
     public static Interaction? Target { get; private set; }
 
+    public static GameObject? Instigator;
+
     /// <summary>
     /// Decides whether an item can be interacted with
     /// TODO: Should this PREVENT an item from becoming a target? OR signal some error SFX in Interact()?

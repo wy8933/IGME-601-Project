@@ -5,8 +5,11 @@ namespace ItemSystem
     public enum ItemUseResult { Success, OnCooldown, NoCharges, Failed }
 
     [System.Serializable]
-    public class ItemInstance: MonoBehaviour
+    public class ItemInstance: Interaction
     {
+        [Header("Item Mesh")]
+        [SerializeField] GameObject Mesh;
+
         public ItemDataSO item;
         public int durabilityLeft;
         public float lastUseTime;
@@ -16,6 +19,9 @@ namespace ItemSystem
 
         public bool IsEmpty => item == null;
         public bool IsOnCooldown => item != null && (Time.time - lastUseTime) < item.cooldownSeconds;
+
+        protected bool _isEquipped = false;
+        protected bool _pickedUp = false;
 
         /// <summary>
         /// Initialize durability when create/assign the instance.
@@ -54,6 +60,60 @@ namespace ItemSystem
                 }
             }
             return ItemUseResult.Success;
+        }
+
+        public override void Highlight()
+        {
+
+        }
+
+        protected override void Interact()
+        {
+
+        }
+
+        public void PickUp()
+        {
+            canInteract = false;
+            _pickedUp = true;
+            Equip();
+        }
+
+        public virtual void Equip()
+        {
+            _isEquipped = true;
+            Mesh.SetActive(true);
+        }
+
+        public virtual void UnEquip()
+        {
+            _isEquipped = false;
+            Mesh.SetActive(false);
+        }
+
+        public virtual void Use(GameObject user)
+        {
+            Debug.Log("Called Parent Use()");
+        }
+
+        public virtual void AttachToParent(GameObject parent)
+        {
+            Debug.Log("Called Parent AttachToParent()");
+        }
+
+        public virtual void DetachFromParent(GameObject parent)
+        {
+
+        }
+
+        public virtual void DisableRigidBodyCollisions()
+        {
+
+        }
+
+        public virtual void EnableRigidBodyCollisions()
+        {
+
         }
     }
 }
