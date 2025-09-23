@@ -7,6 +7,9 @@ namespace ItemSystem
     [System.Serializable]
     public class ItemInstance: Interaction
     {
+        [Header("Item Mesh")]
+        [SerializeField] GameObject Mesh;
+
         public ItemDataSO item;
         public int durabilityLeft;
         public float lastUseTime;
@@ -71,18 +74,21 @@ namespace ItemSystem
 
         public void PickUp()
         {
+            canInteract = false;
             _pickedUp = true;
             Equip();
         }
 
-        public void Equip()
+        public virtual void Equip()
         {
             _isEquipped = true;
+            Mesh.SetActive(true);
         }
 
-        public void UnEquip()
+        public virtual void UnEquip()
         {
             _isEquipped = false;
+            Mesh.SetActive(false);
         }
 
         public virtual void Use(GameObject user)
@@ -93,6 +99,21 @@ namespace ItemSystem
         public virtual void AttachToParent(GameObject parent)
         {
             Debug.Log("Called Parent AttachToParent()");
+        }
+
+        public virtual void DetachFromParent()
+        {
+
+        }
+
+        public virtual void DisableRigidBodyCollisions()
+        {
+
+        }
+
+        public virtual void EnableRigidBodyCollisions(GameObject parent)
+        {
+
         }
     }
 }

@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
                 Vector2 mouse = new Vector2(MouseSensitivityX * lookValue.x * dt, MouseSensitivityY * lookValue.y * dt);
 
                 //transform.rotation *= Quaternion.Euler(0, mouse.x * LookYawSpeed, 0);   // Yaw
-                transform.Rotate(new Vector3(0, mouse.x * LookYawSpeed, 0));
+                transform.Rotate(new Vector3(0, mouse.x * LookYawSpeed, 0));              // Yaw
                
                 _rotationX -= mouse.y * LookPitchSpeed;
                 _rotationX = Mathf.Clamp(_rotationX, -LookPitchLimit, LookPitchLimit);
@@ -322,6 +322,8 @@ public class PlayerController : MonoBehaviour
             if(_itemHotbar[_selectedItemIndex] != null)
             {
                 Debug.Log("Drop " +  _itemHotbar[_selectedItemIndex]);
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent();
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions(this.gameObject);
                 _itemHotbar[_selectedItemIndex] = null;
             }
         }
@@ -454,6 +456,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)
     {
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
         _selectedItemIndex = 0;
         if (_itemHotbar[_selectedItemIndex])
         {
@@ -463,27 +469,39 @@ public class PlayerController : MonoBehaviour
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _selectedItemIndex = 1;
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
         }
+        _selectedItemIndex = 1;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _selectedItemIndex = 2;
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        _selectedItemIndex = 2;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _selectedItemIndex = 3;
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        _selectedItemIndex = 3;
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
     }
 

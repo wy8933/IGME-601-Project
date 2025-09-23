@@ -131,8 +131,8 @@ GameObject:
   - component: {fileID: 221106156}
   - component: {fileID: 221106155}
   - component: {fileID: 221106154}
-  - component: {fileID: 221106159}
   - component: {fileID: 221106160}
+  - component: {fileID: 221106161}
   m_Layer: 6
   m_Name: Flashlight
   m_TagString: Untagged
@@ -153,7 +153,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -225,28 +225,13 @@ Transform:
   m_GameObject: {fileID: 221106153}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.13, y: 1.11, z: 3.02}
+  m_LocalPosition: {x: -0.018, y: 1.91, z: 3.02}
   m_LocalScale: {x: 0.12565248, y: 0.21938922, z: 0.12565248}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 770216547}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &221106159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 221106153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1f6490fd7737ca4ca55ce311945d0fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canInteract: 1
-  _holdTime: 0
-  Mesh: {fileID: 221106153}
 --- !u!114 &221106160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,9 +246,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canInteract: 1
   _holdTime: 0
-  Mesh: {fileID: 0}
-  Spotlight: {fileID: 0}
+  Mesh: {fileID: 221106153}
+  item: {fileID: 11400000, guid: 9a430d3945bb33a458e4d8406657ac9e, type: 2}
+  durabilityLeft: 0
+  lastUseTime: 0
+  isUseable: 1
+  Spotlight: {fileID: 770216546}
   Battery: 100
+--- !u!54 &221106161
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221106153}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &366973570
 GameObject:
   m_ObjectHideFlags: 0
