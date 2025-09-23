@@ -78,6 +78,7 @@ public class MBS_PlayerController : MonoBehaviour
         Use();
         SwitchItems();
         ToggleJournal();
+        ScanInteractions();
     }
 
     void Locomotion(float dt)
@@ -256,9 +257,9 @@ public class MBS_PlayerController : MonoBehaviour
     {
         if (!inJournal)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && Interaction.Target != null)
             {
-                Debug.Log("Interact Key Triggered!");
+                //Interaction.Target.Interact();
             }
         }
     }
@@ -322,5 +323,28 @@ public class MBS_PlayerController : MonoBehaviour
                 Cursor.visible = false;
             }
         }
+    }
+
+    /// <summary>
+    /// Finds objects within range that can be interacted with and highlights the item
+    /// </summary>
+    private void ScanInteractions()
+    {
+        // Scans the area for ANY colliders, not just interactables - allows walls to occlude items
+        float interactRange = 5.0f;
+
+        //// Looks for an object, makes sure its an interactable, and that it is usable
+        //if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, 
+        //    out RaycastHit hit, interactRange) && 
+        //    hit.collider.TryGetComponent<Interaction>(out Interaction obj) &&
+        //    obj._canInteract)
+        //{
+        //    Interaction.SetPriorityTarget(obj);
+        //    Interaction.Target.Highlight();
+        //}
+        //else
+        //{
+        //    Interaction.SetPriorityTarget(null);
+        //}
     }
 }
