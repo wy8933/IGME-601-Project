@@ -14,7 +14,8 @@ public class Flashlight : ItemInstance
     private float _batteryDrainAmount;
 
     private Transform _cameraTransform;
-    private Vector3 offset = new Vector3(0.3f, -0.3f, 0.3f);
+    private Vector3 _itemCamPosOffset = new Vector3(0.3f, -0.3f, 0.3f);
+    private float _dropDistanceOffset = 1.5f;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
 
@@ -89,12 +90,14 @@ public class Flashlight : ItemInstance
         DisableRigidBodyCollisions();
 
         this.gameObject.transform.SetParent(_cameraTransform, false);
-        transform.localPosition = offset;
+        transform.localPosition = _itemCamPosOffset;
         transform.localRotation = Quaternion.Euler(90, 0, 0);
     }
 
-    public override void DetachFromParent()
+    public override void DetachFromParent(GameObject parent)
     {
+        Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
+        transform.position = newPos;
         this.gameObject.transform.parent = null;
         canInteract = true;
         _pickedUp = false;
@@ -108,11 +111,8 @@ public class Flashlight : ItemInstance
         _rb.useGravity = false;
     }
 
-    public override void EnableRigidBodyCollisions(GameObject parent)
+    public override void EnableRigidBodyCollisions()
     {
-        transform.position = parent.transform.rotation 
-                  * new Vector3(parent.transform.position.x, parent.transform.position.y, parent.transform.position.z + 0.1f);
-
         _capsuleCollider.enabled = true;
         _rb.isKinematic = false;
         _rb.detectCollisions = true;
@@ -123,7 +123,7 @@ public class Flashlight : ItemInstance
     {
         if (_cameraTransform && _pickedUp)
         {
-            transform.localPosition = offset;
+            transform.localPosition = _itemCamPosOffset;
         }
     }
 

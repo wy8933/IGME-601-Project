@@ -322,8 +322,8 @@ public class PlayerController : MonoBehaviour
             if(_itemHotbar[_selectedItemIndex] != null)
             {
                 Debug.Log("Drop " +  _itemHotbar[_selectedItemIndex]);
-                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent();
-                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions(this.gameObject);
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
                 _itemHotbar[_selectedItemIndex] = null;
             }
         }

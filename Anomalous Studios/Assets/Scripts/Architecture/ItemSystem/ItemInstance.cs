@@ -101,7 +101,7 @@ namespace ItemSystem
             Debug.Log("Called Parent AttachToParent()");
         }
 
-        public virtual void DetachFromParent()
+        public virtual void DetachFromParent(GameObject parent)
         {
 
         }
@@ -111,7 +111,7 @@ namespace ItemSystem
 
         }
 
-        public virtual void EnableRigidBodyCollisions(GameObject parent)
+        public virtual void EnableRigidBodyCollisions()
         {
 
         }
