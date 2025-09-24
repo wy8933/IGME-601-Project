@@ -33,7 +33,7 @@ public class HighlightTarget : MonoBehaviour
             return false;
         }
 
-        // 克隆独立材质实例
+        // Clone mat here
         outlineMatInstance = new Material(HighlightManager.Instance.outlineMat);
 
         Material[] mats = new Material[2];
@@ -41,7 +41,7 @@ public class HighlightTarget : MonoBehaviour
         mats[1] = outlineMatInstance;
         rend.materials = mats;
 
-        // 初始化属性（注意名字要和 Shader Graph Blackboard 一致）
+        // initialize mat 
         outlineMatInstance.SetFloat("_Outline_Alpha", 0f);
         outlineMatInstance.SetFloat("_OutlineGlowIntensity", 0f);
 
@@ -54,7 +54,7 @@ public class HighlightTarget : MonoBehaviour
     IEnumerator DelayedInit()
     {
         yield return null;
-        TryInit();
+        TryInit();  // init again if first time failed
     }
 
     void OnDestroy()
@@ -63,7 +63,7 @@ public class HighlightTarget : MonoBehaviour
 
         if (outlineMatInstance != null)
         {
-            Destroy(outlineMatInstance); // 避免内存泄漏
+            Destroy(outlineMatInstance);
         }
     }
 }

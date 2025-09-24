@@ -5,12 +5,12 @@ public class HighlightManager : MonoBehaviour
 {
     public static HighlightManager Instance;
 
-    [Header("全局参数")]
+    [Header("Global Parameter")]
     public float highlightDistance = 5f;   // start glowing after player walked in this range
     public Material outlineMat;            // M_Outline
     public LayerMask occlusionMask;        // set this mask in layer for occlusion
 
-    [Header("渐变控制")]
+    [Header("Gradient Control")]
     public float fadeSpeed = 5f;           // fade in/out speed for glow effects
     public float maxGlow = 3f;             // max glow on fade in/out
 
@@ -33,16 +33,15 @@ public class HighlightManager : MonoBehaviour
             bool inRange = dist < highlightDistance;
             bool visible = IsVisible(target);
 
-            // 目标Alpha（0 = 隐藏, 1 = 高亮）
+            // target Alpha（0 = hide, 1 = highlight）
             float targetAlpha = (inRange && visible) ? 1f : 0f;
 
-            // 当前值
             float currentAlpha = target.outlineMatInstance.GetFloat("_Outline_Alpha");
 
-            // 插值平滑
+            // lerp for anim
             float newAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime * fadeSpeed);
 
-            // 更新 Shader 属性
+            // update shader 
             target.outlineMatInstance.SetFloat("_Outline_Alpha", newAlpha);
             target.outlineMatInstance.SetFloat("_OutlineGlowIntensity", newAlpha * maxGlow);
         }
@@ -56,7 +55,7 @@ public class HighlightManager : MonoBehaviour
         if (Physics.Raycast(player.position, dir, out RaycastHit hit, dist, occlusionMask))
         {
             if (hit.collider.gameObject != target.gameObject)
-                return false; // 有遮挡
+                return false; // if vision blocked, object won't glow
         }
         return true;
     }
