@@ -299,6 +299,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "de54aee2844841e8a71016465ca9ce58"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "fc92749357a54aa0bcbcab71477cf22c"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "e0984dfe8ea74b60926026daefe0ef28"
                 },
                 "m_SlotId": 2
@@ -912,7 +926,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "5a0f0f2afd67417ebfa943ffbe2493c8",
     "m_Id": 0,
-    "m_DisplayName": "Outline Width",
+    "m_DisplayName": "OutlineWidth",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -990,7 +1004,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "60828b2d91f449a4a11baac884bd88e3",
     "m_Id": 0,
-    "m_DisplayName": "Outline Glow Color",
+    "m_DisplayName": "OutlineGlowColor",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1116,10 +1130,10 @@
     "m_Guid": {
         "m_GuidSerialized": "7580993c-0a8c-4fc0-9329-4651b512273b"
     },
-    "m_Name": "Outline Width",
+    "m_Name": "OutlineWidth",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Outline Width",
-    "m_DefaultReferenceName": "_Outline_Width",
+    "m_RefNameGeneratedByDisplayName": "OutlineWidth",
+    "m_DefaultReferenceName": "_OutlineWidth",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1144,10 +1158,10 @@
     "m_Guid": {
         "m_GuidSerialized": "bb653025-3b35-47ef-9415-318fcc52ce6b"
     },
-    "m_Name": "Outline Color",
+    "m_Name": "OutlineColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Outline Color",
-    "m_DefaultReferenceName": "_Outline_Color",
+    "m_RefNameGeneratedByDisplayName": "OutlineColor",
+    "m_DefaultReferenceName": "_OutlineColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1213,10 +1227,10 @@
     "m_Guid": {
         "m_GuidSerialized": "128beab9-bd3b-4b54-8487-61cf74e8727c"
     },
-    "m_Name": "Outline Alpha",
+    "m_Name": "OutlineAlpha",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Outline Alpha",
-    "m_DefaultReferenceName": "_Outline_Alpha",
+    "m_RefNameGeneratedByDisplayName": "OutlineAlpha",
+    "m_DefaultReferenceName": "_OutlineAlpha",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1648,10 +1662,10 @@
     "m_Guid": {
         "m_GuidSerialized": "f40c940e-539e-47d4-a6a3-467e6adb8890"
     },
-    "m_Name": "Outline Glow Color",
+    "m_Name": "OutlineGlowColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Outline Glow Color",
-    "m_DefaultReferenceName": "_Outline_Glow_Color",
+    "m_RefNameGeneratedByDisplayName": "OutlineGlowColor",
+    "m_DefaultReferenceName": "_OutlineGlowColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1794,7 +1808,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "ad6df4c2b683491e88891558bc6bfae8",
     "m_Id": 0,
-    "m_DisplayName": "Outline Glow Intensity",
+    "m_DisplayName": "OutlineGlowIntensity",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1834,10 +1848,10 @@
     "m_Guid": {
         "m_GuidSerialized": "32757d4f-2945-4f23-9228-a6151c876cf6"
     },
-    "m_Name": "Outline Glow Intensity",
+    "m_Name": "OutlineGlowIntensity",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Outline Glow Intensity",
-    "m_DefaultReferenceName": "_Outline_Glow_Intensity",
+    "m_RefNameGeneratedByDisplayName": "OutlineGlowIntensity",
+    "m_DefaultReferenceName": "_OutlineGlowIntensity",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -2170,7 +2184,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "da312a5a498a47a692f0da17d0cbb00b",
     "m_Id": 0,
-    "m_DisplayName": "Outline Color",
+    "m_DisplayName": "OutlineColor",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2524,7 +2538,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "ff20954e911d4725a8ddb9874b7332ab",
     "m_Id": 0,
-    "m_DisplayName": "Outline Alpha",
+    "m_DisplayName": "OutlineAlpha",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

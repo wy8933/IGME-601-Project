@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Renderer))]
@@ -13,7 +13,6 @@ public class HighlightTarget : MonoBehaviour
         rend = GetComponent<Renderer>();
         originalMats = rend.materials;
 
-        // initialize, if failed try after 1 frame
         if (!TryInit())
         {
             StartCoroutine(DelayedInit());
@@ -34,7 +33,7 @@ public class HighlightTarget : MonoBehaviour
             return false;
         }
 
-        // clone outline mat
+        // 克隆独立材质实例
         outlineMatInstance = new Material(HighlightManager.Instance.outlineMat);
 
         Material[] mats = new Material[2];
@@ -42,8 +41,9 @@ public class HighlightTarget : MonoBehaviour
         mats[1] = outlineMatInstance;
         rend.materials = mats;
 
-        // initialize alpha
-        outlineMatInstance.SetFloat("_OutlineAlpha", 0f);
+        // 初始化属性（注意名字要和 Shader Graph Blackboard 一致）
+        outlineMatInstance.SetFloat("_Outline_Alpha", 0f);
+        outlineMatInstance.SetFloat("_OutlineGlowIntensity", 0f);
 
         HighlightManager.Register(this);
 
@@ -53,12 +53,17 @@ public class HighlightTarget : MonoBehaviour
 
     IEnumerator DelayedInit()
     {
-        yield return null; // wait for 1 frame
+        yield return null;
         TryInit();
     }
 
     void OnDestroy()
     {
         HighlightManager.Unregister(this);
+
+        if (outlineMatInstance != null)
+        {
+            Destroy(outlineMatInstance); // 避免内存泄漏
+        }
     }
 }

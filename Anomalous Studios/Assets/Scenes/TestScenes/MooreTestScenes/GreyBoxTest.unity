@@ -237,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 405109407}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.84, y: 1.53, z: 0.47}
+  m_LocalPosition: {x: -8.81, y: 1.53, z: 0.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -294,13 +294,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4259534ac37af1d488f223283086f106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightDistance: 10
+  highlightDistance: 5
   outlineMat: {fileID: 2100000, guid: 35ef70406012b1f4685443cc0c13bcfc, type: 2}
   occlusionMask:
     serializedVersion: 2
     m_Bits: 0
-  fadeSpeed: 5
-  maxGlow: 10
+  fadeSpeed: 2
+  maxGlow: 5
 --- !u!4 &661148957
 Transform:
   m_ObjectHideFlags: 0
@@ -597,11 +597,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4472148027960460090, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: LookYawSpeed
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4472148027960460090, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: LookPitchSpeed
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_Name
