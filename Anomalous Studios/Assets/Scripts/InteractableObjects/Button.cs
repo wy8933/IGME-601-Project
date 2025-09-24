@@ -9,6 +9,8 @@ public class Button : Interaction
 
     [SerializeField] private Animator _elevator;
 
+    [SerializeField] private Level _level;
+
     public override void Update()
     {
         base.Update();
@@ -17,17 +19,22 @@ public class Button : Interaction
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        Debug.Log(_name + " Button");
     }
 
     protected override void Interact()
     {
-        Debug.Log("Interaction: " + _name + " Button Pressed");
-
         // TODO: temporary interact value. A different numpad object should call the transition between levels
-        if (_elevator != null)
+
+        // If the player is in the elevator
+        if (VariableConditionManager.Instance.Get("InElevator").Equals("true") &&
+            VariableConditionManager.Instance.Get("TaskComplete").Equals("false"))
         {
+            _elevator.SetBool("is_open", false);
+            
+            EventBus<LevelLoading>.Raise(new LevelLoading { name = _level });
+
             _elevator.SetBool("is_open", !_elevator.GetBool("is_open"));
         }
+
     }
 }
