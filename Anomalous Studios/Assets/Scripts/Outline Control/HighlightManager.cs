@@ -6,13 +6,13 @@ public class HighlightManager : MonoBehaviour
     public static HighlightManager Instance;
 
     [Header("全局参数")]
-    public float highlightDistance = 5f;   // 高亮距离
-    public Material outlineMat;            // 高亮用的Shader Graph材质
-    public LayerMask occlusionMask;        // 遮挡检测层
+    public float highlightDistance = 5f;   // start glowing after player walked in this range
+    public Material outlineMat;            // M_Outline
+    public LayerMask occlusionMask;        // set this mask in layer for occlusion
 
     [Header("渐变控制")]
-    public float fadeSpeed = 5f;           // 渐变速度
-    public float maxGlow = 3f;             // 最大发光强度
+    public float fadeSpeed = 5f;           // fade in/out speed for glow effects
+    public float maxGlow = 3f;             // max glow on fade in/out
 
     private Transform player;
     private static List<HighlightTarget> targets = new List<HighlightTarget>();
