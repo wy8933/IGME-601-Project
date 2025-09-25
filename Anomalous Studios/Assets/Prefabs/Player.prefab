@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 4472148027960460090}
   - component: {fileID: 7168459518286499936}
   - component: {fileID: 8164744604730758691}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,10 +327,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3440044099b084ab42d3159dc70e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MouseSensitivityX: 10
+  MouseSensitivityY: 10
   PlayerCamera: {fileID: 8156612788814952234}
-  MouseSensitivityX: 1
-  MouseSensitivityY: 1
-  LookYawSpeed: 2
+  LookYawSpeed: 1
   LookPitchSpeed: 1
   LookPitchLimit: 60
   LeanPivot: {fileID: 6808690005100648623}
@@ -341,7 +341,7 @@ MonoBehaviour:
   DefaultHeight: 2
   CrouchHeight: 1
   CrouchSpeed: 2
-  SelectedItemIndex: -1
+  journal: {fileID: 921242989472160827, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
 --- !u!54 &7168459518286499936
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -367,7 +367,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &8164744604730758691
 CapsuleCollider:

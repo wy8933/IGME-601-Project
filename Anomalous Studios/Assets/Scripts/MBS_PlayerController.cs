@@ -331,7 +331,7 @@ public class MBS_PlayerController : MonoBehaviour
     private void ScanInteractions()
     {
         // Scans the area for ANY colliders, not just interactables - allows walls to occlude items
-        float interactRange = 5.0f;
+        //float interactRange = 5.0f;
 
         //// Looks for an object, makes sure its an interactable, and that it is usable
         //if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, 
