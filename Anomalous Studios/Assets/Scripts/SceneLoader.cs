@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,16 +6,17 @@ using UnityEngine.SceneManagement;
 public enum Level
 {
     blue,
-    green,
     red
 }
 
-public struct LevelLoading : IEvent { public Level name; }
+public struct LevelLoading : IEvent { public Level newLevel; }
 
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private SceneField[] _blueLevel;
     [SerializeField] private SceneField[] _redLevel;
+
+    private Level _lastLevel;
 
     private Dictionary<Level, SceneField[]> dict;
 
@@ -22,7 +24,9 @@ public class SceneLoader : MonoBehaviour
 
     private EventBinding<LevelLoading> _levelLoading;
 
-    void Start()
+    private Animator _animator;
+
+    public void Start()
     {
         dict = new Dictionary<Level, SceneField[]>
         {
@@ -31,58 +35,82 @@ public class SceneLoader : MonoBehaviour
         };
 
         // Initializes the starting level
-        OnLevelLoaded(new LevelLoading { name = Level.blue });
+        _lastLevel = Level.blue;
+
+        foreach (SceneField scene in dict[Level.blue])
+        {
+            SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+        }
+
 
         // Assumes the player spawn in the Elevator to start
         VariableConditionManager.Instance.Set("TaskComplete", "true");
+
+        _animator = GetComponent<Animator>();
+        _animator.SetTrigger("moveDoors");
     }
 
-
+    /// <summary>
+    /// EventBus event, starts the process of moving to the next level
+    /// </summary>
+    /// <param name="e"></param>
     private void OnLevelLoaded(LevelLoading e)
     {
-        // Check for currently loaded scenes that can stay loaded
-            // If its already loaded, return
-            // else add to scenes to load
+        _animator.SetTrigger("moveDoors");
 
-        // Unload the previous unnecessary scenes
-            // current scenes - stay_loaded scenes
+        StartCoroutine(LoadScenes(e));
+    }
 
-        // Load the necessary scenes
-            // total scenes - stay_loaded scenes
-
+    private IEnumerator LoadScenes(LevelLoading e)
+    {
         // TODO: Refactor this to use some sort of bitmask or something. Right now just brute-forcing it
 
-        // Add all the scenes from a single level to be loaded
-        foreach (SceneField scene in dict[e.name])
+        // Start unloading scenes when elevator door is fully closed
+        while (_animator.GetBool("isOpen")) { yield return null; }
+
+        // Unload the current floor, and load in the new floor
+        foreach (SceneField scene in dict[_lastLevel])
+        {
+            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+        }
+
+        foreach (SceneField scene in dict[e.newLevel])
         {
             _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
         }
 
-        
-        // Add these same scenes to be unloaded in the next call
-        foreach (SceneField scene in dict[e.name])
-        {
-            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
-        }
+        _lastLevel = e.newLevel;
+
+        // Wait for the last operation before opening the doors
+        while (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+
+        _scenesToLoad.Clear();
+
+        _animator.SetTrigger("moveDoors");
     }
 
-    void OnTriggerEnter(Collider other)
+    public void IsOpen()
+    {
+        _animator.SetBool("isOpen", !_animator.GetBool("isOpen"));
+    }
+
+    public void OnTriggerEnter(Collider other)
     {
         VariableConditionManager.Instance.Set("InElevator", "true");
     }
 
-    void OnTriggerExit(Collider other)
+    public void OnTriggerExit(Collider other)
     {
         VariableConditionManager.Instance.Set("InElevator", "false");
     }
 
-    void OnEnable()
+    public void OnEnable()
     {
         _levelLoading = new EventBinding<LevelLoading>(OnLevelLoaded);
         EventBus<LevelLoading>.Register(_levelLoading);
     }
 
-    void OnDisable()
+    public void OnDisable()
     {
         EventBus<LevelLoading>.DeRegister(_levelLoading);
     }

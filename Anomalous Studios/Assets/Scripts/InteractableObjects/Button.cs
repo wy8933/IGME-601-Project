@@ -5,8 +5,6 @@ using UnityEngine;
 /// </summary>
 public class Button : Interaction
 {
-    [SerializeField] private string _name;
-
     [SerializeField] private Animator _elevator;
 
     [SerializeField] private Level _level;
@@ -23,18 +21,29 @@ public class Button : Interaction
 
     protected override void Interact()
     {
-        // TODO: temporary interact value. A different numpad object should call the transition between levels
+        // TODO: set value of elevator in Start()
 
         // If the player is in the elevator
         if (VariableConditionManager.Instance.Get("InElevator").Equals("true") &&
             VariableConditionManager.Instance.Get("TaskComplete").Equals("false"))
-        {
-            _elevator.SetBool("is_open", false);
-            
-            EventBus<LevelLoading>.Raise(new LevelLoading { name = _level });
+        {            
+            EventBus<LevelLoading>.Raise(new LevelLoading { newLevel = _level });
 
-            _elevator.SetBool("is_open", !_elevator.GetBool("is_open"));
+            //_elevator.SetBool("is_open", !_elevator.GetBool("is_open"));
         }
 
     }
+
+    // Press the button
+    // Start the animation to close the door
+    // When the animation is finished, unload and load the levels
+    // When the levels are finished loading, open the door
+
+    // Press the to raise an event to open the doors
+    
+    // the event starts a trigger in the animator
+        // 
+
+
+
 }
