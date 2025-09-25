@@ -19,9 +19,9 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private float _waitTime = 3.0f;
 
     // TODO: Temporary testing levels to be replaced with the grayboxed scenes
-    [SerializeField] private SceneField[] _blueLevel;
-    [SerializeField] private SceneField[] _greenLevel;
-    [SerializeField] private SceneField[] _redLevel;
+    [SerializeField] private SceneField[] _floorB7;
+    [SerializeField] private SceneField[] _floorB6;
+    [SerializeField] private SceneField[] _floorB5;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
 
@@ -43,9 +43,9 @@ public class SceneLoader : MonoBehaviour
 
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
-            { Level.blue, _blueLevel },
-            { Level.green, _greenLevel },
-            { Level.red, _redLevel }
+            { Level.blue, _floorB7 },
+            { Level.green, _floorB6 },
+            { Level.red, _floorB5 }
         };
 
         // TODO: The initial scene load should all be done in one method (variables, items, etc.)
