@@ -71,6 +71,8 @@ public abstract class Interaction : MonoBehaviour
         {
             _timer = obj != null ? obj._holdTime : 0f;
         }
+
+        if (Target) { Target.Highlight(); }
     }
 
     /// <summary>

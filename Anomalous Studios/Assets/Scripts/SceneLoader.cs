@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public enum Level
 {
     blue,
+    green,
     red
 }
 
@@ -13,41 +14,42 @@ public struct LevelLoading : IEvent { public Level newLevel; }
 
 public class SceneLoader : MonoBehaviour
 {
+    [Tooltip("Artificially creates some time in-between levels")]
+    [Range(0.0f, 5.0f)]
+    [SerializeField] private float _waitTime = 3.0f;
+
+    // TODO: Temporary testing levels to be replaced with the grayboxed scenes
     [SerializeField] private SceneField[] _blueLevel;
+    [SerializeField] private SceneField[] _greenLevel;
     [SerializeField] private SceneField[] _redLevel;
+
+    private Dictionary<Level, SceneField[]> _floorLibrary;
 
     private Level _lastLevel;
 
-    private Dictionary<Level, SceneField[]> dict;
-
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
-
-    private EventBinding<LevelLoading> _levelLoading;
 
     private Animator _animator;
 
+    private EventBinding<LevelLoading> _levelLoading;
+
     public void Start()
     {
-        dict = new Dictionary<Level, SceneField[]>
+        // TODO: should these var be init here? Is there a better place to init all the var?
+        VariableConditionManager.Instance.Set("TaskComplete", "true");
+        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
+
+        _animator = GetComponent<Animator>();
+
+        _floorLibrary = new Dictionary<Level, SceneField[]>
         {
             { Level.blue, _blueLevel },
+            { Level.green, _greenLevel },
             { Level.red, _redLevel }
         };
 
-        // Initializes the starting level
-        _lastLevel = Level.blue;
-
-        foreach (SceneField scene in dict[Level.blue])
-        {
-            SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
-        }
-
-
-        // Assumes the player spawn in the Elevator to start
-        VariableConditionManager.Instance.Set("TaskComplete", "true");
-
-        _animator = GetComponent<Animator>();
-        _animator.SetTrigger("moveDoors");
+        // TODO: The initial scene load should all be done in one method (variables, items, etc.)
+        StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.blue }));
     }
 
     /// <summary>
@@ -61,34 +63,51 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadScenes(e));
     }
 
+    /// <summary>
+    /// Waits for scenes to unload and load before opening the elevator doors
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
     private IEnumerator LoadScenes(LevelLoading e)
     {
-        // TODO: Refactor this to use some sort of bitmask or something. Right now just brute-forcing it
+        // TODO: Refactor this to use some sort of bitmask. Right now just brute-forcing it
+        // This should get rid of the need for _lastLevel as well
 
-        // Start unloading scenes when elevator door is fully closed
+        // Wait for the doors to close before unloading any scenes
         while (_animator.GetBool("isOpen")) { yield return null; }
 
-        // Unload the current floor, and load in the new floor
-        foreach (SceneField scene in dict[_lastLevel])
+        // Unload all the scenes from the previous level, and load in all the new level's scenes
+        if (_lastLevel != e.newLevel)
         {
-            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+            foreach (SceneField scene in _floorLibrary[_lastLevel])
+            {
+                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+            }
         }
 
-        foreach (SceneField scene in dict[e.newLevel])
+        foreach (SceneField scene in _floorLibrary[e.newLevel])
         {
             _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
         }
-
+        
         _lastLevel = e.newLevel;
 
-        // Wait for the last operation before opening the doors
-        while (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+        // Wait until the scenes are all loaded before opening the doors
+        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
+        // Artificially create some amount of time in the elevator for ambiance and SFX
+        if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
+
+        VariableConditionManager.Instance.Set("IsLevelLoading", "false");
+        
         _scenesToLoad.Clear();
 
         _animator.SetTrigger("moveDoors");
     }
 
+    /// <summary>
+    /// Waits for the close / open animation to fully finish before changing values
+    /// </summary>
     public void IsOpen()
     {
         _animator.SetBool("isOpen", !_animator.GetBool("isOpen"));

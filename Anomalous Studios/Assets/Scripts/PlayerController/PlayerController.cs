@@ -469,7 +469,7 @@ public class PlayerController : MonoBehaviour
             obj.canInteract)
         {
             Interaction.SetPriorityTarget(obj);
-            Interaction.Target.Highlight();
+            //Interaction.Target.Highlight();
         }
         else
         {
