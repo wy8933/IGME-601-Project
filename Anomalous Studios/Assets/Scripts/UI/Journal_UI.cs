@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using AudioSystem;
 
 public class Journal_UI : MonoBehaviour
 {
@@ -47,7 +48,8 @@ public class Journal_UI : MonoBehaviour
 
         cluesList.Add(clue);
     }
-    // Button functions
+
+    #region Button Methods
     /// <summary>
     /// Used for tabs to open the passed in page and closes all other pages effectively swapping the contents of the journal. 
     /// </summary>
@@ -87,6 +89,7 @@ public class Journal_UI : MonoBehaviour
         slider.value -= amount;
     }
 
+    
     /// <summary>
     /// Hides the journal and resumes play
     /// </summary>
@@ -115,7 +118,11 @@ public class Journal_UI : MonoBehaviour
         Application.Quit();
     #endif
     }
+    #endregion
 
+    
+
+    #region Test
     // Testing
     public void TestTask()
     {
@@ -140,4 +147,5 @@ public class Journal_UI : MonoBehaviour
         cluesList[0].gameObject.SetActive(false);
         cluesList.RemoveAt(0);
     }
+    #endregion
 }

@@ -1,16 +1,19 @@
+using AudioSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
     [SerializeField] Slider[] sliders;
-
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private AudioManager audioManager;
     /// <summary>
     /// Called each time the settings menu is enabled.
     /// </summary>
     private void OnEnable()
     {
         GetPrefs();
+        SetSliders();
     }
 
     // Update is called once per frame
@@ -29,7 +32,30 @@ public class Settings : MonoBehaviour
             slider.value = GetPlayerPrefs(slider.name);
         }
     }
-    
+
+
+
+    #region Slider Methods
+    void SetSliders()
+    {
+        AdjustSFXSlider(GetPlayerPrefs("VolumeSlider"));
+    }
+    public void AdjustSensitivityX(float value)
+    {
+        playerController.MouseSensitivityX = value;
+    }
+
+    public void AdjustSensitivityY(float value)
+    {
+        playerController.MouseSensitivityY = value;
+    }
+
+    public void AdjustSFXSlider(float value)
+    {
+        audioManager.sfxAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Log10(value) * 20);
+    }
+    #endregion
+
     #region Helper Methods
     /// <summary>
     /// Helper method for getting player preference values
