@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace RuleViolationSystem {
@@ -8,16 +10,12 @@ namespace RuleViolationSystem {
     }
 
     [CreateAssetMenu(fileName = "RuleSO", menuName = "Scriptable Objects/RuleSO")]
-    public class RuleConditionSO : ScriptableObject
+    public abstract class RuleConditionSO : ScriptableObject
     {
-        public bool IsViolated(IRuleQuery query) 
-        {
-            return false;
-        }
+        public abstract bool IsViolated(IRuleQuery query);
 
-        public string GetShortDebug(IRuleQuery query) 
-        {
-            return "";
-        }
+        public virtual IEnumerable<string> ReferencedVariableKeys() => Array.Empty<string>();
+
+        public virtual string DebugSummary(IRuleQuery query) => name;
     }
 }

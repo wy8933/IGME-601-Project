@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Generic;
 
 namespace RuleViolationSystem { 
     public interface IRuleQuery
     {
-        bool TryGet(string key, out string rawValue);
+        bool TryGet(string key, out string raw);
+        bool TryGetInt(string key, out int value);
+        bool TryGetFloat(string key, out float value);
 
-        bool WasInteractionSeen(string interactionID, float withinSeconds);
+        bool Check(VariableCondition cond);
+        bool CheckAll(IEnumerable<VariableCondition> conds);
 
-        int CurrentFloorIndex { get; }
-        string CurrentLoopId { get; }
+        bool WasInteractionSeen(string interactionId, float withinSeconds);
 
+        string FloorId { get; }
         DateTime UtcNow { get; }
     }
 }
