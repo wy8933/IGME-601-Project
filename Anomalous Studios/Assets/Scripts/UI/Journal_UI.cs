@@ -17,6 +17,7 @@ public class Journal_UI : MonoBehaviour
     [SerializeField] private GameObject taskPrefab;
     [SerializeField] private GameObject cluePrefab;
     [SerializeField] private PlayerController playerController;
+    
 
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
@@ -89,6 +90,10 @@ public class Journal_UI : MonoBehaviour
         slider.value -= amount;
     }
 
+    public void Mute(Slider volumeSlider)
+    {
+        volumeSlider.value = 0;
+    }
     
     /// <summary>
     /// Hides the journal and resumes play
