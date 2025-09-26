@@ -14,8 +14,8 @@ public class PlayerController : MonoBehaviour
 
     // Mouse Sensitivity
     [Header("Mouse Sensitivity")]
-    [SerializeField] float MouseSensitivityX = 1.0f;
-    [SerializeField] float MouseSensitivityY = 1.0f;
+    [SerializeField] public float MouseSensitivityX = 1.0f;
+    [SerializeField] public float MouseSensitivityY = 1.0f;
 
     // Follow Camera
     [Header("Follow Camera")]
