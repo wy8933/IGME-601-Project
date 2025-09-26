@@ -306,7 +306,7 @@ public class PlayerController : MonoBehaviour
 
             if (_itemHotbar[_selectedItemIndex] != null)
             {
-                _itemHotbar[_selectedItemIndex].GetComponent<Flashlight>().Use(this.gameObject);
+                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Use(this.gameObject);
             }
             else
             {
@@ -436,6 +436,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
+        if (_itemHotbar[_selectedItemIndex] != null)
+        {
+            Debug.Log("Already holding an item");
+            return;
+        }
+
         // TODO: Test edges cases while pulling up the journal
         if (!_inJournal && Interaction.Target != null)
         {
