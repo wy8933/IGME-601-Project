@@ -12,4 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7421511e8d0a7f5429f9dd72cbc02cc8, type: 3}
   m_Name: ConditionBlackboardSO
   m_EditorClassIdentifier: 
-  _variableList: []
+  _variableList:
+  - key: InElevator
+    value: false
+  - key: TaskComplete
+    value: true
+  - key: IsElevatorMoving
+    value: false
+  - key: IsLevelLoading
+    value: false

@@ -5,29 +5,52 @@ using UnityEngine;
 /// </summary>
 public class Button : Interaction
 {
-    [SerializeField] private string _name;
+    [SerializeField] private Level _level;
 
-    [SerializeField] private Animator _elevator;
+    private Renderer _renderer;
+
+    // TODO: Change the initialization of the first level to be dynamic, raise an event
+    // The level system is going to change pretty soon to accomadate new level box anyway
+    private static Level _currentLevel = Level.blue;
+
+    public void Start()
+    {
+        _renderer = GetComponent<Renderer>();
+    }
 
     public override void Update()
     {
         base.Update();
+
+        if (_currentLevel == _level)
+        {
+            _renderer.material.color = Color.white;
+        }
+
+        else
+        {
+            _renderer.material.color = Color.black;
+        }
     }
 
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        Debug.Log(_name + " Button");
+        print("Highlighting B" + _level);
     }
 
     protected override void Interact()
     {
-        Debug.Log("Interaction: " + _name + " Button Pressed");
-
-        // TODO: temporary interact value. A different numpad object should call the transition between levels
-        if (_elevator != null)
-        {
-            _elevator.SetBool("is_open", !_elevator.GetBool("is_open"));
+        // TODO: Check to see if which levels are available to the player as yet, some sort of static condition for all elevator buttons
+        if (_currentLevel != _level &&
+            VariableConditionManager.Instance.Get("InElevator").Equals("true") &&
+            VariableConditionManager.Instance.Get("TaskComplete").Equals("true") &&
+            VariableConditionManager.Instance.Get("IsLevelLoading").Equals("false"))
+        {            
+            EventBus<LevelLoading>.Raise(new LevelLoading { newLevel = _level });
+            VariableConditionManager.Instance.Set("IsLevelLoading", "true");
+            _currentLevel = _level;
         }
+
     }
 }
