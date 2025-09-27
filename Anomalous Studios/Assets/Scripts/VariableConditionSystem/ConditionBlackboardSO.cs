@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class StringKeyValue
+{
+    public string key;
+    public string value;
+}
+
 [CreateAssetMenu(fileName = "ConditionBlackboard", menuName = "Systems/Condition Blackboard SO")]
 public class ConditionBlackboardSO : ScriptableObject
 {
-    [System.Serializable]
-    public class StringKeyValue
-    {
-        public string key;
-        public string value;
-    }
-
     [SerializeField] private List<StringKeyValue> _variableList = new List<StringKeyValue>();
     private Dictionary<string, string> _variables = null;
 
