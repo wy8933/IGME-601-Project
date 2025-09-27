@@ -2,6 +2,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ItemSystem;
+using UnityEngine.UI;
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEditor.ShaderGraph;
+using System;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -77,6 +82,15 @@ public class PlayerController : MonoBehaviour
     private int _selectedItemIndex = 0;
     private GameObject[] _itemHotbar = new GameObject[4];
 
+    [SerializeField] GameObject HotbarContainer;
+    private CanvasGroup _canvasGroup;
+    [SerializeField] GameObject Item1Icon;
+    [SerializeField] GameObject Item2Icon;
+    [SerializeField] GameObject Item3Icon;
+    [SerializeField] GameObject Item4Icon;
+
+    private float _fadeDuration = 1.0f;
+
     // Journal Variables
     private bool _inJournal = false;
     [Header("Journal")]
@@ -96,6 +110,9 @@ public class PlayerController : MonoBehaviour
             DefaultCameraY = PlayerCamera.transform.position.y;
             CrouchCameraY = PlayerCamera.transform.position.y - _crouchOffset;
         }
+
+        _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0;
 
         // Initialize Playermasks
         _IgnorePlayerMask = ~LayerMask.GetMask("Player");
@@ -293,9 +310,18 @@ public class PlayerController : MonoBehaviour
 
     public void AddItem(GameObject item)
     {
+        if(_itemHotbar[_selectedItemIndex] != null)
+        {
+            return;
+        }
+
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
         Debug.Log("Item added to hotbar! " +  _itemHotbar[_selectedItemIndex].ToString());
+
+        UpdateHotbarItemIcon();
+
+        StartCoroutine(FadeSequence());
     }
 
     public void Use()
@@ -325,6 +351,10 @@ public class PlayerController : MonoBehaviour
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
                 _itemHotbar[_selectedItemIndex] = null;
+
+                RemoveHotbarItemIcon();
+
+                StartCoroutine(FadeSequence());
             }
         }
     }
@@ -348,6 +378,85 @@ public class PlayerController : MonoBehaviour
     private bool IsGrounded()
     {
         return Mathf.Abs(_rb.linearVelocity.y) < _groundedThreshold;
+    }
+
+    private void UpdateHotbarItemIcon()
+    {
+        switch (_selectedItemIndex)
+        {
+            case 1:
+                Item2Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
+                Item2Icon.GetComponent<RawImage>().color = Color.yellow;
+                break;
+            case 2:
+                Item3Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
+                Item3Icon.GetComponent<RawImage>().color = Color.yellow;
+                break;
+            case 3:
+                Item4Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
+                Item4Icon.GetComponent<RawImage>().color = Color.yellow;
+                break;
+            default:
+                Item1Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
+                Item1Icon.GetComponent<RawImage>().color = Color.yellow;
+                break;
+        }
+    }
+
+    private void RemoveHotbarItemIcon()
+    {
+        Color resetColor = new Color(0, 0, 0, 0.5f);
+
+        switch (_selectedItemIndex)
+        {
+            case 1:
+                Item2Icon.GetComponent<RawImage>().texture = null;
+                Item2Icon.GetComponent<RawImage>().color = resetColor;
+                break;
+            case 2:
+                Item3Icon.GetComponent<RawImage>().texture = null;
+                Item3Icon.GetComponent<RawImage>().color = resetColor;
+                break;
+            case 3:
+                Item4Icon.GetComponent<RawImage>().texture = null;
+                Item4Icon.GetComponent<RawImage>().color = resetColor;
+                break;
+            default:
+                Item1Icon.GetComponent<RawImage>().texture = null;
+                Item1Icon.GetComponent<RawImage>().color = resetColor;
+                break;
+        }
+    }
+
+    public IEnumerator FadeSequence()
+    {
+        // Fade In
+        yield return StartCoroutine(DoFade(_canvasGroup.alpha, 1));
+
+        // Stay Visible
+        yield return new WaitForSeconds(1);
+
+        // Fade Out
+        yield return StartCoroutine(DoFade(_canvasGroup.alpha, 0));
+    }
+
+    private IEnumerator DoFade(float startAlpha, float endAlpha)
+    {
+        float timer = 0;
+
+        while(timer < _fadeDuration)
+        {
+            timer += Time.deltaTime;
+            _canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, timer / _fadeDuration);
+            yield return null;
+        }
+
+        _canvasGroup.alpha = endAlpha;
+    }
+
+    private void ToggleHotbarDisplay()
+    {
+        HotbarContainer.SetActive(!HotbarContainer.activeSelf);
     }
 
     private void Awake()
@@ -460,10 +569,44 @@ public class PlayerController : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
         }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
         _selectedItemIndex = 0;
+
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
+        else
+        {
+            Item1Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        StartCoroutine(FadeSequence());
+    }
+
+    private void ResetPreviousEmptySlot()
+    {
+        if( _itemHotbar[_selectedItemIndex] == null)
+        {
+            switch (_selectedItemIndex)
+            {
+                case 1:
+                    Item2Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+                case 2:
+                    Item3Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+                case 3:
+                    Item4Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+                default:
+                    Item1Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+            }
         }
     }
 
@@ -473,11 +616,23 @@ public class PlayerController : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
         }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
         _selectedItemIndex = 1;
+
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
+        else
+        {
+            Item2Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        StartCoroutine(FadeSequence());
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
@@ -485,11 +640,23 @@ public class PlayerController : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
         }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
         _selectedItemIndex = 2;
+
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
+        else
+        {
+            Item3Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        StartCoroutine(FadeSequence());
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
@@ -498,11 +665,23 @@ public class PlayerController : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
         }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
         _selectedItemIndex = 3;
+
         if (_itemHotbar[_selectedItemIndex])
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
+        else
+        {
+            Item4Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        StartCoroutine(FadeSequence());
     }
 
     private void OnOpenJournalPerformed(InputAction.CallbackContext ctx)
