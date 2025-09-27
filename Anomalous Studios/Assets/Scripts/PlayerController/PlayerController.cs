@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ItemSystem;
+using AudioSystem;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -82,6 +83,13 @@ public class PlayerController : MonoBehaviour
     [Header("Journal")]
     [SerializeField] Journal_UI journal;
 
+    [Header("Sound Data")]
+    [SerializeField] SoundDataSO SprintSlowSO;
+    [SerializeField] SoundDataSO SprintMedSO;
+    [SerializeField] SoundDataSO SprintFastSO;
+    private float _audioCooldownTime = 0.5f;
+    private float lastPlayTime;
+
     // Layermasks
     private int _IgnorePlayerMask;
 
@@ -128,6 +136,18 @@ public class PlayerController : MonoBehaviour
         ApplyGravity(Time.fixedDeltaTime);
     }
 
+    public void PlaySound(SoundDataSO sd)
+    {
+        if(Time.time - lastPlayTime >= _audioCooldownTime)
+        {
+            if (AudioManager.Instance)
+            {
+                AudioManager.Instance.Play(sd);
+            }
+            lastPlayTime = Time.time;
+        }
+    }
+
     private void CheckSprint(float dt)
     {
         if (_isSprinting && !_inJournal)
@@ -135,7 +155,19 @@ public class PlayerController : MonoBehaviour
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
-            if (Stamina < 0)
+            if(Stamina > 66.0f)
+            {
+                PlaySound(SprintSlowSO);
+            }
+            else if(Stamina > 33.0f)
+            {
+                PlaySound(SprintMedSO);
+            }
+            else if(Stamina > 0)
+            {
+                PlaySound(SprintFastSO);
+            }
+            else if (Stamina <= 0)
             {
                 _canSprint = false;
                 _isSprinting = false;
@@ -156,8 +188,8 @@ public class PlayerController : MonoBehaviour
         Stamina = Mathf.Clamp(Stamina, 0, 100);
 
         // Debug Logs
-        //Debug.Log("Stamina: " + Stamina);
-        //Debug.Log("isSprinting: " + _isSprinting);
+        Debug.Log("Stamina: " + Stamina);
+        Debug.Log("isSprinting: " + _isSprinting);
     }
 
     private void Move(float dt)
@@ -204,7 +236,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_canMove)
             {
-                if(_isCrouching)
+                if (_isCrouching)
                 {
                     _capsuleCollider.height = CrouchHeight;
                     _capsuleCollider.center = new Vector3(0, -0.5f, 0); // -0.5f to adjust the _capsuleCollider center to prevent floor clipping
