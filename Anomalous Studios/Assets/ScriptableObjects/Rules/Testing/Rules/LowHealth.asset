@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816d6be1f57ca98458576a0e06e53a4e, type: 3}
+  m_Name: LowHealth
+  m_EditorClassIdentifier: 
+  ruleId: LowHealth
+  conditionLogic: 0
+  ruleConditions:
+  - {fileID: 11400000, guid: f891db094edc2994c95ea1c5aed3da91, type: 2}
+  violationActions:
+  - {fileID: 11400000, guid: 4dc6efee1059b784690c386cc27b729a, type: 2}
+  resolveActions:
+  - {fileID: 11400000, guid: bbcf783d8581ed746997f5dcbe7edaad, type: 2}
+  fireOnceUntilResolved: 1
+  cooldownSeconds: 0
