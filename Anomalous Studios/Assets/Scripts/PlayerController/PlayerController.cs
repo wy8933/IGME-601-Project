@@ -160,8 +160,9 @@ public class PlayerController : MonoBehaviour
             if (AudioManager.Instance)
             {
                 
-                AudioManager.Instance.Play(sd, gameObject, transform.position);
+                AudioManager.Instance.Play(sd);
                 yield return new WaitForSeconds(5.0f);
+
             }
             lastPlayTime = Time.time;
         }
@@ -180,10 +181,12 @@ public class PlayerController : MonoBehaviour
             }
             else if(Stamina > 33.0f)
             {
+                AudioManager.Instance.Stop(gameObject, SprintSlowSO);
                 StartCoroutine(PlaySound(SprintMedSO));
             }
             else if(Stamina > 0)
             {
+                AudioManager.Instance.Stop(gameObject, SprintMedSO);
                 StartCoroutine(PlaySound(SprintFastSO));
             }
             else if (Stamina <= 0)
@@ -207,8 +210,8 @@ public class PlayerController : MonoBehaviour
         Stamina = Mathf.Clamp(Stamina, 0, 100);
 
         // Debug Logs
-       // Debug.Log("Stamina: " + Stamina);
-       // Debug.Log("isSprinting: " + _isSprinting);
+        Debug.Log("Stamina: " + Stamina);
+        Debug.Log("isSprinting: " + _isSprinting);
     }
 
     private void Move(float dt)

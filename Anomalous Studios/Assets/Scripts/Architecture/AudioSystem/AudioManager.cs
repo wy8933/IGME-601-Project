@@ -7,9 +7,7 @@ namespace AudioSystem
 {
     public class AudioManager : MonoBehaviour
     {
-        /// <summary>
-        /// Singleton instance of the AudioManager.
-        /// </summary>
+
         public static AudioManager Instance { get; private set; }
 
         /// <summary>
@@ -21,17 +19,16 @@ namespace AudioSystem
             { SoundCategory.Music, 1f },
             { SoundCategory.UI, 1f }
         };
+
         [Header("Audio Source Instance Values")]
         [SerializeField] private GameObject _audioSourcePrefab;
         [SerializeField] private int _initialPoolSize = 10;
-        [SerializeField] private int _maxPoolSize;
+        [SerializeField] private int _maxPoolSize = 64;
 
         [Header("Audio Mixers")]
         public AudioMixerGroup musicAudioMixerGroup;
         public AudioMixerGroup sfxAudioMixerGroup;
         public AudioMixerGroup uiAudioMixerGroup;
-
-        public Dictionary<GameObject, List<SoundDataSO>> soundSourceDict;
 
         /// <summary>
         /// Pool of available AudioSource objects.
@@ -41,11 +38,22 @@ namespace AudioSystem
         /// <summary>
         /// Parent transform that holds pooled AudioSource objects.
         /// </summary>
+        private readonly List<AudioSource> _allSources = new List<AudioSource>();
         private Transform _poolParent;
 
-        /// <summary>
-        /// Initializes the singleton instance, audio source pool, and persists this manager across scenes.
-        /// </summary>
+        private readonly HashSet<SoundCreator> _playingPairs = new HashSet<SoundCreator>();
+
+        private struct SoundCreator
+        {
+            public readonly int emitterId;
+            public readonly int clipId;
+            public SoundCreator(GameObject emitter, AudioClip clip)
+            {
+                emitterId = emitter ? emitter.GetInstanceID() : 0;
+                clipId = clip ? clip.GetInstanceID() : 0;
+            }
+        }
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -56,11 +64,12 @@ namespace AudioSystem
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
             _poolParent = new GameObject("AudioSourcePool").transform;
             DontDestroyOnLoad(_poolParent.gameObject);
 
             for (int i = 0; i < _initialPoolSize; i++)
-                _audioSourcePool.Enqueue(CreateNewAudioSource());
+                EnqueueNewSource();
         }
 
         /// <summary>
@@ -68,47 +77,36 @@ namespace AudioSystem
         /// </summary>
         /// <param name="soundData">Sound data to play.</param>
         /// <param name="position">Optional 3D world position.</param>
+        public void Play(SoundDataSO soundData, Vector3? position = null)
+        {
+            Play(soundData, null, position);
+        }
+
         public void Play(SoundDataSO soundData, GameObject creator, Vector3? position = null)
         {
-            AudioSource source = GetPooledAudioSource();
+            if (soundData == null || soundData.Clip == null) return;
 
-            if (soundSourceDict.ContainsKey(creator))
-            {
-                foreach (var sound in soundSourceDict[creator])
-                {
-                    if (sound == soundData)
-                    {
-                        Debug.Log("Already Exist");
-                        return;
-                    }
-                }
+            var key = new SoundCreator(creator, soundData.Clip);
+            if (_playingPairs.Contains(key))
+                return; 
 
-                soundSourceDict[creator].Add(soundData);
-            }
-            else
-            {
-                soundSourceDict[creator] = new List<SoundDataSO>();
-            }
+            var source = GetPooledAudioSource();
+            if (source == null) return;
 
-            Debug.Log("Sound Playing");
-            switch (soundData.Category) 
+            switch (soundData.Category)
             {
-                case SoundCategory.Music:
-                    source.outputAudioMixerGroup = musicAudioMixerGroup;
-                    break;
-                case SoundCategory.SFX:
-                    source.outputAudioMixerGroup = sfxAudioMixerGroup;
-                    break;
-                case SoundCategory.UI:
-                    source.outputAudioMixerGroup = uiAudioMixerGroup;
-                    break;
+                case SoundCategory.Music: source.outputAudioMixerGroup = musicAudioMixerGroup; break;
+                case SoundCategory.SFX: source.outputAudioMixerGroup = sfxAudioMixerGroup; break;
+                case SoundCategory.UI: source.outputAudioMixerGroup = uiAudioMixerGroup; break;
             }
 
             ConfigureSource(source, soundData, position);
+
+            _playingPairs.Add(key);
             source.Play();
 
             if (!soundData.Loop)
-                StartCoroutine(ReturnToPoolAfterPlayback(source, creator, soundData));
+                StartCoroutine(ReturnToPoolAfterPlayback(source, key));
         }
 
         /// <summary>
@@ -118,20 +116,37 @@ namespace AudioSystem
         /// <param name="volume">New volume (0 to 1).</param>
         public void SetCategoryVolume(SoundCategory category, float volume)
         {
-            Debug.Log("Old volume is: " + _categoryVolumes[category]);
             _categoryVolumes[category] = Mathf.Clamp01(volume);
-            Debug.Log("New volume is: "+ volume);
         }
 
-        /// <summary>
-        /// Instantiates and returns a new AudioSource object from the prefab.
-        /// </summary>
-        /// <returns>New AudioSource component.</returns>
-        private AudioSource CreateNewAudioSource()
+        public void Stop(GameObject emitter, SoundDataSO soundData)
         {
-            GameObject go = Instantiate(_audioSourcePrefab, _poolParent);
+            if (soundData == null || soundData.Clip == null) return;
+            var key = new SoundCreator(emitter, soundData.Clip);
+
+            for (int i = 0; i < _allSources.Count; i++)
+            {
+                var s = _allSources[i];
+                if (s != null && s.clip == soundData.Clip && s.isPlaying)
+                {
+                    s.Stop();
+                    s.clip = null;
+                    s.gameObject.SetActive(false);
+                    s.transform.SetParent(_poolParent);
+                    _audioSourcePool.Enqueue(s);
+                }
+            }
+
+            _playingPairs.Remove(key);
+        }
+
+        private void EnqueueNewSource()
+        {
+            var go = Instantiate(_audioSourcePrefab, _poolParent);
             go.SetActive(false);
-            return go.GetComponent<AudioSource>();
+            var src = go.GetComponent<AudioSource>();
+            _audioSourcePool.Enqueue(src);
+            _allSources.Add(src);
         }
 
         /// <summary>
@@ -142,7 +157,25 @@ namespace AudioSystem
         {
             if (_audioSourcePool.Count > 0)
                 return _audioSourcePool.Dequeue();
-            return CreateNewAudioSource();
+
+            if (_maxPoolSize <= 0 || _allSources.Count < _maxPoolSize)
+            {
+                EnqueueNewSource();
+                return _audioSourcePool.Dequeue();
+            }
+
+            for (int i = 0; i < _allSources.Count; i++)
+            {
+                var s = _allSources[i];
+                if (!s.isPlaying)
+                {
+                    s.gameObject.SetActive(false);
+                    s.clip = null;
+                    return s;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -177,17 +210,17 @@ namespace AudioSystem
         /// </summary>
         /// <param name="source">AudioSource that finished playing.</param>
         /// <returns>IEnumerator for coroutine.</returns>
-        private IEnumerator ReturnToPoolAfterPlayback(AudioSource source, GameObject creator, SoundDataSO soundData)
+        private IEnumerator ReturnToPoolAfterPlayback(AudioSource source, SoundCreator key)
         {
-            // remove the done sound data in the dictionary
-            soundSourceDict[creator].Remove(soundData);
-
             yield return new WaitWhile(() => source.isPlaying);
+
             source.Stop();
             source.clip = null;
             source.gameObject.SetActive(false);
             source.transform.SetParent(_poolParent);
             _audioSourcePool.Enqueue(source);
+
+            _playingPairs.Remove(key);
         }
     }
 }
