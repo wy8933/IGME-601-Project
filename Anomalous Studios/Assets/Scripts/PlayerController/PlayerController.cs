@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     private bool _isSprinting = false;
     [Header("Sprint Stamina")]
     [SerializeField] float Stamina = 100.0f;
-    private float _staminaDepletionFactor = 20.0f;
+    private float _staminaDepletionFactor = 10.0f;
     private float _staminaRegenFactor = 5.0f;
 
     // Jump Variables
@@ -155,14 +155,12 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PlaySound(SoundDataSO sd)
     {
-        if(Time.time - lastPlayTime >= _audioCooldownTime)
+        if (Time.time - lastPlayTime >= _audioCooldownTime)
         {
             if (AudioManager.Instance)
             {
-                
                 AudioManager.Instance.Play(sd);
                 yield return new WaitForSeconds(5.0f);
-
             }
             lastPlayTime = Time.time;
         }
@@ -175,21 +173,9 @@ public class PlayerController : MonoBehaviour
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
-            if(Stamina > 66.0f)
-            {
-                StartCoroutine(PlaySound(SprintSlowSO));
-            }
-            else if(Stamina > 33.0f)
-            {
-                AudioManager.Instance.Stop(gameObject, SprintSlowSO);
-                StartCoroutine(PlaySound(SprintMedSO));
-            }
-            else if(Stamina > 0)
-            {
-                AudioManager.Instance.Stop(gameObject, SprintMedSO);
-                StartCoroutine(PlaySound(SprintFastSO));
-            }
-            else if (Stamina <= 0)
+            SprintPantingDepletionSFX();
+
+            if (Stamina <= 0)
             {
                 _canSprint = false;
                 _isSprinting = false;
@@ -199,6 +185,8 @@ public class PlayerController : MonoBehaviour
         {
             _canLean = true;
             Stamina += _staminaRegenFactor * dt;
+
+            SprintPantingRegenSFX();
 
             if (Stamina > 10.0f)
             {
@@ -212,6 +200,46 @@ public class PlayerController : MonoBehaviour
         // Debug Logs
         Debug.Log("Stamina: " + Stamina);
         Debug.Log("isSprinting: " + _isSprinting);
+    }
+
+    private void SprintPantingDepletionSFX()
+    {
+        if (Stamina > 66.0f)
+        {
+            StartCoroutine(PlaySound(SprintSlowSO));
+        }
+        else if (Stamina > 33.0f)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
+            StartCoroutine(PlaySound(SprintMedSO));
+        }
+        else if (Stamina > 0)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintMedSO);
+            StartCoroutine(PlaySound(SprintFastSO));
+        }
+    }
+
+    private void SprintPantingRegenSFX()
+    {
+        if (Stamina <= 33.0f)
+        {
+            StartCoroutine(PlaySound(SprintFastSO));
+        }
+        else if (Stamina <= 66.0f)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintFastSO);
+            StartCoroutine(PlaySound(SprintMedSO));
+        }
+        else if (Stamina < 100)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintMedSO);
+            StartCoroutine(PlaySound(SprintSlowSO));
+        }
+        else
+        {
+            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
+        }
     }
 
     private void Move(float dt)
