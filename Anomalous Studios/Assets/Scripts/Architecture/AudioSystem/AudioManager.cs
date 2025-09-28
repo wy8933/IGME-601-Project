@@ -24,11 +24,14 @@ namespace AudioSystem
         [Header("Audio Source Instance Values")]
         [SerializeField] private GameObject _audioSourcePrefab;
         [SerializeField] private int _initialPoolSize = 10;
+        [SerializeField] private int _maxPoolSize;
 
         [Header("Audio Mixers")]
         public AudioMixerGroup musicAudioMixerGroup;
         public AudioMixerGroup sfxAudioMixerGroup;
         public AudioMixerGroup uiAudioMixerGroup;
+
+        public Dictionary<GameObject, List<SoundDataSO>> soundSourceDict;
 
         /// <summary>
         /// Pool of available AudioSource objects.
@@ -65,9 +68,26 @@ namespace AudioSystem
         /// </summary>
         /// <param name="soundData">Sound data to play.</param>
         /// <param name="position">Optional 3D world position.</param>
-        public void Play(SoundDataSO soundData, Vector3? position = null)
+        public void Play(SoundDataSO soundData, GameObject creator, Vector3? position = null)
         {
             AudioSource source = GetPooledAudioSource();
+
+            if (soundSourceDict.ContainsKey(creator))
+            {
+                foreach (var sound in soundSourceDict[creator])
+                {
+                    if (sound == soundData)
+                    {
+                        return;
+                    }
+                }
+
+                soundSourceDict[creator].Add(soundData);
+            }
+            else
+            {
+                soundSourceDict[creator] = new List<SoundDataSO>();
+            }
 
             switch (soundData.Category) 
             {
@@ -86,7 +106,7 @@ namespace AudioSystem
             source.Play();
 
             if (!soundData.Loop)
-                StartCoroutine(ReturnToPoolAfterPlayback(source));
+                StartCoroutine(ReturnToPoolAfterPlayback(source, creator, soundData));
         }
 
         /// <summary>
@@ -155,8 +175,11 @@ namespace AudioSystem
         /// </summary>
         /// <param name="source">AudioSource that finished playing.</param>
         /// <returns>IEnumerator for coroutine.</returns>
-        private IEnumerator ReturnToPoolAfterPlayback(AudioSource source)
+        private IEnumerator ReturnToPoolAfterPlayback(AudioSource source, GameObject creator, SoundDataSO soundData)
         {
+            // remove the done sound data in the dictionary
+            soundSourceDict[creator].Remove(soundData);
+
             yield return new WaitWhile(() => source.isPlaying);
             source.Stop();
             source.clip = null;
