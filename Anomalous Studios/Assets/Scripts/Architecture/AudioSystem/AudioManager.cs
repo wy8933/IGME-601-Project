@@ -78,6 +78,7 @@ namespace AudioSystem
                 {
                     if (sound == soundData)
                     {
+                        Debug.Log("Already Exist");
                         return;
                     }
                 }
@@ -89,6 +90,7 @@ namespace AudioSystem
                 soundSourceDict[creator] = new List<SoundDataSO>();
             }
 
+            Debug.Log("Sound Playing");
             switch (soundData.Category) 
             {
                 case SoundCategory.Music:
