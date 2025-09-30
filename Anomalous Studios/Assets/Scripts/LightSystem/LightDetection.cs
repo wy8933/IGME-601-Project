@@ -1,69 +1,69 @@
+using System.Collections;
 using UnityEngine;
 
-public class LightDetection : MonoBehaviour 
+public class LightDetection : MonoBehaviour
 {
 
     [Header("Light Settings")]
     [SerializeField] private LayerMask lightHitMask; //What can light hit? Player, enemies, walls, objects, etc
-    private Light[] lights; //List of active lights
     private RaycastHit lightHitInfo; //Create one variable to hold hit info instead of many
     private float targetLightTotal; //Target light value
     [SerializeField] private bool applySmoothing = true; //Smoothly change light value or not
     [SerializeField] private float lightResponsiveness = 10f; //Time value for lerping to target light value
     public float lightTotal; //Amount of light hitting player, from 0 to 1
 
-    public void FixedUpdate()
+    [Min(0.25f)]
+    public float lightDetectionCooldown;
+
+    public void Start()
     {
-        ListLights();
-        CheckPlayerLightValue();
+        StartCoroutine(CheckLightValue());
+    }
+
+    public IEnumerator CheckLightValue() 
+    {
+        yield return new WaitForSeconds(lightDetectionCooldown);
+        if (!(LightManager.Instance.Lights == null || LightManager.Instance.Lights.Length == 0)) { 
+
+            targetLightTotal = 0; //Reset light total
+
+            foreach (Light light in LightManager.Instance.Lights)
+            {
+
+                if (!light.gameObject.activeInHierarchy || //Check if light is actually active and exists
+                    light.enabled == false ||
+                    light == null) continue;
+
+                //Select type of light
+                switch (light.type)
+                {
+                    case LightType.Directional:
+                        targetLightTotal += CheckDirectionalLight(light);
+                        break;
+
+                    case LightType.Point:
+                        targetLightTotal += CheckPointLight(light);
+                        break;
+
+                    case LightType.Spot:
+                        targetLightTotal += CheckSpotLight(light);
+                        break;
+
+                    default:
+                        Debug.Log("Unknown Light Type");
+                        break;
+                }
+            }
+
+            lightTotal = applySmoothing ? Mathf.Lerp(lightTotal, targetLightTotal, Time.deltaTime * lightResponsiveness) : targetLightTotal; //Smoothly interpolate if smoothing is applied
+
+            lightTotal = Mathf.Clamp01(lightTotal); //Keep value within 0 to 1
+            Debug.Log($"{gameObject}'s light value is {lightTotal}");
+        }
+        StartCoroutine(CheckLightValue());
     }
 
     #region LightCheck
-    private void ListLights()
-    {
-        //Relist light objects
-        lights = FindObjectsByType<Light>(FindObjectsSortMode.None);
-    }
-
-    private void CheckPlayerLightValue()
-    {
-        if (lights == null || lights.Length == 0) return; //Skip process if no lights are listed
-
-        targetLightTotal = 0; //Reset light total
-
-        foreach (Light light in lights)
-        {
-
-            if (!light.gameObject.activeInHierarchy || //Check if light is actually active and exists
-                light.enabled == false ||
-                light == null) continue;
-
-            //Select type of light
-            switch (light.type)
-            {
-                case LightType.Directional:
-                    targetLightTotal += CheckDirectionalLight(light);
-                    break;
-
-                case LightType.Point:
-                    targetLightTotal += CheckPointLight(light);
-                    break;
-
-                case LightType.Spot:
-                    targetLightTotal += CheckSpotLight(light);
-                    break;
-
-                default:
-                    Debug.Log("Unknown Light Type");
-                    break;
-            }
-        }
-
-        lightTotal = applySmoothing ? Mathf.Lerp(lightTotal, targetLightTotal, Time.deltaTime * lightResponsiveness) : targetLightTotal; //Smoothly interpolate if smoothing is applied
-
-        lightTotal = Mathf.Clamp01(lightTotal); //Keep value within 0 to 1
-    }
-
     private float CheckDirectionalLight(Light _directionalLight)
     {
         //Get the opposite direction the light is going in and use that to shoot a ray from the player. If it's blocked, then light is not reaching the player
