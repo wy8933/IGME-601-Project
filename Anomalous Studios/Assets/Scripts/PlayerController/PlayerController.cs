@@ -153,14 +153,13 @@ public class PlayerController : MonoBehaviour
         ApplyGravity(Time.fixedDeltaTime);
     }
 
-    public IEnumerator PlaySound(SoundDataSO sd)
+    public void PlaySound(SoundDataSO sd)
     {
         if (Time.time - lastPlayTime >= _audioCooldownTime)
         {
             if (AudioManager.Instance)
             {
                 AudioManager.Instance.Play(sd);
-                yield return new WaitForSeconds(5.0f);
             }
             lastPlayTime = Time.time;
         }
@@ -206,17 +205,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Stamina > 66.0f)
         {
-            StartCoroutine(PlaySound(SprintSlowSO));
+            PlaySound(SprintSlowSO);
         }
         else if (Stamina > 33.0f)
         {
             AudioManager.Instance.Stop(gameObject, SprintSlowSO);
-            StartCoroutine(PlaySound(SprintMedSO));
+            PlaySound(SprintMedSO);
         }
         else if (Stamina > 0)
         {
             AudioManager.Instance.Stop(gameObject, SprintMedSO);
-            StartCoroutine(PlaySound(SprintFastSO));
+            PlaySound(SprintFastSO);
         }
     }
 
@@ -224,17 +223,17 @@ public class PlayerController : MonoBehaviour
     {
         if (Stamina <= 33.0f)
         {
-            StartCoroutine(PlaySound(SprintFastSO));
+            PlaySound(SprintFastSO);
         }
         else if (Stamina <= 66.0f)
         {
             AudioManager.Instance.Stop(gameObject, SprintFastSO);
-            StartCoroutine(PlaySound(SprintMedSO));
+            PlaySound(SprintMedSO);
         }
         else if (Stamina < 100)
         {
             AudioManager.Instance.Stop(gameObject, SprintMedSO);
-            StartCoroutine(PlaySound(SprintSlowSO));
+            PlaySound(SprintSlowSO);
         }
         else
         {
