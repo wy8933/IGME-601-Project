@@ -6,9 +6,7 @@ public class LightDetection : MonoBehaviour
     [Header("Light Settings")]
     [SerializeField] private LayerMask lightHitMask; //What can light hit? Player, enemies, walls, objects, etc
     [Tooltip("The layers that will block the lights")]
-    [SerializeField] private LayerMask occluderMask;
-    private RaycastHit lightHitInfo; //Create one variable to hold hit info instead of many
-    private float targetLightTotal; //Target light value
+    [SerializeField] private LayerMask blockerMask;
     [SerializeField] private bool applySmoothing = true; //Smoothly change light value or not
     [SerializeField] private float lightResponsiveness = 10f; //Time value for lerping to target light value
     public float lightTotal; //Amount of light hitting player, from 0 to 1
@@ -92,7 +90,7 @@ public class LightDetection : MonoBehaviour
         Vector3 dir = to - from;
         float dist = dir.magnitude;
         if (dist < 0.0001f) return false;
-        return Physics.Raycast(from, dir / dist, dist - 0.05f, occluderMask, QueryTriggerInteraction.Ignore);
+        return Physics.Raycast(from, dir / dist, dist - 0.05f, blockerMask, QueryTriggerInteraction.Ignore);
     }
 
     float LightValueCalculation(float intensity, float sqrDistance)
