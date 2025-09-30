@@ -54,7 +54,6 @@ public class LightDetection : MonoBehaviour
                 : target;
 
             lightTotal = Mathf.Clamp01(lightTotal);
-            Debug.Log(lightTotal);
             yield return wait;
         }
     }
