@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,11 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField[] _floorB7;
     [SerializeField] private SceneField[] _floorB6;
     [SerializeField] private SceneField[] _floorB5;
+
+    /// <summary>
+    /// Used to update the navmesh every time a new level is loaded
+    /// </summary>
+    [SerializeField] private NavMeshSurface _navSurface;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
 
@@ -49,7 +55,9 @@ public class SceneLoader : MonoBehaviour
         };
 
         // TODO: The initial scene load should all be done in one method (variables, items, etc.)
-        StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.blue }));
+        // TODO: Load in the Rulekeeper every level, don't keep it active between scenes. Can throw errors w/ navmesh
+        _lastLevel = Level.red;
+        StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.red }));
     }
 
     /// <summary>

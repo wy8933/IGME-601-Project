@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
         // Lean Left/Right
         LeanLeftRight();
 
-        ScanInteractables(5.0f);
+        ScanInteractables(10.0f);
     }
 
     private void FixedUpdate()
@@ -712,17 +712,23 @@ public class PlayerController : MonoBehaviour
     {
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
+
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
             out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
             hit.collider.TryGetComponent(out Interaction obj) &&
             obj.canInteract)
         {
             Interaction.SetPriorityTarget(obj);
-            //Interaction.Target.Highlight();
+            Interaction.Target.Highlight();
         }
         else
         {
             Interaction.SetPriorityTarget(null);
         }
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(PlayerCamera.transform.position, PlayerCamera.transform.forward);
     }
 }
