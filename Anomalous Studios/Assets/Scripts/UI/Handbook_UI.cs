@@ -1,11 +1,12 @@
-using TMPro;
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEditor;
-using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 using AudioSystem;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Handbook_UI : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Handbook_UI : MonoBehaviour
     [SerializeField] private Transform _ruleContainer;
     [SerializeField] private GameObject _taskPrefab;
     [SerializeField] private GameObject _policyPrefab;
+    [SerializeField] private GameObject _popupPrefab;
     [SerializeField] private PlayerController _playerController;
 
     /// <summary>
@@ -47,8 +49,14 @@ public class Handbook_UI : MonoBehaviour
         policy.Title = title;
 
         policiesList.Add(policy);
+
+        GameObject popupText = Instantiate(_popupPrefab);
+        popupText.transform.SetParent(transform.parent, false);
     }
 
+    #region Coroutines
+    
+    #endregion
     #region Button Methods
     /// <summary>
     /// Used for tabs to open the passed in page and closes all other pages effectively swapping the contents of the journal. 

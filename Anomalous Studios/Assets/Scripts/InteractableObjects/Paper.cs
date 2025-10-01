@@ -27,8 +27,8 @@ public class Paper : Interaction
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        print("Highlighting Paper");
-        _center = gameObject.transform.position;
+        //print("Highlighting Paper");
+        //_center = gameObject.transform.position;
     }
 
     protected override void Interact()
@@ -45,6 +45,6 @@ public class Paper : Interaction
 
     public void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(_center, 1);
+        //Gizmos.DrawWireSphere(_center, 1);
     }
 }

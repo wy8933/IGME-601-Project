@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
         _canvasGroup.alpha = 0;
 
         // Initialize Playermasks
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
+        _IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
     }
 
     // Update is called once per frame
