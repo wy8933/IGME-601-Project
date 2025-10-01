@@ -55,7 +55,7 @@ public class Key : ItemInstance
 
     public override void AttachToParent(GameObject parent)
     {
-        Debug.Log("Called Child AttachToParent()");
+        //Debug.Log("Called Child AttachToParent()");
 
         _cameraTransform = parent.transform.GetChild(1).transform.GetChild(0).transform;
 

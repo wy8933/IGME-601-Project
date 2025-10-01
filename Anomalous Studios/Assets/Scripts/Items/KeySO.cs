@@ -18,7 +18,7 @@ public class KeySO : ItemDataSO
     public override bool Use(GameObject user, ItemInstance instance)
     {
         string who = includeUserName && user != null ? $"[{user.name}] " : "";
-        Debug.Log($"{who}{message} {itemID}");
+        //Debug.Log($"{who}{message} {itemID}");
 
 
         // Return true so ItemInstance.TryUse() knows the use is succesful
