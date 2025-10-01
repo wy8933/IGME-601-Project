@@ -197,8 +197,8 @@ public class PlayerController : MonoBehaviour
         Stamina = Mathf.Clamp(Stamina, 0, 100);
 
         // Debug Logs
-        Debug.Log("Stamina: " + Stamina);
-        Debug.Log("isSprinting: " + _isSprinting);
+        //Debug.Log("Stamina: " + Stamina);
+        //Debug.Log("isSprinting: " + _isSprinting);
     }
 
     private void SprintPantingDepletionSFX()
@@ -381,7 +381,7 @@ public class PlayerController : MonoBehaviour
 
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
-        Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
+        //Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
 
         UpdateHotbarItemIcon();
 
@@ -392,7 +392,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_inJournal)
         {
-            Debug.Log(_selectedItemIndex);
+            //Debug.Log(_selectedItemIndex);
 
             if (_itemHotbar[_selectedItemIndex] != null)
             {
@@ -400,7 +400,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("No Item Selected!");
+                //Debug.Log("No Item Selected!");
             }
         }
     }
@@ -411,7 +411,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_itemHotbar[_selectedItemIndex] != null)
             {
-                Debug.Log("Drop " + _itemHotbar[_selectedItemIndex]);
+                //Debug.Log("Drop " + _itemHotbar[_selectedItemIndex]);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
                 _itemHotbar[_selectedItemIndex] = null;
@@ -612,7 +612,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_itemHotbar[_selectedItemIndex] != null)
         {
-            Debug.Log("Already holding an item");
+            //Debug.Log("Already holding an item");
             return;
         }
 
