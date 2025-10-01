@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 
 public class Paper : Interaction
 {
     [SerializeField] private Level _level;
-
+    [SerializeField] private TextMeshProUGUI _description;
+    [SerializeField] private Handbook_UI _handbook = null;
     private Renderer _renderer;
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
@@ -18,7 +20,15 @@ public class Paper : Interaction
     public override void Update()
     {
         base.Update();
-        
+        if (_currentLevel == _level)
+        {
+            _renderer.material.color = Color.white;
+        }
+
+        else
+        {
+            _renderer.material.color = Color.black;
+        }
 
     }
 
@@ -30,7 +40,13 @@ public class Paper : Interaction
 
     protected override void Interact()
     {
-        
+        print("interacted");
+        this.gameObject.SetActive(false);
+        AddToHandbook();
+    }
 
+    public void AddToHandbook()
+    {
+        _handbook.AddClue(_description.text, "Rule1");
     }
 }

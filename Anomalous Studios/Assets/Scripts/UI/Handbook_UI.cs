@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using AudioSystem;
 
-public class Journal_UI : MonoBehaviour
+public class Handbook_UI : MonoBehaviour
 {
     public List <Clue> cluesList;
     public List <Task> taskList;
@@ -17,7 +17,6 @@ public class Journal_UI : MonoBehaviour
     [SerializeField] private GameObject taskPrefab;
     [SerializeField] private GameObject cluePrefab;
     [SerializeField] private PlayerController playerController;
-    
 
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
@@ -100,7 +99,7 @@ public class Journal_UI : MonoBehaviour
     /// </summary>
     public void Resume()
     {
-        playerController.ToggleJournal();
+        playerController.ToggleHandbook();
         // Resume Logic
     }
 
