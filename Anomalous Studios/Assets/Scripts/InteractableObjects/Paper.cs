@@ -1,4 +1,4 @@
-using TMPro;
+    using TMPro;
 using UnityEngine;
 
 public class Paper : Interaction
@@ -7,6 +7,7 @@ public class Paper : Interaction
     [SerializeField] private TextMeshProUGUI _description;
     [SerializeField] private Handbook_UI _handbook = null;
     private Renderer _renderer;
+    Vector3 _center;
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
     // The level system is going to change pretty soon to accomadate new level box anyway
@@ -20,15 +21,6 @@ public class Paper : Interaction
     public override void Update()
     {
         base.Update();
-        if (_currentLevel == _level)
-        {
-            _renderer.material.color = Color.white;
-        }
-
-        else
-        {
-            _renderer.material.color = Color.black;
-        }
 
     }
 
@@ -36,6 +28,7 @@ public class Paper : Interaction
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
         print("Highlighting Paper");
+        _center = gameObject.transform.position;
     }
 
     protected override void Interact()
@@ -47,6 +40,11 @@ public class Paper : Interaction
 
     public void AddToHandbook()
     {
-        _handbook.AddClue(_description.text, "Rule1");
+        _handbook.AddPolicy(_description.text, "Rule1");
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(_center, 1);
     }
 }

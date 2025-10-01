@@ -9,14 +9,14 @@ using AudioSystem;
 
 public class Handbook_UI : MonoBehaviour
 {
-    public List <Clue> cluesList;
+    public List <Policy> policiesList;
     public List <Task> taskList;
     public GameObject[] pages;
-    [SerializeField] private Transform taskContainer;
-    [SerializeField] private Transform ruleContainer;
-    [SerializeField] private GameObject taskPrefab;
-    [SerializeField] private GameObject cluePrefab;
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Transform _taskContainer;
+    [SerializeField] private Transform _ruleContainer;
+    [SerializeField] private GameObject _taskPrefab;
+    [SerializeField] private GameObject _policyPrefab;
+    [SerializeField] private PlayerController _playerController;
 
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
@@ -25,7 +25,7 @@ public class Handbook_UI : MonoBehaviour
     /// <param name="task"></param>
     public void AddTask(string description, string title)
     {
-        GameObject taskObj = Instantiate(taskPrefab, taskContainer);
+        GameObject taskObj = Instantiate(_taskPrefab, _taskContainer);
         Task task = taskObj.GetComponent<Task>();
 
         task.Description = description;
@@ -38,15 +38,15 @@ public class Handbook_UI : MonoBehaviour
     /// Will add the gameObject specified into the journal under the tasks page
     /// </summary>
     /// <param name="task"></param>
-    public void AddClue(string description, string title)
+    public void AddPolicy(string description, string title)
     {
-        GameObject clueObj = Instantiate(cluePrefab, ruleContainer);
-        Clue clue = clueObj.GetComponent<Clue>();
+        GameObject policyObj = Instantiate(_policyPrefab, _ruleContainer);
+        Policy policy = policyObj.GetComponent<Policy>();
 
-        clue.Description = description;
-        clue.Title = title;
+        policy.Description = description;
+        policy.Title = title;
 
-        cluesList.Add(clue);
+        policiesList.Add(policy);
     }
 
     #region Button Methods
@@ -99,7 +99,7 @@ public class Handbook_UI : MonoBehaviour
     /// </summary>
     public void Resume()
     {
-        playerController.ToggleHandbook();
+        _playerController.ToggleHandbook();
         // Resume Logic
     }
 
@@ -128,28 +128,28 @@ public class Handbook_UI : MonoBehaviour
 
     #region Test
     // Testing
-    public void TestTask()
-    {
-        AddTask("KILL EVERYONE", "kill");
-    }
+    //public void TestTask()
+    //{
+    //    AddTask("KILL EVERYONE", "kill");
+    //}
 
-    public void CompleteTest()
-    {
-        Debug.Log(taskList.Count + " tasks" + taskList[0].Description);
-        taskList[0].CompleteTask();
-        taskList.RemoveAt(0);
-    }
+    //public void CompleteTest()
+    //{
+    //    Debug.Log(taskList.Count + " tasks" + taskList[0].Description);
+    //    taskList[0].CompleteTask();
+    //    taskList.RemoveAt(0);
+    //}
 
-    public void TestClue()
-    {
-        AddClue("KILL EVERYONE", "kill");
-    }
+    //public void TestClue()
+    //{
+    //    AddClue("KILL EVERYONE", "kill");
+    //}
 
-    public void CompleteClue()
-    {
-        Debug.Log(cluesList.Count + " clues" + cluesList[0].Description);
-        cluesList[0].gameObject.SetActive(false);
-        cluesList.RemoveAt(0);
-    }
+    //public void CompleteClue()
+    //{
+    //    Debug.Log(cluesList.Count + " clues" + cluesList[0].Description);
+    //    cluesList[0].gameObject.SetActive(false);
+    //    cluesList.RemoveAt(0);
+    //}
     #endregion
 }
