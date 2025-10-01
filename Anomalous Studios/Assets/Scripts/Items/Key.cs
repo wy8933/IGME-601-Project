@@ -29,7 +29,7 @@ public class Key : ItemInstance
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Flashlight");
+        //Debug.Log("Highlighting Key");
     }
 
     protected override void Interact()

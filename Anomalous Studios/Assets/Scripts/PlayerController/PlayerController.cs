@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ItemSystem;
@@ -91,6 +90,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject Item4Icon;
 
     private float _fadeDuration = 1.0f;
+    private Coroutine _fadeCoroutine;
 
     // Journal Variables
     private bool _inJournal = false;
@@ -383,9 +383,14 @@ public class PlayerController : MonoBehaviour
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
         //Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
 
-        UpdateHotbarItemIcon();
+        UpdateHotbarItemIcon(); 
 
-        StartCoroutine(FadeSequence());
+        if(_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     public void Use()
@@ -418,7 +423,12 @@ public class PlayerController : MonoBehaviour
 
                 RemoveHotbarItemIcon();
 
-                StartCoroutine(FadeSequence());
+                if (_fadeCoroutine != null)
+                {
+                    StopCoroutine(_fadeCoroutine);
+                }
+
+                _fadeCoroutine = StartCoroutine(FadeSequence());
             }
         }
     }
@@ -656,7 +666,17 @@ public class PlayerController : MonoBehaviour
             Item1Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
@@ -681,7 +701,12 @@ public class PlayerController : MonoBehaviour
             Item2Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
@@ -705,7 +730,12 @@ public class PlayerController : MonoBehaviour
             Item3Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
@@ -730,7 +760,12 @@ public class PlayerController : MonoBehaviour
             Item4Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void ResetPreviousEmptySlot()
