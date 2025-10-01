@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     // Follow Camera
     [Header("Follow Camera")]
-    [SerializeField] Camera PlayerCamera;
+    [SerializeField] public Camera PlayerCamera;
 
     // Camera Yaw & Pitch
     [Header("Camera Pitch & Yaw")]
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
     private float lastPlayTime;
 
     // Layermasks
-    private int _IgnorePlayerMask;
+    public int IgnorePlayerMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
         _canvasGroup.alpha = 0;
 
         // Initialize Playermasks
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
+        IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -814,7 +814,7 @@ public class PlayerController : MonoBehaviour
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
-            out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
+            out RaycastHit hit, interactRange, IgnorePlayerMask) &&
             hit.collider.TryGetComponent(out Interaction obj) &&
             obj.canInteract)
         {
