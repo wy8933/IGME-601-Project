@@ -7,6 +7,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.ShaderGraph;
 using System;
+using static UnityEngine.Rendering.DebugUI;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -96,11 +97,13 @@ public class PlayerController : MonoBehaviour
     [Header("Journal")]
     [SerializeField] Journal_UI journal;
 
-    // Layermasks
-    private int _IgnorePlayerMask;
+    /// <summary>
+    /// Unused : attempting to calc in start not being called, unused for now - Andrew
+    /// </summary>
+    private LayerMask _IgnorePlayerMask;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    public void Start()
     {
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
@@ -114,8 +117,6 @@ public class PlayerController : MonoBehaviour
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
 
-        // Initialize Playermasks
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -712,9 +713,10 @@ public class PlayerController : MonoBehaviour
     {
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
+        // NOTE: would use _IgnorePlayerMask, but start() refuses to init value
 
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
-            out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
+            out RaycastHit hit, interactRange, ~LayerMask.GetMask("Player")) &&
             hit.collider.TryGetComponent(out Interaction obj) &&
             obj.canInteract)
         {

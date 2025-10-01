@@ -27,11 +27,12 @@ public class EnemyBehavior : Interaction
     }
     public override void Highlight()
     {
-        
+
     }
 
     protected override void Interact()
     {
+        // TODO: replace with textbox interaction, should be able to simply say 'hello,' or sign a paper
         EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true });
     }
 
