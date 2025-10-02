@@ -51,14 +51,10 @@ public class Key : ItemInstance
             user.GetComponent<PlayerController>().PlayerCamera.transform.forward,
             out RaycastHit hit, interactRange, user.GetComponent<PlayerController>().IgnorePlayerMask))
         {
-            
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
 
-            Debug.Log(dc);
             if (dc != null)
             {
-                Debug.Log(this.item.itemID + ": " + this.item.itemID.GetType());
-                Debug.Log(dc.DoorID + ": " + dc.DoorID.GetType());
                 if (this.item.itemID == dc.DoorID)
                 {
                     dc.ToggleDoor();
