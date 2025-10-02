@@ -40,7 +40,7 @@ public class EnemyBehavior : Interaction
     protected override void Interact()
     {
         // TODO: replace with textbox interaction, should be able to simply say 'hello,' or sign a paper
-        self.SetVariableValue("ruleBroken", true);
+        GetComponent<Renderer>().material.color = Color.red;
     }
 
     /// <summary>
