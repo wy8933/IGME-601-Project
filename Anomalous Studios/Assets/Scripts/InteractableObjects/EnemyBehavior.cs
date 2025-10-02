@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.GameCenter;
 using static RuleViolationSystem.DebugLogActionSO;
 using System.Collections;
+using UnityEngine.AI;
 
 /// <summary>
 /// TODO: Temporary broken rule event, should be refactored with rule event system
@@ -39,7 +40,7 @@ public class EnemyBehavior : Interaction
     protected override void Interact()
     {
         // TODO: replace with textbox interaction, should be able to simply say 'hello,' or sign a paper
-        EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true });
+        self.SetVariableValue("ruleBroken", true);
     }
 
     /// <summary>
@@ -58,9 +59,11 @@ public class EnemyBehavior : Interaction
     /// <param name="spawnPoint">Optionally update the Rulekeeper's spawn position</param>
     private void OnLevelLoaded(LevelLoading e)
     {
-        transform.position = _spawnPoint;
+        self.enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
         self.SetVariableValue("ruleBroken", false);
-        gameObject.SetActive(false);
+        self.Restart();
+        transform.position = _spawnPoint;
 
         StartCoroutine(EnableRuleKeeper(e));
     }
@@ -69,7 +72,9 @@ public class EnemyBehavior : Interaction
     {
         while (VariableConditionManager.Instance.Get("IsLevelLoading") == "false") { yield return null; }
 
-        gameObject.SetActive(true);
+        self.enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+
     }
 
     public void OnEnable()

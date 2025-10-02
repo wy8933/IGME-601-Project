@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 1765702436533806501}
   - component: {fileID: 3526653138846555139}
   - component: {fileID: 5957915162050682171}
-  m_Layer: 0
+  - component: {fileID: 3282701377439288970}
+  - component: {fileID: 8695711156104654587}
+  m_Layer: 6
   m_Name: RuleKeeper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9205146073855690417}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.2, y: 2.129, z: -0.11}
   m_LocalScale: {x: 1.5, y: 1.9, z: 1.5}
   m_ConstrainProportionsScale: 0
@@ -147,7 +149,7 @@ MonoBehaviour:
         GUID:
           m_Value0: 324539187695675503
           m_Value1: 12382514021176518437
-        Name: Rulebroken
+        Name: rulebroken
         m_Value: 0
     - rid: 4217738984822932268
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
@@ -157,3 +159,39 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 9205146073855690417}
+--- !u!114 &3282701377439288970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205146073855690417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0134577619308c847a99fba4adc43f2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canInteract: 1
+  _holdTime: 0
+--- !u!195 &8695711156104654587
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9205146073855690417}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

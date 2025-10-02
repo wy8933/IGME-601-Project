@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // The player should spawn wherever they start when the game initally loads - inside the elevator
-        _spawnPoint = gameObject.transform.position;
+        _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
         _IgnorePlayerMask = ~LayerMask.GetMask("Player");
 
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
@@ -477,7 +477,7 @@ public class PlayerController : MonoBehaviour
         // What other edge cases when the level is reset..?
 
         // If this level is the last level, reset the player spawn
-        //if (e.newLevel == Level.current) { gameObject.transform.position = _spawnPoint; }
+        if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
     }
 
     private void Awake()

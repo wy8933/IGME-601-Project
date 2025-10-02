@@ -25,11 +25,6 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField[] _floorB6;
     [SerializeField] private SceneField[] _floorB5;
 
-    /// <summary>
-    /// Reference to the AI agent chasing the player
-    /// </summary>
-    //[SerializeField] private EnemyBehavior _ruleKeeper;
-
     private Dictionary<Level, SceneField[]> _floorLibrary;
 
     private Level _lastLevel;
@@ -86,28 +81,27 @@ public class SceneLoader : MonoBehaviour
         // Wait for the doors to close before unloading any scenes
         while (_animator.GetBool("isOpen")) { yield return null; }
 
-        //_ruleKeeper.resetRuleKeeper(new Vector3(-14, 2.5f, 0.0f));
-
         // Unload all the scenes from the previous level, and load in all the new level's scenes
-        if (_lastLevel != e.newLevel)
+        if (_floorLibrary[Level.currentLevel] != _floorLibrary[e.newLevel])
         {
-            foreach (SceneField scene in _floorLibrary[_lastLevel])
+            if (_floorLibrary[Level.currentLevel] != null)
             {
-                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+                foreach (SceneField scene in _floorLibrary[Level.currentLevel])
+                {
+                    _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+                }
             }
+
+            foreach (SceneField scene in _floorLibrary[e.newLevel])
+            {
+                _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
+            }
+
+            // Wait until the scenes are all loaded before opening the doors
+            if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
         }
 
-        foreach (SceneField scene in _floorLibrary[e.newLevel])
-        {
-            _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
-        }
-        
-        _lastLevel = e.newLevel;
-
-        // Wait until the scenes are all loaded before opening the doors
-        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
-
-        //_ruleKeeper.resetRuleKeeper(); 
+        _floorLibrary[Level.currentLevel] = _floorLibrary[e.newLevel];
 
         // Artificially create some amount of time in the elevator for ambiance and SFX
         if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
@@ -117,14 +111,6 @@ public class SceneLoader : MonoBehaviour
         _scenesToLoad.Clear();
 
         _animator.SetTrigger("moveDoors");
-    }
-
-    /// <summary>
-    /// If the player dies or wants to reload the level, restarts THIS level
-    /// </summary>
-    public void ResetScene()
-    {
-        OnLevelLoaded(new LevelLoading { newLevel = _lastLevel } );
     }
 
     /// <summary>
