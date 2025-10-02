@@ -94,8 +94,8 @@ public class PlayerController : MonoBehaviour
 
     // Journal Variables
     private bool _inJournal = false;
-    [Header("Journal")]
-    [SerializeField] Journal_UI journal;
+    [Header("Handbook")]
+    [SerializeField] Handbook_UI handbook;
 
     [Header("Sound Data")]
     [SerializeField] SoundDataSO SprintSlowSO;
@@ -107,8 +107,15 @@ public class PlayerController : MonoBehaviour
     // Layermasks
     public int IgnorePlayerMask;
 
+    /// <summary>
+    /// When a new level starts to load in, the player should be in the elevator or dead
+    /// </summary>
+    private EventBinding<LevelLoading> _levelLoading;
+
+    private Vector3 _spawnPoint = Vector3.zero;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    public void Start()
     {
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
@@ -119,6 +126,11 @@ public class PlayerController : MonoBehaviour
             CrouchCameraY = PlayerCamera.transform.position.y - _crouchOffset;
         }
 
+        // The player should spawn wherever they start when the game initally loads - inside the elevator
+        _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
+        // Initialize Playermasks
+        _IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
+        
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
 
@@ -135,7 +147,7 @@ public class PlayerController : MonoBehaviour
         // Lean Left/Right
         LeanLeftRight();
 
-        ScanInteractables(5.0f);
+        ScanInteractables(10.0f);
     }
 
     private void FixedUpdate()
@@ -433,10 +445,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ToggleJournal()
+    public void ToggleHandbook()
     {
         _inJournal = !_inJournal;
-        journal.gameObject.SetActive(_inJournal);
+        handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -533,6 +545,19 @@ public class PlayerController : MonoBehaviour
         HotbarContainer.SetActive(!HotbarContainer.activeSelf);
     }
 
+    /// <summary>
+    /// When the player dies and the level restarts, reset everything about the player to the last iteration
+    /// </summary>
+    private void ResetPlayer(LevelLoading e)
+    {
+        // Remove items from inventory?
+        // Fade in fade out black screen of death?
+        // Disable journal?
+        // What other edge cases when the level is reset..?
+
+        // If this level is the last level, reset the player spawn
+        if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
+    }
 
     private void Awake()
     {
@@ -552,7 +577,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed += OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed += OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenJournal.performed += OnOpenJournalPerformed;
+        _playerInputActions.Player.OpenHandbook.performed += OnOpenHandbookPerformed;
 
         _playerInputActions.Player.Sprint.performed += OnSprintPerformed;
         _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
@@ -563,6 +588,9 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.LeanLeft.canceled += OnLeanLeftCanceled;
         _playerInputActions.Player.LeanRight.performed += OnLeanRightPerformed;
         _playerInputActions.Player.LeanRight.canceled += OnLeanRightCanceled;
+
+        _levelLoading = new EventBinding<LevelLoading>(ResetPlayer);
+        EventBus<LevelLoading>.Register(_levelLoading);
     }
 
     private void OnDisable() 
@@ -574,8 +602,10 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed -= OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed -= OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenJournal.performed -= OnOpenJournalPerformed;
+        _playerInputActions.Player.OpenHandbook.performed -= OnOpenHandbookPerformed;
         _playerInputActions.Player.Disable();
+
+        EventBus<LevelLoading>.DeRegister(_levelLoading);
     }
 
     private void OnSprintPerformed(InputAction.CallbackContext ctx)
@@ -791,9 +821,9 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void OnOpenJournalPerformed(InputAction.CallbackContext ctx)
+    private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
-        ToggleJournal();
+        ToggleHandbook();
     }
 
     private void OnCrouchPerformed(InputAction.CallbackContext ctx)
@@ -813,13 +843,14 @@ public class PlayerController : MonoBehaviour
     {
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
+
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
             out RaycastHit hit, interactRange, IgnorePlayerMask) &&
             hit.collider.TryGetComponent(out Interaction obj) &&
             obj.canInteract)
         {
             Interaction.SetPriorityTarget(obj);
-            //Interaction.Target.Highlight();
+            Interaction.Target.Highlight();
         }
         else
         {
