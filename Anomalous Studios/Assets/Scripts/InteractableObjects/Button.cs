@@ -36,7 +36,6 @@ public class Button : Interaction
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        print("Highlighting B" + _level);
     }
 
     protected override void Interact()

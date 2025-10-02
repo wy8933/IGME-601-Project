@@ -174,7 +174,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""OpenJournal"",
+                    ""name"": ""OpenHandbook"",
                     ""type"": ""Button"",
                     ""id"": ""e8061615-6639-4c31-81ca-7574c517d16a"",
                     ""expectedControlType"": """",
@@ -379,7 +379,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""OpenJournal"",
+                    ""action"": ""OpenHandbook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -466,7 +466,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_LeanLeft = m_Player.FindAction("LeanLeft", throwIfNotFound: true);
         m_Player_LeanRight = m_Player.FindAction("LeanRight", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
-        m_Player_OpenJournal = m_Player.FindAction("OpenJournal", throwIfNotFound: true);
+        m_Player_OpenHandbook = m_Player.FindAction("OpenHandbook", throwIfNotFound: true);
         m_Player_Item1Hotbar = m_Player.FindAction("Item1Hotbar", throwIfNotFound: true);
         m_Player_Item2Hotbar = m_Player.FindAction("Item2Hotbar", throwIfNotFound: true);
         m_Player_Item3Hotbar = m_Player.FindAction("Item3Hotbar", throwIfNotFound: true);
@@ -561,7 +561,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LeanLeft;
     private readonly InputAction m_Player_LeanRight;
     private readonly InputAction m_Player_Sprint;
-    private readonly InputAction m_Player_OpenJournal;
+    private readonly InputAction m_Player_OpenHandbook;
     private readonly InputAction m_Player_Item1Hotbar;
     private readonly InputAction m_Player_Item2Hotbar;
     private readonly InputAction m_Player_Item3Hotbar;
@@ -615,9 +615,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         /// <summary>
-        /// Provides access to the underlying input action "Player/OpenJournal".
+        /// Provides access to the underlying input action "Player/OpenHandbook".
         /// </summary>
-        public InputAction @OpenJournal => m_Wrapper.m_Player_OpenJournal;
+        public InputAction @OpenHandbook => m_Wrapper.m_Player_OpenHandbook;
         /// <summary>
         /// Provides access to the underlying input action "Player/Item1Hotbar".
         /// </summary>
@@ -691,9 +691,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
-            @OpenJournal.started += instance.OnOpenJournal;
-            @OpenJournal.performed += instance.OnOpenJournal;
-            @OpenJournal.canceled += instance.OnOpenJournal;
+            @OpenHandbook.started += instance.OnOpenHandbook;
+            @OpenHandbook.performed += instance.OnOpenHandbook;
+            @OpenHandbook.canceled += instance.OnOpenHandbook;
             @Item1Hotbar.started += instance.OnItem1Hotbar;
             @Item1Hotbar.performed += instance.OnItem1Hotbar;
             @Item1Hotbar.canceled += instance.OnItem1Hotbar;
@@ -747,9 +747,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
-            @OpenJournal.started -= instance.OnOpenJournal;
-            @OpenJournal.performed -= instance.OnOpenJournal;
-            @OpenJournal.canceled -= instance.OnOpenJournal;
+            @OpenHandbook.started -= instance.OnOpenHandbook;
+            @OpenHandbook.performed -= instance.OnOpenHandbook;
+            @OpenHandbook.canceled -= instance.OnOpenHandbook;
             @Item1Hotbar.started -= instance.OnItem1Hotbar;
             @Item1Hotbar.performed -= instance.OnItem1Hotbar;
             @Item1Hotbar.canceled -= instance.OnItem1Hotbar;
@@ -882,12 +882,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSprint(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "OpenJournal" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "OpenHandbook" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOpenJournal(InputAction.CallbackContext context);
+        void OnOpenHandbook(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Item1Hotbar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Clue : MonoBehaviour
+public class Policy : MonoBehaviour
 {
     private string _description;
     private string _title;
@@ -10,7 +10,7 @@ public class Clue : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
 
     /// <summary>
-    /// Public property to get and set clue description
+    /// Public property to get and set policy description
     /// </summary>
     public string Description
     {
@@ -18,7 +18,7 @@ public class Clue : MonoBehaviour
         set { _description = value; }
     }
     /// <summary>
-    /// Public property to get and set clue title
+    /// Public property to get and set policy title
     /// </summary>
     public string Title
     {
@@ -27,7 +27,7 @@ public class Clue : MonoBehaviour
     }
 
     /// <summary>
-    /// Public propert to get and set if clue is broken
+    /// Public propert to get and set if policy is broken
     /// </summary>
     public bool IsBroken
     {
