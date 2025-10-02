@@ -8,6 +8,7 @@ public class DoorController : MonoBehaviour
     public AnimationCurve easeCurve;    // Ease in/out
     public float interactRange = 3f;    // Player interact distance
     public string playerTag = "Player"; // Player Tag
+    public string DoorID = "101";
 
     private bool isOpen = false;        // Door state
     private bool isAnimating = false;   // Anim flag
@@ -42,12 +43,6 @@ public class DoorController : MonoBehaviour
         // Check if player is in range
         float dist = Vector3.Distance(player.position, transform.position);
 
-        // Only allow pressing T when close enough
-        if (dist <= interactRange && Input.GetKeyDown(KeyCode.T) && !isAnimating) // Change this to whatever you need it to be.
-        {
-            ToggleDoor();
-        }
-
         // Animate rotation
         if (isAnimating)
         {
@@ -65,12 +60,15 @@ public class DoorController : MonoBehaviour
 
     public void ToggleDoor()
     {
-        isOpen = !isOpen;
-        startRot = transform.rotation;
-        targetRot = isOpen ? openRot : closedRot;
+        if (!isAnimating)
+        {
+            isOpen = !isOpen;
+            startRot = transform.rotation;
+            targetRot = isOpen ? openRot : closedRot;
 
-        t = 0f;
-        isAnimating = true;
+            t = 0f;
+            isAnimating = true;
+        }
     }
 
     // Debug visualization in Scene view

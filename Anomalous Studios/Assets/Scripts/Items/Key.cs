@@ -29,7 +29,7 @@ public class Key : ItemInstance
     public override void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Flashlight");
+        //Debug.Log("Highlighting Key");
     }
 
     protected override void Interact()
@@ -43,6 +43,32 @@ public class Key : ItemInstance
     public override void Use(GameObject user)
     {
         TryUse(user);
+        PlayerController pc = user.GetComponent<PlayerController>();
+
+        float interactRange = 10.0f;
+
+        if (Physics.Raycast(user.GetComponent<PlayerController>().PlayerCamera.transform.position, 
+            user.GetComponent<PlayerController>().PlayerCamera.transform.forward,
+            out RaycastHit hit, interactRange, user.GetComponent<PlayerController>().IgnorePlayerMask))
+        {
+            
+            DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
+
+            Debug.Log(dc);
+            if (dc != null)
+            {
+                Debug.Log(this.item.itemID + ": " + this.item.itemID.GetType());
+                Debug.Log(dc.DoorID + ": " + dc.DoorID.GetType());
+                if (this.item.itemID == dc.DoorID)
+                {
+                    dc.ToggleDoor();
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("failed raycast");
+        }
     }
 
     private void UpdateLocation()

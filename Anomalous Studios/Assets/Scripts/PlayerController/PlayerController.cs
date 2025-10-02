@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ItemSystem;
@@ -25,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     // Follow Camera
     [Header("Follow Camera")]
-    [SerializeField] Camera PlayerCamera;
+    [SerializeField] public Camera PlayerCamera;
 
     // Camera Yaw & Pitch
     [Header("Camera Pitch & Yaw")]
@@ -91,6 +90,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject Item4Icon;
 
     private float _fadeDuration = 1.0f;
+    private Coroutine _fadeCoroutine;
 
     // Journal Variables
     private bool _inJournal = false;
@@ -104,7 +104,8 @@ public class PlayerController : MonoBehaviour
     private float _audioCooldownTime = 0.5f;
     private float lastPlayTime;
 
-    private LayerMask _IgnorePlayerMask;
+    // Layermasks
+    public int IgnorePlayerMask;
 
     /// <summary>
     /// When a new level starts to load in, the player should be in the elevator or dead
@@ -132,6 +133,9 @@ public class PlayerController : MonoBehaviour
         
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
+
+        // Initialize Playermasks
+        IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -391,9 +395,14 @@ public class PlayerController : MonoBehaviour
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
         //Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
 
-        UpdateHotbarItemIcon();
+        UpdateHotbarItemIcon(); 
 
-        StartCoroutine(FadeSequence());
+        if(_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     public void Use()
@@ -426,7 +435,12 @@ public class PlayerController : MonoBehaviour
 
                 RemoveHotbarItemIcon();
 
-                StartCoroutine(FadeSequence());
+                if (_fadeCoroutine != null)
+                {
+                    StopCoroutine(_fadeCoroutine);
+                }
+
+                _fadeCoroutine = StartCoroutine(FadeSequence());
             }
         }
     }
@@ -682,7 +696,17 @@ public class PlayerController : MonoBehaviour
             Item1Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
@@ -707,7 +731,12 @@ public class PlayerController : MonoBehaviour
             Item2Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
@@ -731,7 +760,12 @@ public class PlayerController : MonoBehaviour
             Item3Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
@@ -756,7 +790,12 @@ public class PlayerController : MonoBehaviour
             Item4Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void ResetPreviousEmptySlot()
@@ -806,7 +845,7 @@ public class PlayerController : MonoBehaviour
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
 
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
-            out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
+            out RaycastHit hit, interactRange, IgnorePlayerMask) &&
             hit.collider.TryGetComponent(out Interaction obj) &&
             obj.canInteract)
         {
