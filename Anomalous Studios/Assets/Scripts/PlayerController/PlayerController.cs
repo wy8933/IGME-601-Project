@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
         // The player should spawn wherever they start when the game initally loads - inside the elevator
         _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
         // Initialize Playermasks
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
+        IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
         
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
