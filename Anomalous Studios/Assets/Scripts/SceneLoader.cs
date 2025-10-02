@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum Level
 {
+    currentLevel,
     blue,
     green,
     red
@@ -43,13 +45,16 @@ public class SceneLoader : MonoBehaviour
 
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
+            { Level.currentLevel, null },
             { Level.blue, _floorB7 },
             { Level.green, _floorB6 },
             { Level.red, _floorB5 }
         };
 
         // TODO: The initial scene load should all be done in one method (variables, items, etc.)
-        StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.blue }));
+        // TODO: Load in the Rulekeeper every level, don't keep it active between scenes. Can throw errors w/ navmesh
+        _lastLevel = Level.red;
+        StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.red }));
     }
 
     /// <summary>
@@ -77,23 +82,26 @@ public class SceneLoader : MonoBehaviour
         while (_animator.GetBool("isOpen")) { yield return null; }
 
         // Unload all the scenes from the previous level, and load in all the new level's scenes
-        if (_lastLevel != e.newLevel)
+        if (_floorLibrary[Level.currentLevel] != _floorLibrary[e.newLevel])
         {
-            foreach (SceneField scene in _floorLibrary[_lastLevel])
+            if (_floorLibrary[Level.currentLevel] != null)
             {
-                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+                foreach (SceneField scene in _floorLibrary[Level.currentLevel])
+                {
+                    _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+                }
             }
+
+            foreach (SceneField scene in _floorLibrary[e.newLevel])
+            {
+                _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
+            }
+
+            // Wait until the scenes are all loaded before opening the doors
+            if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
         }
 
-        foreach (SceneField scene in _floorLibrary[e.newLevel])
-        {
-            _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
-        }
-        
-        _lastLevel = e.newLevel;
-
-        // Wait until the scenes are all loaded before opening the doors
-        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+        _floorLibrary[Level.currentLevel] = _floorLibrary[e.newLevel];
 
         // Artificially create some amount of time in the elevator for ambiance and SFX
         if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
