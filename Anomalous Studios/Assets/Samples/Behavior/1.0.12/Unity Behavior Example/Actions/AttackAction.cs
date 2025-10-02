@@ -23,6 +23,7 @@ public partial class AttackAction : Action
     protected override Status OnUpdate()
     {
         EventBus<LevelLoading>.Raise(new LevelLoading { newLevel = Level.currentLevel });
+        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
         return Status.Success;
     }
 }
