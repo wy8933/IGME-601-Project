@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
     // Journal Variables
     private bool _inJournal = false;
     [Header("Handbook")]
-    [SerializeField] Handbook_UI handbook;
+    //SerializeField] Handbook_UI handbook;
 
     [Header("Sound Data")]
     [SerializeField] SoundDataSO SprintSlowSO;
@@ -103,6 +103,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SoundDataSO SprintFastSO;
     private float _audioCooldownTime = 0.5f;
     private float lastPlayTime;
+
+    [Header("Watch UI")]
+    [SerializeField] public GameObject WatchUI;
+    [SerializeField] public GameObject TimeUI;
+    private bool _watchActive = false;
 
     // Layermasks
     public int IgnorePlayerMask;
@@ -133,6 +138,9 @@ public class PlayerController : MonoBehaviour
         
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
+
+        WatchUI.SetActive(_watchActive);
+        TimeUI.SetActive(_watchActive);
 
         // Initialize Playermasks
         IgnorePlayerMask = ~LayerMask.GetMask("Player");
@@ -448,7 +456,7 @@ public class PlayerController : MonoBehaviour
     public void ToggleHandbook()
     {
         _inJournal = !_inJournal;
-        handbook.gameObject.SetActive(_inJournal);
+        //handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -557,6 +565,13 @@ public class PlayerController : MonoBehaviour
 
         // If this level is the last level, reset the player spawn
         if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
+    }
+
+    public void ToggleWatch()
+    {
+        _watchActive = !_watchActive;
+        WatchUI.SetActive(_watchActive);
+        TimeUI.SetActive(_watchActive);
     }
 
     private void Awake()
