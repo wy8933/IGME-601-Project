@@ -7,6 +7,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.ShaderGraph;
 using System;
+using AudioSystem;
 
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
     private bool _isSprinting = false;
     [Header("Sprint Stamina")]
     [SerializeField] float Stamina = 100.0f;
-    private float _staminaDepletionFactor = 20.0f;
+    private float _staminaDepletionFactor = 10.0f;
     private float _staminaRegenFactor = 5.0f;
 
     // Jump Variables
@@ -93,8 +94,15 @@ public class PlayerController : MonoBehaviour
 
     // Journal Variables
     private bool _inJournal = false;
-    [Header("Journal")]
-    [SerializeField] Journal_UI journal;
+    [Header("Handbook")]
+    [SerializeField] Handbook_UI handbook;
+
+    [Header("Sound Data")]
+    [SerializeField] SoundDataSO SprintSlowSO;
+    [SerializeField] SoundDataSO SprintMedSO;
+    [SerializeField] SoundDataSO SprintFastSO;
+    private float _audioCooldownTime = 0.5f;
+    private float lastPlayTime;
 
     private LayerMask _IgnorePlayerMask;
 
@@ -119,8 +127,9 @@ public class PlayerController : MonoBehaviour
 
         // The player should spawn wherever they start when the game initally loads - inside the elevator
         _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
-
+        // Initialize Playermasks
+        _IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
+        
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
     }
@@ -152,6 +161,18 @@ public class PlayerController : MonoBehaviour
         ApplyGravity(Time.fixedDeltaTime);
     }
 
+    public void PlaySound(SoundDataSO sd)
+    {
+        if (Time.time - lastPlayTime >= _audioCooldownTime)
+        {
+            if (AudioManager.Instance)
+            {
+                AudioManager.Instance.Play(sd);
+            }
+            lastPlayTime = Time.time;
+        }
+    }
+
     private void CheckSprint(float dt)
     {
         if (_isSprinting && !_inJournal)
@@ -159,7 +180,9 @@ public class PlayerController : MonoBehaviour
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
-            if (Stamina < 0)
+            SprintPantingDepletionSFX();
+
+            if (Stamina <= 0)
             {
                 _canSprint = false;
                 _isSprinting = false;
@@ -169,6 +192,8 @@ public class PlayerController : MonoBehaviour
         {
             _canLean = true;
             Stamina += _staminaRegenFactor * dt;
+
+            SprintPantingRegenSFX();
 
             if (Stamina > 10.0f)
             {
@@ -182,6 +207,46 @@ public class PlayerController : MonoBehaviour
         // Debug Logs
         //Debug.Log("Stamina: " + Stamina);
         //Debug.Log("isSprinting: " + _isSprinting);
+    }
+
+    private void SprintPantingDepletionSFX()
+    {
+        if (Stamina > 66.0f)
+        {
+            PlaySound(SprintSlowSO);
+        }
+        else if (Stamina > 33.0f)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
+            PlaySound(SprintMedSO);
+        }
+        else if (Stamina > 0)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintMedSO);
+            PlaySound(SprintFastSO);
+        }
+    }
+
+    private void SprintPantingRegenSFX()
+    {
+        if (Stamina <= 33.0f)
+        {
+            PlaySound(SprintFastSO);
+        }
+        else if (Stamina <= 66.0f)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintFastSO);
+            PlaySound(SprintMedSO);
+        }
+        else if (Stamina < 100)
+        {
+            AudioManager.Instance.Stop(gameObject, SprintMedSO);
+            PlaySound(SprintSlowSO);
+        }
+        else
+        {
+            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
+        }
     }
 
     private void Move(float dt)
@@ -228,7 +293,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_canMove)
             {
-                if(_isCrouching)
+                if (_isCrouching)
                 {
                     _capsuleCollider.height = CrouchHeight;
                     _capsuleCollider.center = new Vector3(0, -0.5f, 0); // -0.5f to adjust the _capsuleCollider center to prevent floor clipping
@@ -317,14 +382,14 @@ public class PlayerController : MonoBehaviour
 
     public void AddItem(GameObject item)
     {
-        if(_itemHotbar[_selectedItemIndex] != null)
+        if (_itemHotbar[_selectedItemIndex] != null)
         {
             return;
         }
 
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
-        Debug.Log("Item added to hotbar! " +  _itemHotbar[_selectedItemIndex].ToString());
+        //Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
 
         UpdateHotbarItemIcon();
 
@@ -335,7 +400,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_inJournal)
         {
-            Debug.Log(_selectedItemIndex);
+            //Debug.Log(_selectedItemIndex);
 
             if (_itemHotbar[_selectedItemIndex] != null)
             {
@@ -343,7 +408,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("No Item Selected!");
+                //Debug.Log("No Item Selected!");
             }
         }
     }
@@ -352,9 +417,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!_inJournal)
         {
-            if(_itemHotbar[_selectedItemIndex] != null)
+            if (_itemHotbar[_selectedItemIndex] != null)
             {
-                Debug.Log("Drop " +  _itemHotbar[_selectedItemIndex]);
+                //Debug.Log("Drop " + _itemHotbar[_selectedItemIndex]);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
                 _itemHotbar[_selectedItemIndex] = null;
@@ -366,10 +431,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ToggleJournal()
+    public void ToggleHandbook()
     {
         _inJournal = !_inJournal;
-        journal.gameObject.SetActive(_inJournal);
+        handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -451,7 +516,7 @@ public class PlayerController : MonoBehaviour
     {
         float timer = 0;
 
-        while(timer < _fadeDuration)
+        while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
             _canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, timer / _fadeDuration);
@@ -498,7 +563,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed += OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed += OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenJournal.performed += OnOpenJournalPerformed;
+        _playerInputActions.Player.OpenHandbook.performed += OnOpenHandbookPerformed;
 
         _playerInputActions.Player.Sprint.performed += OnSprintPerformed;
         _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
@@ -523,7 +588,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed -= OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed -= OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenJournal.performed -= OnOpenJournalPerformed;
+        _playerInputActions.Player.OpenHandbook.performed -= OnOpenHandbookPerformed;
         _playerInputActions.Player.Disable();
 
         EventBus<LevelLoading>.DeRegister(_levelLoading);
@@ -573,7 +638,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_itemHotbar[_selectedItemIndex] != null)
         {
-            Debug.Log("Already holding an item");
+            //Debug.Log("Already holding an item");
             return;
         }
 
@@ -618,28 +683,6 @@ public class PlayerController : MonoBehaviour
         }
 
         StartCoroutine(FadeSequence());
-    }
-
-    private void ResetPreviousEmptySlot()
-    {
-        if( _itemHotbar[_selectedItemIndex] == null)
-        {
-            switch (_selectedItemIndex)
-            {
-                case 1:
-                    Item2Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-                case 2:
-                    Item3Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-                case 3:
-                    Item4Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-                default:
-                    Item1Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-            }
-        }
     }
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
@@ -716,9 +759,32 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(FadeSequence());
     }
 
-    private void OnOpenJournalPerformed(InputAction.CallbackContext ctx)
+    private void ResetPreviousEmptySlot()
     {
-        ToggleJournal();
+        if (_itemHotbar[_selectedItemIndex] == null)
+        {
+            switch (_selectedItemIndex)
+            {
+                case 1:
+                    Item2Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+                case 2:
+                    Item3Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+                case 3:
+                    Item4Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+                default:
+                    Item1Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
+                    break;
+            }
+        }
+    }
+
+
+    private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
+    {
+        ToggleHandbook();
     }
 
     private void OnCrouchPerformed(InputAction.CallbackContext ctx)

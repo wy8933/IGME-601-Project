@@ -18,7 +18,7 @@ public class FlashlightSO : ItemDataSO
     public override bool Use(GameObject user, ItemInstance instance)
     {
         string who = includeUserName && user != null ? $"[{user.name}] " : "";
-        Debug.Log($"{who}{message}");
+        //Debug.Log($"{who}{message}");
 
 
         // Return true so ItemInstance.TryUse() knows the use is succesful

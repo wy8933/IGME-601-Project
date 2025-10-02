@@ -53,7 +53,7 @@ public class Flashlight : ItemInstance
                 _isOn = false;
             }
 
-            Debug.Log("Battery: " + Battery);
+           //Debug.Log("Battery: " + Battery);
         }
 
         UpdateLocation();
@@ -82,7 +82,7 @@ public class Flashlight : ItemInstance
 
     public override void AttachToParent(GameObject parent)
     {
-        Debug.Log("Called Child AttachToParent()");
+        //Debug.Log("Called Child AttachToParent()");
 
         _cameraTransform = parent.transform.GetChild(1).transform.GetChild(0).transform;
         
