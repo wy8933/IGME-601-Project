@@ -94,8 +94,8 @@ public class PlayerController : MonoBehaviour
 
     // Journal Variables
     private bool _inJournal = false;
-    [Header("Journal")]
-    [SerializeField] Journal_UI journal;
+    [Header("Handbook")]
+    [SerializeField] Handbook_UI handbook;
 
     [Header("Sound Data")]
     [SerializeField] SoundDataSO SprintSlowSO;
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
         _canvasGroup.alpha = 0;
 
         // Initialize Playermasks
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player");
+        _IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
     }
 
     // Update is called once per frame
@@ -423,10 +423,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ToggleJournal()
+    public void ToggleHandbook()
     {
         _inJournal = !_inJournal;
-        journal.gameObject.SetActive(_inJournal);
+        handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -542,7 +542,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed += OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed += OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenJournal.performed += OnOpenJournalPerformed;
+        _playerInputActions.Player.OpenHandbook.performed += OnOpenHandbookPerformed;
 
         _playerInputActions.Player.Sprint.performed += OnSprintPerformed;
         _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
@@ -564,7 +564,7 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
         _playerInputActions.Player.Item3Hotbar.performed -= OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed -= OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenJournal.performed -= OnOpenJournalPerformed;
+        _playerInputActions.Player.OpenHandbook.performed -= OnOpenHandbookPerformed;
         _playerInputActions.Player.Disable();
     }
 
@@ -756,9 +756,9 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void OnOpenJournalPerformed(InputAction.CallbackContext ctx)
+    private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
-        ToggleJournal();
+        ToggleHandbook();
     }
 
     private void OnCrouchPerformed(InputAction.CallbackContext ctx)
