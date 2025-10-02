@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public enum Level
 {
+    currentLevel,
     blue,
     green,
     red
@@ -25,9 +26,9 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField[] _floorB5;
 
     /// <summary>
-    /// Used to update the navmesh every time a new level is loaded
+    /// Reference to the AI agent chasing the player
     /// </summary>
-    [SerializeField] private NavMeshSurface _navSurface;
+    //[SerializeField] private EnemyBehavior _ruleKeeper;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
 
@@ -49,6 +50,7 @@ public class SceneLoader : MonoBehaviour
 
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
+            { Level.currentLevel, null },
             { Level.blue, _floorB7 },
             { Level.green, _floorB6 },
             { Level.red, _floorB5 }
@@ -84,6 +86,8 @@ public class SceneLoader : MonoBehaviour
         // Wait for the doors to close before unloading any scenes
         while (_animator.GetBool("isOpen")) { yield return null; }
 
+        //_ruleKeeper.resetRuleKeeper(new Vector3(-14, 2.5f, 0.0f));
+
         // Unload all the scenes from the previous level, and load in all the new level's scenes
         if (_lastLevel != e.newLevel)
         {
@@ -103,6 +107,8 @@ public class SceneLoader : MonoBehaviour
         // Wait until the scenes are all loaded before opening the doors
         if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
+        //_ruleKeeper.resetRuleKeeper(); 
+
         // Artificially create some amount of time in the elevator for ambiance and SFX
         if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
 
@@ -111,6 +117,14 @@ public class SceneLoader : MonoBehaviour
         _scenesToLoad.Clear();
 
         _animator.SetTrigger("moveDoors");
+    }
+
+    /// <summary>
+    /// If the player dies or wants to reload the level, restarts THIS level
+    /// </summary>
+    public void ResetScene()
+    {
+        OnLevelLoaded(new LevelLoading { newLevel = _lastLevel } );
     }
 
     /// <summary>
