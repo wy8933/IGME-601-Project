@@ -3,9 +3,6 @@ using UnityEngine.InputSystem;
 using ItemSystem;
 using UnityEngine.UI;
 using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph;
-using System;
 using AudioSystem;
 
 //[RequireComponent(typeof(CharacterController))]
