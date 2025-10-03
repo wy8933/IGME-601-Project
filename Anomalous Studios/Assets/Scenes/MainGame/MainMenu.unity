@@ -831,8 +831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canInteract: 1
   _holdTime: 0
-  _name: Click
-  _elevator: {fileID: 0}
+  _level: 0
 --- !u!65 &575225032
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3894,6 +3893,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elevator
       objectReference: {fileID: 0}
+    - target: {fileID: 7263474712853684992, guid: 34f310e6f7532654eafb0bdcab97e739, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -4318,8 +4321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canInteract: 1
   _holdTime: 2
-  _name: Hold
-  _elevator: {fileID: 0}
+  _level: 0
 --- !u!65 &2114634346
 BoxCollider:
   m_ObjectHideFlags: 0

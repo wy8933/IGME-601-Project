@@ -17,7 +17,8 @@ public class Handbook_UI : MonoBehaviour
     [SerializeField] private Transform _ruleContainer;
     [SerializeField] private GameObject _taskPrefab;
     [SerializeField] private GameObject _policyPrefab;
-    [SerializeField] private GameObject _popupPrefab;
+    [SerializeField] private GameObject _popupPrefabPolicy;
+    [SerializeField] private GameObject _popupPrefabTask;
     [SerializeField] private PlayerController _playerController;
 
     /// <summary>
@@ -29,12 +30,15 @@ public class Handbook_UI : MonoBehaviour
     {
         GameObject taskObj = Instantiate(_taskPrefab, _taskContainer);
         Task task = taskObj.GetComponent<Task>();
-
-        task.Description = description;
-        task.Title = title;
         
+        task.Description = $"{taskList.Count + 1}. {description}";
+        task.Title = title;
+
+        GameObject popupText = Instantiate(_popupPrefabTask);
+        popupText.transform.SetParent(transform.parent, false);
         taskList.Add(task);
     }
+
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
     /// Will add the gameObject specified into the journal under the tasks page
@@ -45,18 +49,15 @@ public class Handbook_UI : MonoBehaviour
         GameObject policyObj = Instantiate(_policyPrefab, _ruleContainer);
         Policy policy = policyObj.GetComponent<Policy>();
 
-        policy.Description = description;
+        policy.Description = $"{policiesList.Count+1}. {description}";
         policy.Title = title;
 
         policiesList.Add(policy);
 
-        GameObject popupText = Instantiate(_popupPrefab);
+        GameObject popupText = Instantiate(_popupPrefabPolicy);
         popupText.transform.SetParent(transform.parent, false);
     }
 
-    #region Coroutines
-    
-    #endregion
     #region Button Methods
     /// <summary>
     /// Used for tabs to open the passed in page and closes all other pages effectively swapping the contents of the journal. 
@@ -97,6 +98,10 @@ public class Handbook_UI : MonoBehaviour
         slider.value -= amount;
     }
 
+    /// <summary>
+    /// Sets the volume slider to 0
+    /// </summary>
+    /// <param name="volumeSlider"></param>
     public void Mute(Slider volumeSlider)
     {
         volumeSlider.value = 0;

@@ -20,12 +20,6 @@ public class Settings : MonoBehaviour
         SetSliders();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     /// <summary>
     /// Sets all the UI Elements to their saved values
     /// </summary>
@@ -54,6 +48,9 @@ public class Settings : MonoBehaviour
     }
  
     #region Slider Methods
+    /// <summary>
+    /// Adjusts all the sliders based on their saved preferences
+    /// </summary>
     void SetSliders()
     {
         AdjustSFXSlider(GetPlayerPrefs("VolumeSlider"));
@@ -61,16 +58,28 @@ public class Settings : MonoBehaviour
         AdjustSensitivityY(GetPlayerPrefs("SensitivityYSlider"));
     }
 
+    /// <summary>
+    /// Adjusts the player's x sensitivity
+    /// </summary>
+    /// <param name="value"></param>
     public void AdjustSensitivityX(float value)
     {
         playerController.MouseSensitivityX = value;
     }
 
+    /// <summary>
+    /// Adjusts player's y sensitivity
+    /// </summary>
+    /// <param name="value"></param>
     public void AdjustSensitivityY(float value)
     {
         playerController.MouseSensitivityY = value;
     }
 
+    /// <summary>
+    /// Adjust the slider for sound effects
+    /// </summary>
+    /// <param name="value"></param>
     public void AdjustSFXSlider(float value)
     {
         audioManager.sfxAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Log10(value) * 20);
@@ -103,8 +112,13 @@ public class Settings : MonoBehaviour
     public void SetPlayerPrefs(string pref, float value)
     {
         PlayerPrefs.SetFloat(pref, value);
+        PlayerPrefs.Save();
     }
 
+    /// <summary>
+    /// Helper method for setting slider values
+    /// </summary>
+    /// <param name="slider"></param>
     public void SetSlider(Slider slider)
     {
         SetPlayerPrefs(slider.name, slider.value);
