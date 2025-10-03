@@ -73,8 +73,6 @@ public abstract class Interaction : MonoBehaviour
         {
             _timer = obj != null ? obj._holdTime : 0f;
         }
-
-        if (Target) { Target.Highlight(); }
     }
 
     /// <summary>
@@ -87,4 +85,13 @@ public abstract class Interaction : MonoBehaviour
     /// Performs the unique interaction of this object
     /// </summary>
     protected abstract void Interact();
+
+    private void OnDrawGizmos()
+    {
+        if (Target != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(Target.gameObject.transform.position, 0.3f);
+        }
+    }
 }

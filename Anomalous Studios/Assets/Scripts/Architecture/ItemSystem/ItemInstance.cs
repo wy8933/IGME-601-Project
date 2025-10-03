@@ -8,7 +8,7 @@ namespace ItemSystem
     public class ItemInstance: Interaction
     {
         [Header("Item Mesh")]
-        [SerializeField] GameObject Mesh;
+        [SerializeField] protected GameObject Mesh;
 
         public ItemDataSO item;
         public int durabilityLeft;
@@ -93,12 +93,12 @@ namespace ItemSystem
 
         public virtual void Use(GameObject user)
         {
-            Debug.Log("Called Parent Use()");
+            //Debug.Log("Called Parent Use()");
         }
 
         public virtual void AttachToParent(GameObject parent)
         {
-            Debug.Log("Called Parent AttachToParent()");
+            //Debug.Log("Called Parent AttachToParent()");
         }
 
         public virtual void DetachFromParent(GameObject parent)
