@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     // Journal Variables
     private bool _inJournal = false;
     [Header("Handbook")]
-    //SerializeField] Handbook_UI handbook;
+    [SerializeField] Handbook_UI handbook;
 
     [Header("Sound Data")]
     [SerializeField] SoundDataSO SprintSlowSO;
@@ -138,9 +138,6 @@ public class PlayerController : MonoBehaviour
 
         WatchUI.SetActive(_watchActive);
         TimeUI.SetActive(_watchActive);
-
-        // Initialize Playermasks
-        IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -453,7 +450,7 @@ public class PlayerController : MonoBehaviour
     public void ToggleHandbook()
     {
         _inJournal = !_inJournal;
-        //handbook.gameObject.SetActive(_inJournal);
+        handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
