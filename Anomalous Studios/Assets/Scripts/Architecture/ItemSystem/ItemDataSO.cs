@@ -11,7 +11,7 @@ namespace ItemSystem
         [Tooltip("The name of the item")]
         public string itemName;
         [Tooltip("The id of the item")]
-        public int itemID;
+        public string itemID;
         [Tooltip("The icon of the item that will show in UI")]
         public Sprite itemIcon;
 

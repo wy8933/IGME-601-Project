@@ -1,12 +1,8 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ItemSystem;
 using UnityEngine.UI;
 using System.Collections;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph;
-using System;
 using AudioSystem;
 
 //[RequireComponent(typeof(CharacterController))]
@@ -25,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     // Follow Camera
     [Header("Follow Camera")]
-    [SerializeField] Camera PlayerCamera;
+    [SerializeField] public Camera PlayerCamera;
 
     // Camera Yaw & Pitch
     [Header("Camera Pitch & Yaw")]
@@ -91,11 +87,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject Item4Icon;
 
     private float _fadeDuration = 1.0f;
+    private Coroutine _fadeCoroutine;
 
     // Journal Variables
     private bool _inJournal = false;
     [Header("Handbook")]
-    [SerializeField] Handbook_UI handbook;
+    //SerializeField] Handbook_UI handbook;
 
     [Header("Sound Data")]
     [SerializeField] SoundDataSO SprintSlowSO;
@@ -104,11 +101,23 @@ public class PlayerController : MonoBehaviour
     private float _audioCooldownTime = 0.5f;
     private float lastPlayTime;
 
+    [Header("Watch UI")]
+    [SerializeField] public GameObject WatchUI;
+    [SerializeField] public GameObject TimeUI;
+    private bool _watchActive = false;
+
     // Layermasks
-    private int _IgnorePlayerMask;
+    public int IgnorePlayerMask;
+
+    /// <summary>
+    /// When a new level starts to load in, the player should be in the elevator or dead
+    /// </summary>
+    private EventBinding<LevelLoading> _levelLoading;
+
+    private Vector3 _spawnPoint = Vector3.zero;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    public void Start()
     {
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
@@ -119,11 +128,19 @@ public class PlayerController : MonoBehaviour
             CrouchCameraY = PlayerCamera.transform.position.y - _crouchOffset;
         }
 
+        // The player should spawn wherever they start when the game initally loads - inside the elevator
+        _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
+        // Initialize Playermasks
+        IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
+        
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
 
+        WatchUI.SetActive(_watchActive);
+        TimeUI.SetActive(_watchActive);
+
         // Initialize Playermasks
-        _IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
+        IgnorePlayerMask = ~LayerMask.GetMask("Player");
     }
 
     // Update is called once per frame
@@ -135,7 +152,7 @@ public class PlayerController : MonoBehaviour
         // Lean Left/Right
         LeanLeftRight();
 
-        ScanInteractables(5.0f);
+        ScanInteractables(10.0f);
     }
 
     private void FixedUpdate()
@@ -383,9 +400,14 @@ public class PlayerController : MonoBehaviour
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
         //Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
 
-        UpdateHotbarItemIcon();
+        UpdateHotbarItemIcon(); 
 
-        StartCoroutine(FadeSequence());
+        if(_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     public void Use()
@@ -418,7 +440,12 @@ public class PlayerController : MonoBehaviour
 
                 RemoveHotbarItemIcon();
 
-                StartCoroutine(FadeSequence());
+                if (_fadeCoroutine != null)
+                {
+                    StopCoroutine(_fadeCoroutine);
+                }
+
+                _fadeCoroutine = StartCoroutine(FadeSequence());
             }
         }
     }
@@ -426,7 +453,7 @@ public class PlayerController : MonoBehaviour
     public void ToggleHandbook()
     {
         _inJournal = !_inJournal;
-        handbook.gameObject.SetActive(_inJournal);
+        //handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -523,6 +550,26 @@ public class PlayerController : MonoBehaviour
         HotbarContainer.SetActive(!HotbarContainer.activeSelf);
     }
 
+    /// <summary>
+    /// When the player dies and the level restarts, reset everything about the player to the last iteration
+    /// </summary>
+    private void ResetPlayer(LevelLoading e)
+    {
+        // Remove items from inventory?
+        // Fade in fade out black screen of death?
+        // Disable journal?
+        // What other edge cases when the level is reset..?
+
+        // If this level is the last level, reset the player spawn
+        if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
+    }
+
+    public void ToggleWatch()
+    {
+        _watchActive = !_watchActive;
+        WatchUI.SetActive(_watchActive);
+        TimeUI.SetActive(_watchActive);
+    }
 
     private void Awake()
     {
@@ -553,6 +600,9 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.LeanLeft.canceled += OnLeanLeftCanceled;
         _playerInputActions.Player.LeanRight.performed += OnLeanRightPerformed;
         _playerInputActions.Player.LeanRight.canceled += OnLeanRightCanceled;
+
+        _levelLoading = new EventBinding<LevelLoading>(ResetPlayer);
+        EventBus<LevelLoading>.Register(_levelLoading);
     }
 
     private void OnDisable() 
@@ -566,6 +616,8 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Item4Hotbar.performed -= OnItem4HotbarPerformed;
         _playerInputActions.Player.OpenHandbook.performed -= OnOpenHandbookPerformed;
         _playerInputActions.Player.Disable();
+
+        EventBus<LevelLoading>.DeRegister(_levelLoading);
     }
 
     private void OnSprintPerformed(InputAction.CallbackContext ctx)
@@ -656,7 +708,17 @@ public class PlayerController : MonoBehaviour
             Item1Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
@@ -681,7 +743,12 @@ public class PlayerController : MonoBehaviour
             Item2Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
@@ -705,7 +772,12 @@ public class PlayerController : MonoBehaviour
             Item3Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
@@ -730,7 +802,12 @@ public class PlayerController : MonoBehaviour
             Item4Icon.GetComponent<RawImage>().color = Color.red;
         }
 
-        StartCoroutine(FadeSequence());
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     private void ResetPreviousEmptySlot()
@@ -778,13 +855,14 @@ public class PlayerController : MonoBehaviour
     {
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
         // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
+
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
-            out RaycastHit hit, interactRange, _IgnorePlayerMask) &&
+            out RaycastHit hit, interactRange, IgnorePlayerMask) &&
             hit.collider.TryGetComponent(out Interaction obj) &&
             obj.canInteract)
         {
             Interaction.SetPriorityTarget(obj);
-            //Interaction.Target.Highlight();
+            Interaction.Target.Highlight();
         }
         else
         {
