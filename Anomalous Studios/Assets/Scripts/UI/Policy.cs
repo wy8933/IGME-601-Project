@@ -8,6 +8,7 @@ public class Policy : MonoBehaviour
     private bool _isBroken;
 
     [SerializeField] private TextMeshProUGUI descriptionText;
+    private Handbook_UI _handbook = null;
 
     /// <summary>
     /// Public property to get and set policy description
@@ -39,6 +40,7 @@ public class Policy : MonoBehaviour
     /// </summary>
     private void Start()
     {
+   
         descriptionText.text = _description;
     }
 }

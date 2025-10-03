@@ -7,9 +7,31 @@ public class Popup : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(DoFade(1, 0, 5));
+        // Destroy any previous popups that may be active.
+        GameObject[] objectsToDestroy = GameObject.FindGameObjectsWithTag("Popup");
+        foreach (GameObject obj in objectsToDestroy) 
+        {
+            // Ignore this game object
+            if (obj == this.gameObject) 
+            {
+                StartCoroutine(DoFade(1, 0, 3));
+            }
+            else
+            {
+                Destroy(obj);
+            }
+        
+        }
+        
     }
 
+    /// <summary>
+    /// Coroutine to fade out the canvas goup over a custom duration
+    /// </summary>
+    /// <param name="startAlpha"></param>
+    /// <param name="endAlpha"></param>
+    /// <param name="_fadeDuration"></param>
+    /// <returns></returns>
     private IEnumerator DoFade(float startAlpha, float endAlpha, float _fadeDuration)
     {
         float timer = 0;
