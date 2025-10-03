@@ -1751,6 +1751,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7990396122563923823, guid: 41f16636d66c750489631f662fb0dce7, type: 3}
+      propertyPath: audioManager
+      value: 
+      objectReference: {fileID: 1566962710}
+    - target: {fileID: 7990396122563923823, guid: 41f16636d66c750489631f662fb0dce7, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 1437958281}
     - target: {fileID: 8083532873485975259, guid: 41f16636d66c750489631f662fb0dce7, type: 3}
       propertyPath: _playerController
       value: 
@@ -1927,6 +1935,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd3440044099b084ab42d3159dc70e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1566962710 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7783330443426069877, guid: 6c1adb93d2137d749b881d855064527a, type: 3}
+  m_PrefabInstance: {fileID: 7471101404459182106}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93e91cf0f0656374da8830f24c72c8b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1582009780
