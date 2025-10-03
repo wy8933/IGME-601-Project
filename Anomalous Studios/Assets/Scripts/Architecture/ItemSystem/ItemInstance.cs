@@ -8,7 +8,7 @@ namespace ItemSystem
     public class ItemInstance: Interaction
     {
         [Header("Item Mesh")]
-        [SerializeField] GameObject Mesh;
+        [SerializeField] protected GameObject Mesh;
 
         public ItemDataSO item;
         public int durabilityLeft;
