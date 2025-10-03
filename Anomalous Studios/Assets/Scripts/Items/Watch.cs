@@ -17,7 +17,9 @@ public class Watch : ItemInstance
     [SerializeField] GameObject _player;
     private PlayerController _playerController;
     private Text _watchText;
+    public Renderer _rendererComponent;
 
+    private bool _isActive;
     private float _timer = 0;
     private float _tickInterval = 1.0f;
 
@@ -28,13 +30,15 @@ public class Watch : ItemInstance
 
         _rb = GetComponent<Rigidbody>();
         _sphereCollider = GetComponent<SphereCollider>();
+        _rendererComponent = GetComponent<Renderer>();
 
         if (_player)
         {
             _playerController = _player.GetComponent<PlayerController>();
             _watchText = _playerController.TimeUI.GetComponent<Text>();
-            
         }
+
+        _isActive = false;
     }
 
     // Update is called once per frame
@@ -47,10 +51,13 @@ public class Watch : ItemInstance
     {
         TryUse(user);
 
-        StartCoroutine(UpdateTimer());
+        if (!_isActive)
+        {
+            _isActive = true;
+            StartCoroutine(UpdateTimer());
+        }
 
-        user.GetComponent<PlayerController>().ToggleWatch();
-        Debug.Log("Time: " + _timer);
+        _playerController.ToggleWatchDisplay(_rendererComponent);
     }
 
     public IEnumerator UpdateTimer()
@@ -71,7 +78,7 @@ public class Watch : ItemInstance
         }
 
         yield return new WaitForSeconds(_tickInterval);
-
+        
         StartCoroutine(UpdateTimer());
     }
 
@@ -86,7 +93,22 @@ public class Watch : ItemInstance
         if (Instigator != null)
         {
             Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            _playerController.ToggleWatchDisplay(_rendererComponent);
         }
+    }
+
+    public override void Equip()
+    {
+        _isEquipped = true;
+        _rendererComponent.enabled = true;
+        _playerController.ToggleWatchDisplay(_rendererComponent);
+    }
+
+    public override void UnEquip()
+    {
+        _isEquipped = false;
+        _rendererComponent.enabled = false;
+        _playerController.ToggleWatchDisplay(_rendererComponent);   
     }
 
     public override void AttachToParent(GameObject parent)
