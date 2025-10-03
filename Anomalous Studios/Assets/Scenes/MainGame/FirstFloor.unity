@@ -247,7 +247,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6578195476581271574, guid: 8e428470317861f4fbd810462437b3a8, type: 3}
 --- !u!1001 &100548419
@@ -435,6 +435,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7481799920662168061, guid: 2ebb5b29539103b4988c4bcc46e16dd5, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 2034195274}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1604,43 +1608,47 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.575705
+      value: 9.201
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.82
+      value: 1.822
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 19.157263
+      value: 18.85
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.12302661
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.0409426
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.9915442
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.0053212605
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -0.027
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -165.853
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -4.732
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970723029315211880, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
+      propertyPath: durabilityLeft
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3415862674739262255, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_Name
@@ -1896,6 +1904,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8298636408455781088, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
     - target: {fileID: 8789629340277271339, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.093
@@ -1919,7 +1931,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4472148027960460090, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
   m_PrefabInstance: {fileID: 1437958280}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2034195274}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd3440044099b084ab42d3159dc70e28, type: 3}
@@ -2325,7 +2337,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 898273231913714050, guid: 8e428470317861f4fbd810462437b3a8, type: 3}
 --- !u!64 &1582009792
@@ -3067,7 +3079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eee3df9423b889429c87d7faefd47d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openAngle: 110
+  openAngle: 80
   duration: 1
   easeCurve:
     serializedVersion: 2
@@ -3096,6 +3108,11 @@ MonoBehaviour:
   interactRange: 3
   playerTag: Player
   DoorID: 101
+--- !u!1 &2034195274 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
+  m_PrefabInstance: {fileID: 1437958280}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2054880939
 GameObject:
   m_ObjectHideFlags: 0

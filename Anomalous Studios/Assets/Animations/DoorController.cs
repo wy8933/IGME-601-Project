@@ -38,14 +38,11 @@ public class DoorController : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
-
-        // Check if player is in range
-        float dist = Vector3.Distance(player.position, transform.position);
 
         // Animate rotation
         if (isAnimating)
         {
+            Debug.Log("im opening");
             t += Time.deltaTime / duration;
             float curveT = easeCurve.Evaluate(t); // Apply ease in/out
             transform.rotation = Quaternion.Slerp(startRot, targetRot, curveT);
