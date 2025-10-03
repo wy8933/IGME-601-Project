@@ -209,10 +209,6 @@ public class PlayerController : MonoBehaviour
 
         // Clamp Stamina between [0, 100]
         Stamina = Mathf.Clamp(Stamina, 0, 100);
-
-        // Debug Logs
-        //Debug.Log("Stamina: " + Stamina);
-        //Debug.Log("isSprinting: " + _isSprinting);
     }
 
     private void SprintPantingDepletionSFX()
@@ -395,7 +391,6 @@ public class PlayerController : MonoBehaviour
 
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
-        //Debug.Log("Item added to hotbar! " + _itemHotbar[_selectedItemIndex].ToString());
 
         UpdateHotbarItemIcon(); 
 
@@ -411,15 +406,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!_inJournal)
         {
-            //Debug.Log(_selectedItemIndex);
-
             if (_itemHotbar[_selectedItemIndex] != null)
             {
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Use(this.gameObject);
-            }
-            else
-            {
-                //Debug.Log("No Item Selected!");
             }
         }
     }
@@ -430,9 +419,14 @@ public class PlayerController : MonoBehaviour
         {
             if (_itemHotbar[_selectedItemIndex] != null)
             {
-                //Debug.Log("Drop " + _itemHotbar[_selectedItemIndex]);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
                 _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
+
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Watch>())
+                {
+                    ToggleWatchDisplay(_itemHotbar[_selectedItemIndex].GetComponent<Watch>()._rendererComponent);
+                }
+
                 _itemHotbar[_selectedItemIndex] = null;
 
                 RemoveHotbarItemIcon();
@@ -561,9 +555,17 @@ public class PlayerController : MonoBehaviour
         if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
     }
 
-    public void ToggleWatch()
+    public void ToggleWatchDisplay(Renderer r)
     {
-        _watchActive = !_watchActive;
+        if (r.enabled)
+        {
+            _watchActive = !_watchActive;
+        }
+        else
+        {
+            _watchActive = false;
+        }
+
         WatchUI.SetActive(_watchActive);
         TimeUI.SetActive(_watchActive);
     }
@@ -661,7 +663,6 @@ public class PlayerController : MonoBehaviour
     {
         if (_itemHotbar[_selectedItemIndex] != null)
         {
-            //Debug.Log("Already holding an item");
             return;
         }
 

@@ -17,6 +17,7 @@ public class Watch : ItemInstance
     [SerializeField] GameObject _player;
     private PlayerController _playerController;
     private Text _watchText;
+    public Renderer _rendererComponent;
 
     private bool _isActive;
     private float _timer = 0;
@@ -29,6 +30,7 @@ public class Watch : ItemInstance
 
         _rb = GetComponent<Rigidbody>();
         _sphereCollider = GetComponent<SphereCollider>();
+        _rendererComponent = GetComponent<Renderer>();
 
         if (_player)
         {
@@ -55,7 +57,7 @@ public class Watch : ItemInstance
             StartCoroutine(UpdateTimer());
         }
 
-        _playerController.ToggleWatch();
+        _playerController.ToggleWatchDisplay(_rendererComponent);
     }
 
     public IEnumerator UpdateTimer()
@@ -91,20 +93,22 @@ public class Watch : ItemInstance
         if (Instigator != null)
         {
             Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
-            _playerController.ToggleWatch();
+            _playerController.ToggleWatchDisplay(_rendererComponent);
         }
     }
 
     public override void Equip()
     {
-        base.Equip();
-        _playerController.ToggleWatch();
+        _isEquipped = true;
+        _rendererComponent.enabled = true;
+        _playerController.ToggleWatchDisplay(_rendererComponent);
     }
 
     public override void UnEquip()
     {
-        base.UnEquip();
-        _playerController.ToggleWatch();
+        _isEquipped = false;
+        _rendererComponent.enabled = false;
+        _playerController.ToggleWatchDisplay(_rendererComponent);   
     }
 
     public override void AttachToParent(GameObject parent)
