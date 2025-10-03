@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
     [Header("Watch UI")]
     [SerializeField] public GameObject WatchUI;
     [SerializeField] public GameObject TimeUI;
-    private bool _watchActive = false;
+    public bool _watchActive = false;
 
     // Layermasks
     public int IgnorePlayerMask;

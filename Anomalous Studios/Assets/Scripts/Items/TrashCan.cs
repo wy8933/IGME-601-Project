@@ -25,7 +25,7 @@ public class TrashCan : MonoBehaviour
         {
             if (collision.gameObject.CompareTag(garbageScript.Tag))
             {
-                Debug.Log("Garbage Collected!");
+                //Debug.Log("Garbage Collected!");
                 Destroy(collision.gameObject);
             }
         }

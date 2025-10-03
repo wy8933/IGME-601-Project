@@ -20,7 +20,6 @@ public class GarbageSO : ItemDataSO
         string who = includeUserName && user != null ? $"[{user.name}] " : "";
         //Debug.Log($"{who}{message} {itemID}");
 
-
         // Return true so ItemInstance.TryUse() knows the use is succesful
         return true;
     }

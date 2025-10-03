@@ -55,7 +55,7 @@ public class Watch : ItemInstance
             StartCoroutine(UpdateTimer());
         }
 
-        user.GetComponent<PlayerController>().ToggleWatch();
+        _playerController.ToggleWatch();
     }
 
     public IEnumerator UpdateTimer()
@@ -76,7 +76,7 @@ public class Watch : ItemInstance
         }
 
         yield return new WaitForSeconds(_tickInterval);
-        Debug.Log("Starting next coroutine");
+        
         StartCoroutine(UpdateTimer());
     }
 
@@ -91,7 +91,20 @@ public class Watch : ItemInstance
         if (Instigator != null)
         {
             Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            _playerController.ToggleWatch();
         }
+    }
+
+    public override void Equip()
+    {
+        base.Equip();
+        _playerController.ToggleWatch();
+    }
+
+    public override void UnEquip()
+    {
+        base.UnEquip();
+        _playerController.ToggleWatch();
     }
 
     public override void AttachToParent(GameObject parent)
