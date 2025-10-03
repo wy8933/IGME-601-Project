@@ -52,7 +52,6 @@ public class Key : ItemInstance
             out RaycastHit hit, interactRange, user.GetComponent<PlayerController>().IgnorePlayerMask))
         {
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
-
             if (dc != null)
             {
                 if (this.item.itemID == dc.DoorID)

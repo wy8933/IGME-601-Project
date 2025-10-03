@@ -38,7 +38,9 @@ public class Watch : ItemInstance
             _watchText = _playerController.TimeUI.GetComponent<Text>();
         }
 
-        _isActive = false;
+        _isActive = true;
+
+        StartCoroutine(UpdateTimer());
     }
 
     // Update is called once per frame
@@ -50,12 +52,6 @@ public class Watch : ItemInstance
     public override void Use(GameObject user)
     {
         TryUse(user);
-
-        if (!_isActive)
-        {
-            _isActive = true;
-            StartCoroutine(UpdateTimer());
-        }
 
         _playerController.ToggleWatchDisplay(_rendererComponent);
     }
