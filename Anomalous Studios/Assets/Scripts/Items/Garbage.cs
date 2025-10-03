@@ -1,26 +1,15 @@
-using ItemSystem;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using ItemSystem;
 
-public class Watch : ItemInstance
+public class Garbage : ItemInstance
 {
     private Transform _cameraTransform;
     private Vector3 _itemCamPosOffset = new Vector3(0.3f, -0.3f, 0.3f);
     private float _dropDistanceOffset = 1.5f;
     private Rigidbody _rb;
-    private SphereCollider _sphereCollider;
-    [SerializeField] GameObject _player;
-    private PlayerController _playerController;
-    private Text _watchText;
+    private BoxCollider _boxCollider;
 
-    private bool _isActive;
-    private float _timer = 0;
-    private float _tickInterval = 1.0f;
+    public string Tag = "Garbage";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,56 +17,19 @@ public class Watch : ItemInstance
         Initialize();
 
         _rb = GetComponent<Rigidbody>();
-        _sphereCollider = GetComponent<SphereCollider>();
-
-        if (_player)
-        {
-            _playerController = _player.GetComponent<PlayerController>();
-            _watchText = _playerController.TimeUI.GetComponent<Text>();
-        }
-
-        _isActive = false;
+        _boxCollider = GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame
     public override void Update()
     {
         base.Update();
+        UpdateLocation();
     }
 
     public override void Use(GameObject user)
     {
         TryUse(user);
-
-        if (!_isActive)
-        {
-            _isActive = true;
-            StartCoroutine(UpdateTimer());
-        }
-
-        user.GetComponent<PlayerController>().ToggleWatch();
-    }
-
-    public IEnumerator UpdateTimer()
-    {
-        _timer++;
-
-        if(_timer >= 1440)
-        {
-            _timer = 0;
-        }
-
-        if (_watchText)
-        {
-            int hours = (int)(_timer / 60);
-            int minutes = (int)(_timer % 60);
-            VariableConditionManager.Instance.Set("watchTimer", _timer.ToString("0.00"));
-            _watchText.text = string.Format("{0:00}:{1:00}", hours, minutes);
-        }
-
-        yield return new WaitForSeconds(_tickInterval);
-        Debug.Log("Starting next coroutine");
-        StartCoroutine(UpdateTimer());
     }
 
     public override void Highlight()
@@ -91,6 +43,14 @@ public class Watch : ItemInstance
         if (Instigator != null)
         {
             Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+        }
+    }
+
+    private void UpdateLocation()
+    {
+        if (_cameraTransform && _pickedUp)
+        {
+            transform.localPosition = _itemCamPosOffset;
         }
     }
 
@@ -117,7 +77,7 @@ public class Watch : ItemInstance
 
     public override void DisableRigidBodyCollisions()
     {
-        _sphereCollider.enabled = false;
+        _boxCollider.enabled = false;
         _rb.isKinematic = true;
         _rb.detectCollisions = false;
         _rb.useGravity = false;
@@ -125,7 +85,7 @@ public class Watch : ItemInstance
 
     public override void EnableRigidBodyCollisions()
     {
-        _sphereCollider.enabled = true;
+        _boxCollider.enabled = true;
         _rb.isKinematic = false;
         _rb.detectCollisions = true;
         _rb.useGravity = true;

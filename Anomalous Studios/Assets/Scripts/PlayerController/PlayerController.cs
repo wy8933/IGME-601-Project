@@ -832,7 +832,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
         ToggleHandbook();
