@@ -27,8 +27,6 @@ public class SceneLoader : MonoBehaviour
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
 
-    private Level _lastLevel;
-
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
     private Animator _animator;
@@ -53,7 +51,6 @@ public class SceneLoader : MonoBehaviour
 
         // TODO: The initial scene load should all be done in one method (variables, items, etc.)
         // TODO: Load in the Rulekeeper every level, don't keep it active between scenes. Can throw errors w/ navmesh
-        _lastLevel = Level.red;
         StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.red }));
     }
 
@@ -76,7 +73,6 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadScenes(LevelLoading e)
     {
         // TODO: Refactor this to use some sort of bitmask. Right now just brute-forcing it
-        // This should get rid of the need for _lastLevel as well
 
         // Wait for the doors to close before unloading any scenes
         while (_animator.GetBool("isOpen")) { yield return null; }
