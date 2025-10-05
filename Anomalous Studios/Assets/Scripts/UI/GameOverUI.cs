@@ -7,6 +7,12 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] GameObject credits;
     bool isVisible = false;
 
+    public void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     public void BackGame()
     {
         SceneManager.LoadScene(0);
