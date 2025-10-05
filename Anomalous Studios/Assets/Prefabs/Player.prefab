@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 8156612788814952234}
   - component: {fileID: 6300263328508027291}
   - component: {fileID: 1627797926530608137}
+  - component: {fileID: 122087428849805735}
   m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -404,6 +405,27 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!65 &122087428849805735
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978791704366293241}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1438227843404756338
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +645,6 @@ GameObject:
   - component: {fileID: 8789629340277271339}
   - component: {fileID: 8670030161889869591}
   - component: {fileID: 3913070786727733876}
-  - component: {fileID: 465537805397118324}
   m_Layer: 7
   m_Name: CapsuleMesh
   m_TagString: Untagged
@@ -640,7 +661,7 @@ Transform:
   m_GameObject: {fileID: 5264406870816975123}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.093, y: -0.579, z: 0.512}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -699,29 +720,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &465537805397118324
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5264406870816975123}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5755319272095810495
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +786,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
     m_FontSize: 10
     m_FontStyle: 0
     m_BestFit: 0
@@ -875,6 +873,7 @@ MonoBehaviour:
   SprintFastSO: {fileID: 11400000, guid: 8f5fb57624a224d4bb37e8a716a39ce0, type: 2}
   WatchUI: {fileID: 94484913838705938}
   TimeUI: {fileID: 5755319272095810495}
+  _watchActive: 0
   IgnorePlayerMask: 0
 --- !u!54 &7168459518286499936
 Rigidbody:
@@ -922,10 +921,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.1, y: -0.5, z: 0.5}
 --- !u!1 &6009211873909701447
 GameObject:
   m_ObjectHideFlags: 0
