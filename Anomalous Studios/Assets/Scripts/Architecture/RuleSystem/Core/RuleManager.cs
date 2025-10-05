@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RuleManager : MonoBehaviour
 {
-    public bool verbose;
+    public bool verbose = false;
 
     [SerializeField] private RuleSetSO ruleSet;
 

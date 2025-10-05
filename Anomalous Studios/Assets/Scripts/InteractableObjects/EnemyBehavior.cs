@@ -17,13 +17,13 @@ public class EnemyBehavior : Interaction
     private EventBinding<RuleBroken> _ruleBroken;
     private EventBinding<LevelLoading> _levelLoading;
 
-    private BehaviorGraphAgent self;
+    [SerializeField]private BehaviorGraphAgent self;
 
     private Vector3 _spawnPoint = Vector3.zero;
 
     public void Start()
     {
-        self = GetComponent<BehaviorGraphAgent>();
+        //self = GetComponent<BehaviorGraphAgent>();
         _spawnPoint = new Vector3(-14, 2.5f, 0.0f); // TODO: Change to this position, just need to test other things 1st
     }
 

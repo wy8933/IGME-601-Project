@@ -42,7 +42,6 @@ public class DoorController : MonoBehaviour
         // Animate rotation
         if (isAnimating)
         {
-            Debug.Log("im opening");
             t += Time.deltaTime / duration;
             float curveT = easeCurve.Evaluate(t); // Apply ease in/out
             transform.rotation = Quaternion.Slerp(startRot, targetRot, curveT);

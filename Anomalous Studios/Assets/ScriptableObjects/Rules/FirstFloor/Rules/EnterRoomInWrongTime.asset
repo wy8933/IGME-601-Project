@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 816d6be1f57ca98458576a0e06e53a4e, type: 3}
-  m_Name: RuleAsset 1
+  m_Name: EnterRoomInWrongTime
   m_EditorClassIdentifier: 
-  ruleId: first-floor-1
+  ruleId: first-floor-Room
   conditionLogic: 0
   ruleConditions:
   - {fileID: 11400000, guid: 58c879dfce5a27942a489bfac414a04a, type: 2}
-  violationActions: []
-  resolveActions: []
+  violationActions:
+  - {fileID: 11400000, guid: 72cc3fe20a049bd4993687cd8613aa54, type: 2}
+  resolveActions:
+  - {fileID: 11400000, guid: 15533be07c360ef4ea77a4f011c3ea7c, type: 2}
   fireOnceUntilResolved: 1
   cooldownSeconds: 1
