@@ -32,6 +32,8 @@ public class Watch : ItemInstance
         _sphereCollider = GetComponent<SphereCollider>();
         _rendererComponent = GetComponent<Renderer>();
 
+        _player = GameObject.FindGameObjectWithTag("Player");
+
         if (_player)
         {
             _playerController = _player.GetComponent<PlayerController>();
