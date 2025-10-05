@@ -20,7 +20,12 @@ public class SceneLoader : MonoBehaviour
     [Range(0.0f, 5.0f)]
     [SerializeField] private float _waitTime = 3.0f;
 
-    // TODO: Temporary testing levels to be replaced with the grayboxed scenes
+    /// <summary>
+    /// Temporary reference for rebaking the navmesh when the scene reloads.
+    /// TODO: move the sceneloader to a persistant obj w/ the game managers, that obj also has navmesh.
+    /// </summary>
+    [SerializeField] private NavMeshSurface _nav;
+
     [SerializeField] private SceneField[] _floorB7;
     [SerializeField] private SceneField[] _floorB6;
     [SerializeField] private SceneField[] _floorB5;
@@ -102,6 +107,7 @@ public class SceneLoader : MonoBehaviour
         // Artificially create some amount of time in the elevator for ambiance and SFX
         if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
 
+        //_nav.BuildNavMesh();
         VariableConditionManager.Instance.Set("IsLevelLoading", "false");
         
         _scenesToLoad.Clear();
