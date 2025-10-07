@@ -3,6 +3,7 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
+using UnityEngine.SceneManagement;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Attack", story: "[Agent] attacks [target]", category: "Action", id: "c0463c3b74bae776c5c4960943826640")]
@@ -22,6 +23,7 @@ public partial class AttackAction : Action
 
     protected override Status OnUpdate()
     {
+        SceneManager.LoadScene("GameOver");
         EventBus<LevelLoading>.Raise(new LevelLoading { newLevel = Level.currentLevel });
         VariableConditionManager.Instance.Set("IsLevelLoading", "true");
         return Status.Success;

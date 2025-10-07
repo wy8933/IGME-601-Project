@@ -6,7 +6,7 @@ public enum ValueType { String, Int, Float }
 
 public static class GameVariables
 {
-    public static bool Verbose = true;
+    public static bool Verbose = false;
     public static float GlobalFloatTolerance = 0.0001f;
     public static string DefaultReason = "Gameplay";
 
