@@ -14,8 +14,6 @@ public class LightDetection : MonoBehaviour
     [Min(0.25f)]
     public float lightDetectionCooldown;
 
-    const float Skin = 0.05f;
-
     public void Start()
     {
         StartCoroutine(CheckLightValueLoop());
@@ -29,6 +27,7 @@ public class LightDetection : MonoBehaviour
             float target = 0f;
 
             var lights = LightManager.Instance?.Lights;
+            Debug.Log(lights.Length);
             if (lights != null && lights.Length > 0)
             {
                 foreach (var light in lights)
