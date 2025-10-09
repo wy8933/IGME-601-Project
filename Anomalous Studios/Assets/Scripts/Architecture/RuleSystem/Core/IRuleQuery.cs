@@ -13,7 +13,9 @@ namespace RuleViolationSystem {
 
         bool WasInteractionSeen(string interactionId, float withinSeconds);
 
-        string FloorId { get; }
-        DateTime UtcNow { get; }
+        public string FloorId { get; }
+        public DateTime UtcNow { get; }
+
+        void setFloorID(string id);
     }
 }
