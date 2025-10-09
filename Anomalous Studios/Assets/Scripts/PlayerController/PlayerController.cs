@@ -667,10 +667,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // TODO: Test edges cases while pulling up the journal
-        if (!_inJournal && Interaction.Target != null)
+        if (!_inJournal && IInteractable.Target != null)
         {
-            Interaction.isPressed = true;
-            Interaction.Instigator = this.gameObject; // Save a reference of player inside interacted object
+            //IInteractable.isPressed = true;
+            IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
+            IInteractable.Target.Interact();
         }
     }
 
@@ -855,15 +856,15 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
             out RaycastHit hit, interactRange, IgnorePlayerMask) &&
-            hit.collider.TryGetComponent(out Interaction obj) &&
-            obj.canInteract)
+            hit.collider.TryGetComponent(out IInteractable obj) &&
+            obj.CanInteract)
         {
-            Interaction.SetPriorityTarget(obj);
-            Interaction.Target.Highlight();
+            IInteractable.SetPriorityTarget(obj);
+            //IInteractable.Target.Highlight();
         }
         else
         {
-            Interaction.SetPriorityTarget(null);
+            IInteractable.SetPriorityTarget(null);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ItemSystem
     public enum ItemUseResult { Success, OnCooldown, NoCharges, Failed }
 
     [System.Serializable]
-    public class ItemInstance: Interaction
+    public abstract class ItemInstance: MonoBehaviour, IInteractable
     {
         [Header("Item Mesh")]
         [SerializeField] protected GameObject Mesh;
@@ -16,9 +16,12 @@ namespace ItemSystem
 
         [Tooltip("Is the Item useable, is there still remaining durability")]
         public bool isUseable;
+        private bool _canInteract = true;
 
         public bool IsEmpty => item == null;
         public bool IsOnCooldown => item != null && (Time.time - lastUseTime) < item.cooldownSeconds;
+
+        public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
         protected bool _isEquipped = false;
         protected bool _pickedUp = false;
@@ -62,19 +65,21 @@ namespace ItemSystem
             return ItemUseResult.Success;
         }
 
-        public override void Highlight()
+        public void Highlight()
         {
-
+            // TODO: Replace with shader to highlight the item
         }
 
-        protected override void Interact()
+        public void RemoveHighlight()
         {
-
+            // TODO: Remove the shader effect from the item
         }
+
+        public abstract void Interact();
 
         public void PickUp()
         {
-            canInteract = false;
+            _canInteract = false;
             _pickedUp = true;
             Equip();
         }

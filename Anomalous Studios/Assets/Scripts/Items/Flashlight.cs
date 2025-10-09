@@ -37,10 +37,8 @@ public class Flashlight : ItemInstance
     }
 
     // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
-        base.Update();
-
         if (_isOn)
         {
             if (Battery > 0)
@@ -59,17 +57,11 @@ public class Flashlight : ItemInstance
         UpdateLocation();
     }
 
-    public override void Highlight()
+    public override void Interact()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Flashlight");
-    }
-
-    protected override void Interact()
-    {
-        if(Instigator != null)
+        if (IInteractable.Instigator != null)
         {
-            Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
         }
     }
 
@@ -99,7 +91,7 @@ public class Flashlight : ItemInstance
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
-        canInteract = true;
+        CanInteract = true;
         _pickedUp = false;
     }
 
