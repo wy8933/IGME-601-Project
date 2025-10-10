@@ -6,6 +6,8 @@ public class Paper : MonoBehaviour, IInteractable
     [SerializeField] private Level _level;
     [SerializeField] private TextMeshProUGUI _description;
     [SerializeField] private Handbook_UI _handbook = null;
+    [SerializeField] private float _holdTime = 0.0f;
+
     private Renderer _renderer;
     public bool isTask;
 
@@ -13,7 +15,7 @@ public class Paper : MonoBehaviour, IInteractable
     // The level system is going to change pretty soon to accomadate new level box anyway
     private static Level _currentLevel = Level.blue;
     private bool _canInteract = true;
-
+    public float HoldTime { get => _holdTime; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
     /// <summary>

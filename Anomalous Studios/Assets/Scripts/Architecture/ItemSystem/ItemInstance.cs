@@ -7,6 +7,8 @@ namespace ItemSystem
     [System.Serializable]
     public abstract class ItemInstance: MonoBehaviour, IInteractable
     {
+        [SerializeField] private float _holdTime = 0.0f;
+
         [Header("Item Mesh")]
         [SerializeField] protected GameObject Mesh;
 
@@ -21,10 +23,11 @@ namespace ItemSystem
         public bool IsEmpty => item == null;
         public bool IsOnCooldown => item != null && (Time.time - lastUseTime) < item.cooldownSeconds;
 
-        public bool CanInteract { get => _canInteract; set => _canInteract = value; }
-
         protected bool _isEquipped = false;
         protected bool _pickedUp = false;
+
+        public float HoldTime { get => _holdTime; }
+        public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
         /// <summary>
         /// Initialize durability when create/assign the instance.

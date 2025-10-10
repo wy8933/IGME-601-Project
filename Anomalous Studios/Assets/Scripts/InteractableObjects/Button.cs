@@ -7,6 +7,7 @@ public class Button : MonoBehaviour, IInteractable
 {
     [SerializeField] private Level _level;
 
+
     private Renderer _renderer;
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
@@ -16,6 +17,9 @@ public class Button : MonoBehaviour, IInteractable
     private bool _canInteract = true;
 
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
+    [SerializeField] private float _holdTime = 0.0f;
+    public float HoldTime { get => _holdTime; }
 
     public void Start()
     {

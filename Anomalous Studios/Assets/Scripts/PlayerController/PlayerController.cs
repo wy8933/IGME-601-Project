@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     // Player Input Actions Class
     private PlayerInputActions _playerInputActions;
+
     // Player Rigidbody and CapsuleCollider
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
@@ -106,7 +107,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject TimeUI;
     public bool _watchActive = false;
 
-    // Layermasks
+    /// <summary>
+    /// LEGACY: has been moved to UserInteraction. Remove when key obj becomes IInteractable
+    /// </summary>
     public int IgnorePlayerMask;
 
     /// <summary>
@@ -130,9 +133,8 @@ public class PlayerController : MonoBehaviour
 
         // The player should spawn wherever they start when the game initally loads - inside the elevator
         _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
-        // Initialize Playermasks
         IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
-        
+
         _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0;
 
@@ -148,8 +150,6 @@ public class PlayerController : MonoBehaviour
 
         // Lean Left/Right
         LeanLeftRight();
-
-        ScanInteractables(10.0f);
     }
 
     private void FixedUpdate()
@@ -671,7 +671,7 @@ public class PlayerController : MonoBehaviour
         {
             //IInteractable.isPressed = true;
             IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
-            IInteractable.Target.Interact();
+            //IInteractable.Target.Interact();
         }
     }
 
@@ -844,27 +844,5 @@ public class PlayerController : MonoBehaviour
     private void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
         _isCrouching = false;
-    }
-
-    /// <summary>
-    /// Finds objects within range that can be interacted with and highlights the item
-    /// </summary>
-    private void ScanInteractables(float interactRange)
-    {
-        // Ignores the player's collider when looking for interactions, allowing walls to occlude items
-        // 1) Looks for any object  2) makes sure its an interactable  3) and that it is usable
-
-        if (Physics.Raycast(PlayerCamera.transform.position, PlayerCamera.transform.forward,
-            out RaycastHit hit, interactRange, IgnorePlayerMask) &&
-            hit.collider.TryGetComponent(out IInteractable obj) &&
-            obj.CanInteract)
-        {
-            IInteractable.SetPriorityTarget(obj);
-            //IInteractable.Target.Highlight();
-        }
-        else
-        {
-            IInteractable.SetPriorityTarget(null);
-        }
     }
 }

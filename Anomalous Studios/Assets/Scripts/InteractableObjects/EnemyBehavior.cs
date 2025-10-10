@@ -14,6 +14,8 @@ public struct RuleBroken : IEvent { public bool isBroken; }
 /// </summary>
 public class EnemyBehavior : MonoBehaviour, IInteractable
 {
+    [SerializeField] private float _holdTime = 0.0f;
+    
     private EventBinding<RuleBroken> _ruleBroken;
     private EventBinding<LevelLoading> _levelLoading;
 
@@ -22,6 +24,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     private Vector3 _spawnPoint = Vector3.zero;
 
     private bool _canInteract = true;
+
+    public float HoldTime { get => _holdTime; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
     public void Start()

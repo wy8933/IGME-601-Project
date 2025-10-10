@@ -244,6 +244,10 @@ PrefabInstance:
       propertyPath: _handbook
       value: 
       objectReference: {fileID: 1714437526}
+    - target: {fileID: 6243537920911075583, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _holdTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8050157995874139600, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.0062877005
@@ -2477,6 +2481,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2034195282}
+    - targetCorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2034195286}
   m_SourcePrefab: {fileID: 100100000, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
 --- !u!114 &1437958281 stripped
 MonoBehaviour:
@@ -3277,6 +3284,19 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &2034195286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034195274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01dff4c5c5dd0c04a80a12842a570ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactRange: 3
 --- !u!1 &2054880939
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,8 +7,11 @@ using UnityEngine;
 public class RageTotem : MonoBehaviour, IInteractable
 {
     [SerializeField] private BehaviorGraphAgent _rulekeeper;
+    [SerializeField] private float _holdTime = 0.0f;
+    private bool _canInteract = true;
 
-    public bool CanInteract { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public float HoldTime { get => _holdTime; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
     public void Highlight()
     {
