@@ -4,8 +4,8 @@ using UnityEngine;
 public class Popup : MonoBehaviour
 {
     [SerializeField] CanvasGroup _canvasGroup;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // Called each time the popup is enabled
+    void OnEnable()
     {
         // Destroy any previous popups that may be active.
         GameObject[] objectsToDestroy = GameObject.FindGameObjectsWithTag("Popup");
