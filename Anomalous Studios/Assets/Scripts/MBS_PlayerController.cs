@@ -257,7 +257,7 @@ public class MBS_PlayerController : MonoBehaviour
     {
         if (!inJournal)
         {
-            if (Input.GetKeyDown(KeyCode.F) && Interaction.Target != null)
+            if (Input.GetKeyDown(KeyCode.F) && IInteractable.Target != null)
             {
                 //Interaction.Target.Interact();
             }

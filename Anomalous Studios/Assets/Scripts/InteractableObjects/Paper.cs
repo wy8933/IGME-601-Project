@@ -1,17 +1,22 @@
     using TMPro;
 using UnityEngine;
 
-public class Paper : Interaction
+public class Paper : MonoBehaviour, IInteractable
 {
     [SerializeField] private Level _level;
     [SerializeField] private TextMeshProUGUI _description;
     [SerializeField] private Handbook_UI _handbook = null;
+    [SerializeField] private float _holdTime = 0.0f;
+
     private Renderer _renderer;
     public bool isTask;
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
     // The level system is going to change pretty soon to accomadate new level box anyway
     private static Level _currentLevel = Level.blue;
+    private bool _canInteract = true;
+    public float HoldTime { get => _holdTime; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
     /// <summary>
     /// Called on first active frame
@@ -22,17 +27,9 @@ public class Paper : Interaction
     }
 
     /// <summary>
-    /// Interaction class update
-    /// </summary>
-    public override void Update()
-    {
-        base.Update();
-    }
-
-    /// <summary>
     /// TODO: Will be implemented once shader is create
     /// </summary>
-    public override void Highlight()
+    public void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
         //print("Highlighting Paper");
@@ -42,7 +39,7 @@ public class Paper : Interaction
     /// <summary>
     /// Leverages interact from interaction class
     /// </summary>
-    protected override void Interact()
+    public void Interact()
     {
         this.gameObject.SetActive(false);
         AddToHandbook();
@@ -66,5 +63,10 @@ public class Paper : Interaction
     public void OnDrawGizmos()
     {
         //Gizmos.DrawWireSphere(_center, 1);
+    }
+
+    public void RemoveHighlight()
+    {
+      
     }
 }
