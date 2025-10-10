@@ -45,12 +45,6 @@ public class Watch : ItemInstance
         StartCoroutine(UpdateTimer());
     }
 
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();
-    }
-
     public override void Use(GameObject user)
     {
         TryUse(user);
@@ -80,17 +74,11 @@ public class Watch : ItemInstance
         StartCoroutine(UpdateTimer());
     }
 
-    public override void Highlight()
+    public override void Interact()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Watch");
-    }
-
-    protected override void Interact()
-    {
-        if (Instigator != null)
+        if (IInteractable.Instigator != null)
         {
-            Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
             _playerController.ToggleWatchDisplay(_rendererComponent);
         }
     }
@@ -126,7 +114,7 @@ public class Watch : ItemInstance
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
-        canInteract = true;
+        CanInteract = true;
         _pickedUp = false;
     }
 

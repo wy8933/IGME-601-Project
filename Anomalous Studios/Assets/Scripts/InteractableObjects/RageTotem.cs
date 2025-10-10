@@ -4,22 +4,27 @@ using UnityEngine;
 /// <summary>
 /// Test class to break the Rulekeeper's rules
 /// </summary>
-public class RageTotem : Interaction
+public class RageTotem : MonoBehaviour, IInteractable
 {
     [SerializeField] private BehaviorGraphAgent _rulekeeper;
+    [SerializeField] private float _holdTime = 0.0f;
+    private bool _canInteract = true;
 
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();  
-    }
-    public override void Highlight()
+    public float HoldTime { get => _holdTime; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
+    public void Highlight()
     {
         // Highlight!
     }
 
-    protected override void Interact()
+    public void Interact()
     {
         _rulekeeper.SetVariableValue("ruleBroken", true);
+    }
+
+    public void RemoveHighlight()
+    {
+        throw new System.NotImplementedException();
     }
 }

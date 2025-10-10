@@ -12,14 +12,21 @@ public struct RuleBroken : IEvent { public bool isBroken; }
 /// <summary>
 /// A controller for the Rulekeeper's unique rules-dependent behaviors
 /// </summary>
-public class EnemyBehavior : Interaction
+public class EnemyBehavior : MonoBehaviour, IInteractable
 {
+    [SerializeField] private float _holdTime = 0.0f;
+    
     private EventBinding<RuleBroken> _ruleBroken;
     private EventBinding<LevelLoading> _levelLoading;
 
     private BehaviorGraphAgent self;
 
     private Vector3 _spawnPoint = Vector3.zero;
+
+    private bool _canInteract = true;
+
+    public float HoldTime { get => _holdTime; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
     public void Start()
     {
@@ -29,16 +36,12 @@ public class EnemyBehavior : Interaction
         _spawnPoint = new Vector3(-14, 2.5f, 0.0f); // TODO: Change to this position, just need to test other things 1st
     }
 
-    public override void Update()
-    {
-        base.Update();
-    }
-    public override void Highlight()
+    public void Highlight()
     {
 
     }
 
-    protected override void Interact()
+    public void Interact()
     {
         // TODO: replace with textbox interaction, should be able to simply say 'hello,' or sign a paper
         GetComponent<Renderer>().material.color = Color.red;
@@ -91,4 +94,10 @@ public class EnemyBehavior : Interaction
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
         EventBus<LevelLoading>.DeRegister(_levelLoading);
     }
+
+    public void RemoveHighlight()
+    {
+        throw new System.NotImplementedException();
+    }
+
 }
