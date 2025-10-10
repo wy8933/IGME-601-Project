@@ -1,3 +1,4 @@
+using AudioSystem;
 using UnityEngine;
 
 #nullable enable
@@ -14,8 +15,25 @@ public interface IInteractable
 
     public static GameObject? Instigator;
 
-    //public AudioClip Clip { get; set; }
+    /// <summary>
+    /// Played if the player starts interacting with an object with a HoldTime
+    /// </summary>
+    public SoundDataSO InitialSFX { get; }
 
+    /// <summary>
+    /// Played if CanInteract is false
+    /// </summary>
+    public SoundDataSO FailedSFX { get; }
+
+    /// <summary>
+    /// Played if the player stops interacting with an object with a HoldTime
+    /// </summary>
+    public SoundDataSO CancelSFX { get; }
+
+    /// <summary>
+    /// Played when the player interacts with the Target or at the end of an object's HoldTime
+    /// </summary>
+    public SoundDataSO SuccessSFX { get; }
 
     /// <summary>
     /// Decides whether an item can be interacted with

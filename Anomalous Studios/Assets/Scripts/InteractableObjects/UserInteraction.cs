@@ -1,3 +1,4 @@
+using AudioSystem;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -51,6 +52,7 @@ public class UserInteraction : MonoBehaviour
             if (IInteractable.Target != obj)
             {
                 IInteractable.SetPriorityTarget(obj);
+                print("changed");
                 OnInteractCanceled(new InputAction.CallbackContext());
             }
         }
@@ -63,11 +65,16 @@ public class UserInteraction : MonoBehaviour
             if (IInteractable.Target.HoldTime == 0.0f)
             {
                 // TODO: check obj.CanInteract and play appropriate sfx if it CAN or CAN'T
+                print("auto");
+                AudioManager.Instance.Play(IInteractable.Target.SuccessSFX, transform.position);
                 IInteractable.Target.Interact();
             }
 
             else
             {
+                //AudioManager.Instance.Play(IInteractable.Target.InitialSFX, transform.position);
+                print("initial");
+                IInteractable.Target.Interact();
                 _co = PressAndHold(IInteractable.Target.HoldTime);
                 StartCoroutine(_co);
             }
@@ -82,6 +89,8 @@ public class UserInteraction : MonoBehaviour
     {
         if (_co != null)
         {
+            //AudioManager.Instance.Play(IInteractable.Target.CancelSFX, transform.position);
+            print("canceled");
             StopCoroutine(_co);
             _co = null;
         }
@@ -95,6 +104,10 @@ public class UserInteraction : MonoBehaviour
     private IEnumerator PressAndHold(float holdTime)
     {
         yield return new WaitForSeconds(holdTime);
+        print("success!");
+        AudioManager.Instance.Play(IInteractable.Target.SuccessSFX, transform.position);
         IInteractable.Target.Interact();
+        
+        // _co = null;
     }
 }

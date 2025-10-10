@@ -240,6 +240,14 @@ PrefabInstance:
       propertyPath: _handbook
       value: 
       objectReference: {fileID: 1714437526}
+    - target: {fileID: 5727855582200624358, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _failedSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+    - target: {fileID: 5727855582200624358, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
     - target: {fileID: 6243537920911075583, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
       propertyPath: _handbook
       value: 
@@ -248,6 +256,22 @@ PrefabInstance:
       propertyPath: _holdTime
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6243537920911075583, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _cancelSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: ec75088a96623ef48950bd5d5ab5b53e, type: 2}
+    - target: {fileID: 6243537920911075583, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _failedSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+    - target: {fileID: 6243537920911075583, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _initialSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 0258aa5ee53abe24094df4f3c64cea9f, type: 2}
+    - target: {fileID: 6243537920911075583, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
     - target: {fileID: 8050157995874139600, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.0062877005
@@ -304,6 +328,14 @@ PrefabInstance:
       propertyPath: _handbook
       value: 
       objectReference: {fileID: 1714437526}
+    - target: {fileID: 8578113937437719778, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _failedSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+    - target: {fileID: 8578113937437719778, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
     - target: {fileID: 8826542731992035283, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
       propertyPath: m_Name
       value: Corkboard
@@ -312,6 +344,14 @@ PrefabInstance:
       propertyPath: _handbook
       value: 
       objectReference: {fileID: 1714437526}
+    - target: {fileID: 8899191320808831782, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _failedSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+    - target: {fileID: 8899191320808831782, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -960,6 +1000,10 @@ PrefabInstance:
     - target: {fileID: 9205146073855690417, guid: 47cde461f9abecb4b90d158db25b19ec, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9205146073855690417, guid: 47cde461f9abecb4b90d158db25b19ec, type: 3}
+      propertyPath: m_TagString
+      value: RuleKeeper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

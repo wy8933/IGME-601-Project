@@ -1,6 +1,6 @@
 using UnityEngine;
 using ItemSystem;
-using UnityEngine.Experimental.GlobalIllumination;
+using AudioSystem;
 
 public class Key : ItemInstance
 {
@@ -9,6 +9,14 @@ public class Key : ItemInstance
     private float _dropDistanceOffset = 1.5f;
     private Rigidbody _rb;
     private BoxCollider _boxCollider;
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()

@@ -1,3 +1,4 @@
+using AudioSystem;
 using UnityEngine;
 
 namespace ItemSystem
@@ -28,6 +29,11 @@ namespace ItemSystem
 
         public float HoldTime { get => _holdTime; }
         public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
+        public abstract SoundDataSO InitialSFX { get; }
+        public abstract SoundDataSO FailedSFX { get; }
+        public abstract SoundDataSO CancelSFX { get; }
+        public abstract SoundDataSO SuccessSFX { get; }
 
         /// <summary>
         /// Initialize durability when create/assign the instance.
