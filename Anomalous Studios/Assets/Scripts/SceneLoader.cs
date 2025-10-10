@@ -20,14 +20,17 @@ public class SceneLoader : MonoBehaviour
     [Range(0.0f, 5.0f)]
     [SerializeField] private float _waitTime = 3.0f;
 
-    // TODO: Temporary testing levels to be replaced with the grayboxed scenes
+    /// <summary>
+    /// Temporary reference for rebaking the navmesh when the scene reloads.
+    /// TODO: move the sceneloader to a persistant obj w/ the game managers, that obj also has navmesh.
+    /// </summary>
+    [SerializeField] private NavMeshSurface _nav;
+
     [SerializeField] private SceneField[] _floorB7;
     [SerializeField] private SceneField[] _floorB6;
     [SerializeField] private SceneField[] _floorB5;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
-
-    private Level _lastLevel;
 
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
@@ -53,7 +56,6 @@ public class SceneLoader : MonoBehaviour
 
         // TODO: The initial scene load should all be done in one method (variables, items, etc.)
         // TODO: Load in the Rulekeeper every level, don't keep it active between scenes. Can throw errors w/ navmesh
-        _lastLevel = Level.red;
         StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.red }));
     }
 
@@ -76,7 +78,6 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadScenes(LevelLoading e)
     {
         // TODO: Refactor this to use some sort of bitmask. Right now just brute-forcing it
-        // This should get rid of the need for _lastLevel as well
 
         // Wait for the doors to close before unloading any scenes
         while (_animator.GetBool("isOpen")) { yield return null; }
@@ -106,6 +107,7 @@ public class SceneLoader : MonoBehaviour
         // Artificially create some amount of time in the elevator for ambiance and SFX
         if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
 
+        //_nav.BuildNavMesh();
         VariableConditionManager.Instance.Set("IsLevelLoading", "false");
         
         _scenesToLoad.Clear();

@@ -38,10 +38,6 @@ public class DoorController : MonoBehaviour
 
     void Update()
     {
-        if (player == null) return;
-
-        // Check if player is in range
-        float dist = Vector3.Distance(player.position, transform.position);
 
         // Animate rotation
         if (isAnimating)

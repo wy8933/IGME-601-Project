@@ -24,6 +24,8 @@ public class EnemyBehavior : Interaction
     public void Start()
     {
         self = GetComponent<BehaviorGraphAgent>();
+        self.SetVariableValue("Player", 
+            GameObject.FindGameObjectWithTag("Player"));
         _spawnPoint = new Vector3(-14, 2.5f, 0.0f); // TODO: Change to this position, just need to test other things 1st
     }
 

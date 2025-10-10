@@ -31,20 +31,20 @@ public class Settings : MonoBehaviour
             slider.value = GetPlayerPrefs(slider.name);
         }
 
-        // Sets the value of each toggle active in the list 
-        for (int i = 0; i < toggles.Length; i++)
-        {
-            Toggle toggle = toggles[i];
-            if (GetPlayerPrefs(toggle.name) % 1 == 0)
-            {
-                toggle.isOn = true;
-                Debug.Log(toggle.name + " Slider Muted");
-            }
-            else
-            {
-                toggle.isOn = false;
-            }
-        }
+        //// Sets the value of each toggle active in the list 
+        //for (int i = 0; i < toggles.Length; i++)
+        //{
+        //    Toggle toggle = toggles[i];
+        //    if (GetPlayerPrefs(toggle.name) % 1 == 0)
+        //    {
+        //        toggle.isOn = true;
+        //        Debug.Log(toggle.name + " Slider Muted");
+        //    }
+        //    else
+        //    {
+        //        toggle.isOn = false;
+        //    }
+        //}
     }
  
     #region Slider Methods
