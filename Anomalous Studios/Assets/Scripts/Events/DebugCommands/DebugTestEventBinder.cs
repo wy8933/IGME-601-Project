@@ -1,21 +1,11 @@
 using UnityEngine;
 
-public class TestCommandSubscriber : MonoBehaviour
+[CreateAssetMenu(fileName = "TestCommandEventSO", menuName = "Events/Commands/TestCommandEventSO")]
+public sealed class TestCommandEventSO : BaseEventSO<CommandRequested>
 {
-    private EventBinding<CommandRequested> _binding;
-
-    void OnEnable()
+    protected override void OnEvent(CommandRequested e)
     {
-        _binding = new EventBinding<CommandRequested>(_ => {
-            EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = "test command works", Type = LogType.Log });
-            Debug.Log("test command works");
-        }, pr: 100);
-
-        EventBus<CommandRequested>.Register(_binding, scope: CommandScope.Key("test_command"));
-    }
-
-    void OnDisable()
-    {
-        EventBus<CommandRequested>.DeRegister(_binding, scope: CommandScope.Key("test_command"));
+        EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = "test command works", Type = LogType.Log });
+        Debug.Log("test command works");
     }
 }
