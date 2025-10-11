@@ -3,15 +3,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+
 public class PlayerInputBindings : MonoBehaviour
 {
     // Player Input Actions Class
     private PlayerInputActions _playerInputActions;
+    private PlayerController _playerController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();   
     }
 
     // Update is called once per frame
@@ -64,53 +66,50 @@ public class PlayerInputBindings : MonoBehaviour
 
     private void OnSprintPerformed(InputAction.CallbackContext ctx)
     {
-        if (_canSprint)
-        {
-            _isSprinting = true;
-        }
+        _playerController.Sprint();
     }
 
     private void OnSprintCanceled(InputAction.CallbackContext ctx)
     {
-        _isSprinting = false;
+        _playerController.SetIsSprinting(false);
     }
 
     private void OnLeanLeftPerformed(InputAction.CallbackContext ctx)
     {
-        _isLeaningLeft = true;
-        _isLeaningRight = false;
+        _playerController.SetIsLeanLeft(true);
+        _playerController.SetIsLeanRight(false);
     }
 
     private void OnLeanLeftCanceled(InputAction.CallbackContext ctx)
     {
-        _isLeaningLeft = false;
+        _playerController.SetIsLeanLeft(false);
     }
 
     private void OnLeanRightPerformed(InputAction.CallbackContext ctx)
     {
-        _isLeaningRight = true;
-        _isLeaningLeft = false;
+        _playerController.SetIsLeanRight(true);
+        _playerController.SetIsLeanLeft(false);
     }
 
     private void OnLeanRightCanceled(InputAction.CallbackContext ctx)
     {
-        _isLeaningRight = false;
+        _playerController.SetIsLeanRight(false);
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-        Jump();
+        _playerController.Jump();
     }
 
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
-        if (_itemHotbar[_selectedItemIndex] != null)
+        if (_playerController.GetItemHotbar()[_playerController.GetSelectedItemIndex()] != null)
         {
             return;
         }
 
         // TODO: Test edges cases while pulling up the journal
-        if (!_inJournal && Interaction.Target != null)
+        if (!_playerController.GetInJournal() && Interaction.Target != null)
         {
             Interaction.isPressed = true;
             Interaction.Instigator = this.gameObject; // Save a reference of player inside interacted object
@@ -119,150 +118,45 @@ public class PlayerInputBindings : MonoBehaviour
 
     private void OnDropPerformed(InputAction.CallbackContext ctx)
     {
-        DropItem();
+        _playerController.DropItem();
     }
 
     private void OnUseStarted(InputAction.CallbackContext ctx)
     {
-        Use();
+        _playerController.Use();
     }
 
     private void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 0;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item1Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
+        _playerController.SwitchToItem1();
     }
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 1;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item2Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
+        _playerController.SwitchToItem2();
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 2;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item3Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
+        _playerController.SwitchToItem3();
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 3;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item4Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
+        _playerController.SwitchToItem4();
     }
 
     private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
-        ToggleHandbook();
+        _playerController.ToggleHandbook();
     }
 
     private void OnCrouchPerformed(InputAction.CallbackContext ctx)
     {
-        _isCrouching = true;
+        _playerController.SetIsCrouching(true);
     }
 
     private void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
-        _isCrouching = false;
+        _playerController.SetIsCrouching(false);
     }
 }

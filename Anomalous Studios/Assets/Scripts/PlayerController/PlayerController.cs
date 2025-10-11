@@ -82,10 +82,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] GameObject HotbarContainer;
     private CanvasGroup _canvasGroup;
-    [SerializeField] GameObject Item1Icon;
-    [SerializeField] GameObject Item2Icon;
-    [SerializeField] GameObject Item3Icon;
-    [SerializeField] GameObject Item4Icon;
+    [SerializeField] private GameObject Item1Icon;
+    [SerializeField] private GameObject Item2Icon;
+    [SerializeField] private GameObject Item3Icon;
+    [SerializeField] private GameObject Item4Icon;
 
     private float _fadeDuration = 1.0f;
     private Coroutine _fadeCoroutine;
@@ -106,6 +106,83 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject WatchUI;
     [SerializeField] public GameObject TimeUI;
     public bool _watchActive = false;
+
+    // Getter Methods
+    public bool CanSprint()
+    {
+        return _canSprint;
+    }
+
+    public GameObject[] GetItemHotbar()
+    {
+        return _itemHotbar;
+    }
+
+    public int GetSelectedItemIndex()
+    {
+        return _selectedItemIndex;
+    }
+
+    public bool GetInJournal()
+    {
+        return _inJournal;
+    }
+
+    public GameObject GetItem1Icon()
+    {
+        return Item1Icon;
+    }
+
+    public GameObject GetItem2Icon()
+    {
+        return Item2Icon;
+    }
+
+    public GameObject GetItem3Icon()
+    {
+        return Item3Icon;
+    }
+
+    public GameObject GetItem4Icon()
+    {
+        return Item4Icon;
+    }
+
+    public Coroutine GetFadeCoroutine()
+    {
+        return _fadeCoroutine;
+    }
+
+    // Setter Methods
+    public void SetIsSprinting(bool InSprint)
+    {
+        _isSprinting = InSprint;
+    }
+
+    public void SetIsLeanLeft(bool InLeanLeft)
+    {
+        _isLeaningLeft = InLeanLeft;
+    }
+
+    public void SetIsLeanRight(bool InLeanRight)
+    {
+        _isLeaningRight = InLeanRight;
+    }
+
+    public void SetSelectedItemIndex(int InSelectedItemIndex)
+    {
+        _selectedItemIndex = InSelectedItemIndex;
+    }
+
+    public void SetIsCrouching(bool InIsCrouching)
+    {
+        _isCrouching = InIsCrouching;
+    }
+
+    public void SetFadeCoroutine()
+    {
+
+    }
 
     /// <summary>
     /// LEGACY: has been moved to UserInteraction. Remove when key obj becomes IInteractable
@@ -179,6 +256,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Sprint()
+    {
+        if (_canSprint)
+        {
+            _isSprinting = true;
+        }
+    }
     private void CheckSprint(float dt)
     {
         if (_isSprinting && !_inJournal)
@@ -325,7 +409,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
         if (!_inJournal)
         {
@@ -413,7 +497,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void DropItem()
+    public void DropItem()
     {
         if (!_inJournal)
         {
@@ -809,7 +893,7 @@ public class PlayerController : MonoBehaviour
         _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
-    private void ResetPreviousEmptySlot()
+    public void ResetPreviousEmptySlot()
     {
         if (_itemHotbar[_selectedItemIndex] == null)
         {
@@ -844,5 +928,145 @@ public class PlayerController : MonoBehaviour
     private void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
         _isCrouching = false;
+    }
+
+    public void Interact() 
+    {
+        if (_itemHotbar[_selectedItemIndex] != null)
+        {
+            return;
+        }
+
+        // TODO: Test edges cases while pulling up the journal
+        if (!_inJournal && Interaction.Target != null)
+        {
+            Interaction.isPressed = true;
+            Interaction.Instigator = this.gameObject; // Save a reference of player inside interacted object
+        }
+    }
+
+    public void SwitchToItem1()
+    {
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
+        _selectedItemIndex = 0;
+
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
+        else
+        {
+            Item1Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
+    }
+
+    public void SwitchToItem2()
+    {
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
+        _selectedItemIndex = 1;
+
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
+        else
+        {
+            Item2Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
+    }
+
+    public void SwitchToItem3()
+    {
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+        }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
+        _selectedItemIndex = 2;
+
+        if (_itemHotbar[_selectedItemIndex])
+        {
+            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
+        }
+        else
+        {
+            Item3Icon.GetComponent<RawImage>().color = Color.red;
+        }
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
+    }
+
+    public void SwitchToItem4()
+    {
+        if (GetItemHotbar()[GetSelectedItemIndex()])
+        {
+            GetItemHotbar()[GetSelectedItemIndex()].GetComponent<ItemInstance>().UnEquip();
+        }
+        else
+        {
+            ResetPreviousEmptySlot();
+        }
+
+        SetSelectedItemIndex(3);
+
+        if (GetItemHotbar()[GetSelectedItemIndex()])
+        {
+            GetItemHotbar()[GetSelectedItemIndex()].GetComponent<ItemInstance>().Equip();
+        }
+        else
+        {
+            GetItem4Icon().GetComponent<RawImage>().color = Color.red;
+        }
+
+        if (GetFadeCoroutine() != null)
+        {
+            StopCoroutine(GetFadeCoroutine());
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 }
