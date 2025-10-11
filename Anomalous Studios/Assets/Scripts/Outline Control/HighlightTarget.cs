@@ -8,6 +8,8 @@ public class HighlightTarget : MonoBehaviour
     [HideInInspector] public Material[] originalMats;
     [HideInInspector] public Material outlineMatInstance;
 
+    [HideInInspector] public bool IsHighlighted = false;
+
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -47,7 +49,6 @@ public class HighlightTarget : MonoBehaviour
 
         HighlightManager.Register(this);
 
-        Debug.Log("Outline material added to " + gameObject.name);
         return true;
     }
 

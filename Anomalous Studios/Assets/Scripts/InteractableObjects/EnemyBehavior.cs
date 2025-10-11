@@ -1,8 +1,8 @@
 using Unity.Behavior;
 using UnityEngine;
-using static RuleViolationSystem.DebugLogActionSO;
 using System.Collections;
 using UnityEngine.AI;
+using AudioSystem;
 
 /// <summary>
 /// TODO: Temporary broken rule event, should be refactored with rule event system
@@ -15,7 +15,7 @@ public struct RuleBroken : IEvent { public bool isBroken; }
 public class EnemyBehavior : MonoBehaviour, IInteractable
 {
     [SerializeField] private float _holdTime = 0.0f;
-    
+
     private EventBinding<RuleBroken> _ruleBroken;
     private EventBinding<LevelLoading> _levelLoading;
 
@@ -28,6 +28,14 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public float HoldTime { get => _holdTime; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public SoundDataSO InitialSFX => null;
+    public SoundDataSO FailedSFX { get => _failedSFX; }
+    public SoundDataSO CancelSFX => null;
+    public SoundDataSO SuccessSFX { get => _successSFX; }
+
     public void Start()
     {
         self = GetComponent<BehaviorGraphAgent>();
@@ -38,7 +46,11 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     public void Highlight()
     {
-
+        GetComponent<HighlightTarget>().IsHighlighted = true;
+    }
+    public void RemoveHighlight()
+    {
+        GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 
     public void Interact()
@@ -95,9 +107,5 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LevelLoading>.DeRegister(_levelLoading);
     }
 
-    public void RemoveHighlight()
-    {
-        throw new System.NotImplementedException();
-    }
 
 }

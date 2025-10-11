@@ -426,6 +426,7 @@ MonoBehaviour:
   rend: {fileID: 0}
   originalMats: []
   outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!23 &213159075
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -483,7 +484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d41d5cac9d905ab4087d3dd2ef251277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: 8402e17dc79716548b89988d3d073b7b, type: 2}
@@ -492,6 +492,8 @@ MonoBehaviour:
   isUseable: 0
   _player: {fileID: 0}
   _rendererComponent: {fileID: 0}
+  _failedSFX: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+  _successSFX: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
 --- !u!54 &213159077
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -648,6 +650,7 @@ MonoBehaviour:
   rend: {fileID: 0}
   originalMats: []
   outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!114 &474540112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,13 +663,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6340ad6f87d99de4ebfcf89a6988bfb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: 697172f4aa2abf14dbece6203394eec3, type: 2}
   durabilityLeft: 1
   lastUseTime: 0
   isUseable: 1
+  _failedSFX: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+  _successSFX: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
 --- !u!54 &474540113
 Rigidbody:
   m_ObjectHideFlags: 0
