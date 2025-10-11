@@ -46,7 +46,11 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     public void Highlight()
     {
-
+        GetComponent<HighlightTarget>().IsHighlighted = true;
+    }
+    public void RemoveHighlight()
+    {
+        GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 
     public void Interact()
@@ -103,9 +107,5 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LevelLoading>.DeRegister(_levelLoading);
     }
 
-    public void RemoveHighlight()
-    {
-        throw new System.NotImplementedException();
-    }
 
 }

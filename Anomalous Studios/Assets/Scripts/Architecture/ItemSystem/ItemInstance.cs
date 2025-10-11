@@ -76,12 +76,11 @@ namespace ItemSystem
 
         public void Highlight()
         {
-            // TODO: Replace with shader to highlight the item
+            GetComponent<HighlightTarget>().IsHighlighted = true;
         }
-
         public void RemoveHighlight()
         {
-            // TODO: Remove the shader effect from the item
+            GetComponent<HighlightTarget>().IsHighlighted = false;
         }
 
         public abstract void Interact();

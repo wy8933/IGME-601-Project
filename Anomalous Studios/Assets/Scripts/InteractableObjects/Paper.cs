@@ -13,7 +13,7 @@ public class Paper : MonoBehaviour, IInteractable
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
     // The level system is going to change pretty soon to accomadate new level box anyway
-    private bool _canInteract = true;
+    [SerializeField] private bool _canInteract = true;
     public float HoldTime { get => _holdTime; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
@@ -35,14 +35,13 @@ public class Paper : MonoBehaviour, IInteractable
         _renderer = GetComponent<Renderer>();
     }
 
-    /// <summary>
-    /// TODO: Will be implemented once shader is create
-    /// </summary>
     public void Highlight()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //print("Highlighting Paper");
-        //_center = gameObject.transform.position;
+        GetComponent<HighlightTarget>().IsHighlighted = true;
+    }
+    public void RemoveHighlight()
+    {
+        GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 
     /// <summary>
@@ -74,8 +73,4 @@ public class Paper : MonoBehaviour, IInteractable
         //Gizmos.DrawWireSphere(_center, 1);
     }
 
-    public void RemoveHighlight()
-    {
-      
-    }
 }

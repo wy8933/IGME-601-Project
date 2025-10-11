@@ -51,10 +51,15 @@ public class UserInteraction : MonoBehaviour
             // Do not bother setting a new Target if it is the same focus as before
             if (IInteractable.Target != obj)
             {
-                IInteractable.SetPriorityTarget(obj);
-                print("changed");
                 OnInteractCanceled(new InputAction.CallbackContext());
+                IInteractable.SetPriorityTarget(obj);
             }
+        }
+        // If the target is already null, don't bother
+        else if (IInteractable.Target != null)
+        {
+            OnInteractCanceled(new InputAction.CallbackContext());
+            IInteractable.SetPriorityTarget(null);
         }
     }
 
@@ -62,19 +67,20 @@ public class UserInteraction : MonoBehaviour
     {
         if (IInteractable.Target != null)
         {
-            if (IInteractable.Target.HoldTime == 0.0f)
+            if (!IInteractable.Target.CanInteract)
             {
-                // TODO: check obj.CanInteract and play appropriate sfx if it CAN or CAN'T
-                print("auto");
+                AudioManager.Instance.Play(IInteractable.Target.FailedSFX, transform.position);
+            }
+
+            else if (IInteractable.Target.HoldTime == 0.0f)
+            {
                 AudioManager.Instance.Play(IInteractable.Target.SuccessSFX, transform.position);
                 IInteractable.Target.Interact();
             }
 
             else
             {
-                //AudioManager.Instance.Play(IInteractable.Target.InitialSFX, transform.position);
-                print("initial");
-                IInteractable.Target.Interact();
+                AudioManager.Instance.Play(IInteractable.Target.InitialSFX, transform.position);
                 _co = PressAndHold(IInteractable.Target.HoldTime);
                 StartCoroutine(_co);
             }
@@ -89,8 +95,7 @@ public class UserInteraction : MonoBehaviour
     {
         if (_co != null)
         {
-            //AudioManager.Instance.Play(IInteractable.Target.CancelSFX, transform.position);
-            print("canceled");
+            AudioManager.Instance.Play(IInteractable.Target.CancelSFX, transform.position);
             StopCoroutine(_co);
             _co = null;
         }
@@ -104,10 +109,7 @@ public class UserInteraction : MonoBehaviour
     private IEnumerator PressAndHold(float holdTime)
     {
         yield return new WaitForSeconds(holdTime);
-        print("success!");
         AudioManager.Instance.Play(IInteractable.Target.SuccessSFX, transform.position);
         IInteractable.Target.Interact();
-        
-        // _co = null;
     }
 }
