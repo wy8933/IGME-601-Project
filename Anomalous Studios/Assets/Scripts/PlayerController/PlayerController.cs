@@ -8,8 +8,8 @@ using AudioSystem;
 //[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    // Player Input Actions Class
-    private PlayerInputActions _playerInputActions;
+    // Player Input Bindings Script
+    private PlayerInputBindings _playerInput;
 
     // Player Rigidbody and CapsuleCollider
     private Rigidbody _rb;
@@ -26,19 +26,19 @@ public class PlayerController : MonoBehaviour
 
     // Camera Yaw & Pitch
     [Header("Camera Pitch & Yaw")]
-    [SerializeField] float LookYawSpeed = 2.0f;
-    [SerializeField] float LookPitchSpeed = 1.0f;
-    [SerializeField] float LookPitchLimit = 60.0f; 
+    [SerializeField] private float LookYawSpeed = 2.0f;
+    [SerializeField] private float LookPitchSpeed = 1.0f;
+    [SerializeField] private float LookPitchLimit = 60.0f; 
     private float _rotationX = 0.0f;
 
     // Camera Lean Left/Right Variables
     private bool _canLean = true;
     [Header("Leaning")]
-    [SerializeField] Transform LeanPivot;
-    private float _currentLean;         // Actual value of the lean
-    private float _targetLean;          // Will change as player pressed Q or E to lean
-    [SerializeField] float LeanAngle;     // Set the _targetLean depending on LeanAngle       - I found a value of 20 to work best
-    [SerializeField] float LeanSmoothing; // Used to smooth the _currentLean to _targetLean   - I found a value of 0.3 to work best
+    [SerializeField] private Transform LeanPivot;
+    private float _currentLean;             // Actual value of the lean
+    private float _targetLean;              // Will change as player pressed Q or E to lean
+    [SerializeField] private float LeanAngle;       // Set the _targetLean depending on LeanAngle       - I found a value of 20 to work best
+    [SerializeField] private float LeanSmoothing;   // Used to smooth the _currentLean to _targetLean   - I found a value of 0.3 to work best
     private float _leanVelocity;
     private bool _isLeaningLeft;
     private bool _isLeaningRight;
@@ -56,133 +56,50 @@ public class PlayerController : MonoBehaviour
     private bool _canSprint = true;
     private bool _isSprinting = false;
     [Header("Sprint Stamina")]
-    [SerializeField] float Stamina = 100.0f;
+    [SerializeField] private float Stamina = 100.0f;
     private float _staminaDepletionFactor = 10.0f;
     private float _staminaRegenFactor = 5.0f;
 
     // Jump Variables
     [Header("Jump")]
-    [SerializeField] float JumpForce = 3.0f;
+    [SerializeField] private float JumpForce = 3.0f;
     private float _gravity = -9.81f;
     private float _groundedThreshold = 0.05f;
 
     // Crouch Variables
     private bool _isCrouching;
     [Header("Crouch")]
-    [SerializeField] float DefaultHeight = 2.0f;
-    [SerializeField] float CrouchHeight = 1.0f;
-    [SerializeField] float CrouchSpeed = 2.0f;
+    [SerializeField] private float DefaultHeight = 2.0f;
+    [SerializeField] private float CrouchHeight = 1.0f;
+    [SerializeField] private float CrouchSpeed = 2.0f;
     private float DefaultCameraY;
     private float CrouchCameraY;
     private float _crouchOffset = 0.7f;
 
-    // Item Hotbar Variables
-    private int _selectedItemIndex = 0;
-    private GameObject[] _itemHotbar = new GameObject[4];
+    // Item Hotbar Script
+    private ItemHotbar _itemHotbar;
 
-    [SerializeField] GameObject HotbarContainer;
-    private CanvasGroup _canvasGroup;
-    [SerializeField] private GameObject Item1Icon;
-    [SerializeField] private GameObject Item2Icon;
-    [SerializeField] private GameObject Item3Icon;
-    [SerializeField] private GameObject Item4Icon;
+    // Player SFX Script
+    private PlayerSound _playerSound;
 
-    private float _fadeDuration = 1.0f;
-    private Coroutine _fadeCoroutine;
-
-    // Journal Variables
-    private bool _inJournal = false;
-    [Header("Handbook")]
-    [SerializeField] Handbook_UI handbook;
-
-    [Header("Sound Data")]
-    [SerializeField] SoundDataSO SprintSlowSO;
-    [SerializeField] SoundDataSO SprintMedSO;
-    [SerializeField] SoundDataSO SprintFastSO;
-    private float _audioCooldownTime = 0.5f;
-    private float lastPlayTime;
-
-    [Header("Watch UI")]
-    [SerializeField] public GameObject WatchUI;
-    [SerializeField] public GameObject TimeUI;
-    public bool _watchActive = false;
+    // Player Journal Script
+    private PlayerJournal _playerJournal;
 
     // Getter Methods
-    public bool CanSprint()
-    {
-        return _canSprint;
-    }
+    public bool CanSprint() { return _canSprint; }
 
-    public GameObject[] GetItemHotbar()
-    {
-        return _itemHotbar;
-    }
+    public ItemHotbar GetItemHotbar() { return _itemHotbar; }
 
-    public int GetSelectedItemIndex()
-    {
-        return _selectedItemIndex;
-    }
-
-    public bool GetInJournal()
-    {
-        return _inJournal;
-    }
-
-    public GameObject GetItem1Icon()
-    {
-        return Item1Icon;
-    }
-
-    public GameObject GetItem2Icon()
-    {
-        return Item2Icon;
-    }
-
-    public GameObject GetItem3Icon()
-    {
-        return Item3Icon;
-    }
-
-    public GameObject GetItem4Icon()
-    {
-        return Item4Icon;
-    }
-
-    public Coroutine GetFadeCoroutine()
-    {
-        return _fadeCoroutine;
-    }
+    public PlayerJournal GetPlayerJournal() {  return _playerJournal; }
 
     // Setter Methods
-    public void SetIsSprinting(bool InSprint)
-    {
-        _isSprinting = InSprint;
-    }
+    public void SetIsSprinting(bool InSprint) { _isSprinting = InSprint; }
 
-    public void SetIsLeanLeft(bool InLeanLeft)
-    {
-        _isLeaningLeft = InLeanLeft;
-    }
+    public void SetIsLeanLeft(bool InLeanLeft) { _isLeaningLeft = InLeanLeft; }
 
-    public void SetIsLeanRight(bool InLeanRight)
-    {
-        _isLeaningRight = InLeanRight;
-    }
+    public void SetIsLeanRight(bool InLeanRight) { _isLeaningRight = InLeanRight; }
 
-    public void SetSelectedItemIndex(int InSelectedItemIndex)
-    {
-        _selectedItemIndex = InSelectedItemIndex;
-    }
-
-    public void SetIsCrouching(bool InIsCrouching)
-    {
-        _isCrouching = InIsCrouching;
-    }
-
-    public void SetFadeCoroutine()
-    {
-
-    }
+    public void SetIsCrouching(bool InIsCrouching) { _isCrouching = InIsCrouching; }
 
     /// <summary>
     /// LEGACY: has been moved to UserInteraction. Remove when key obj becomes IInteractable
@@ -208,15 +125,15 @@ public class PlayerController : MonoBehaviour
             CrouchCameraY = PlayerCamera.transform.position.y - _crouchOffset;
         }
 
+        // Get references to all necessary script components
+        _playerInput = GetComponent<PlayerInputBindings>();
+        _itemHotbar = GetComponent<ItemHotbar>();
+        _playerSound = GetComponent<PlayerSound>();
+        _playerJournal = GetComponent<PlayerJournal>();
+
         // The player should spawn wherever they start when the game initally loads - inside the elevator
         _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
         IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
-
-        _canvasGroup = HotbarContainer.GetComponent<CanvasGroup>();
-        _canvasGroup.alpha = 0;
-
-        WatchUI.SetActive(_watchActive);
-        TimeUI.SetActive(_watchActive);
     }
 
     // Update is called once per frame
@@ -244,18 +161,9 @@ public class PlayerController : MonoBehaviour
         ApplyGravity(Time.fixedDeltaTime);
     }
 
-    public void PlaySound(SoundDataSO sd)
-    {
-        if (Time.time - lastPlayTime >= _audioCooldownTime)
-        {
-            if (AudioManager.Instance)
-            {
-                AudioManager.Instance.Play(sd);
-            }
-            lastPlayTime = Time.time;
-        }
-    }
-
+    /// <summary>
+    /// Checks if player can sprint
+    /// </summary>
     public void Sprint()
     {
         if (_canSprint)
@@ -263,14 +171,21 @@ public class PlayerController : MonoBehaviour
             _isSprinting = true;
         }
     }
+
+    /// <summary>
+    /// Checks player current sprinting state
+    /// If sprinting, deplete stamina bar
+    /// If not sprinting, regen stamina bar
+    /// </summary>
+    /// <param name="dt">Delta Time</param>
     private void CheckSprint(float dt)
     {
-        if (_isSprinting && !_inJournal)
+        if (_isSprinting && !_playerJournal.GetInJournal())
         {
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
-            SprintPantingDepletionSFX();
+            _playerSound.SprintPantingDepletionSFX(Stamina);
 
             if (Stamina <= 0)
             {
@@ -283,7 +198,7 @@ public class PlayerController : MonoBehaviour
             _canLean = true;
             Stamina += _staminaRegenFactor * dt;
 
-            SprintPantingRegenSFX();
+            _playerSound.SprintPantingRegenSFX(Stamina);
 
             if (Stamina > 10.0f)
             {
@@ -295,54 +210,18 @@ public class PlayerController : MonoBehaviour
         Stamina = Mathf.Clamp(Stamina, 0, 100);
     }
 
-    private void SprintPantingDepletionSFX()
-    {
-        if (Stamina > 66.0f)
-        {
-            PlaySound(SprintSlowSO);
-        }
-        else if (Stamina > 33.0f)
-        {
-            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
-            PlaySound(SprintMedSO);
-        }
-        else if (Stamina > 0)
-        {
-            AudioManager.Instance.Stop(gameObject, SprintMedSO);
-            PlaySound(SprintFastSO);
-        }
-    }
-
-    private void SprintPantingRegenSFX()
-    {
-        if (Stamina <= 33.0f)
-        {
-            PlaySound(SprintFastSO);
-        }
-        else if (Stamina <= 66.0f)
-        {
-            AudioManager.Instance.Stop(gameObject, SprintFastSO);
-            PlaySound(SprintMedSO);
-        }
-        else if (Stamina < 100)
-        {
-            AudioManager.Instance.Stop(gameObject, SprintMedSO);
-            PlaySound(SprintSlowSO);
-        }
-        else
-        {
-            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
-        }
-    }
-
+    /// <summary>
+    /// Moves player controller in any direction
+    /// </summary>
+    /// <param name="dt">Delta Time</param>
     private void Move(float dt)
     {
-        if(!_inJournal)
+        if(!_playerJournal.GetInJournal())
         {
             // Rotate Camera on X and Y axes according to mouse movement to simulate orientation
             if (_canMove)
             {
-                _moveInput = _playerInputActions.Player.Move.ReadValue<Vector2>();
+                _moveInput = _playerInput.GetPlayerInputActions().Player.Move.ReadValue<Vector2>(); 
                 Vector3 movement = _isSprinting ? transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _runSpeed * dt
                                                 : transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _walkSpeed * dt;
                 _rb.MovePosition(movement + _rb.position);
@@ -350,16 +229,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Orients camera to current player rotation
+    /// </summary>
+    /// <param name="dt">Delta Time</param>
     private void OrientCameraToRotation(float dt)
     {
-        if (!_inJournal)
+        if (!_playerJournal.GetInJournal())
         {
             if (_canMove)
             {
-                Vector2 lookValue = _playerInputActions.Player.Look.ReadValue<Vector2>();
+                Vector2 lookValue = _playerInput.GetPlayerInputActions().Player.Look.ReadValue<Vector2>();
                 Vector2 mouse = new Vector2(MouseSensitivityX * lookValue.x * dt, MouseSensitivityY * lookValue.y * dt);
 
-                //transform.rotation *= Quaternion.Euler(0, mouse.x * LookYawSpeed, 0);   // Yaw
                 transform.Rotate(new Vector3(0, mouse.x * LookYawSpeed, 0));              // Yaw
                
                 _rotationX -= mouse.y * LookPitchSpeed;
@@ -373,16 +255,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks whether player is currently crouching or not. Adjusts necessary movement speeds and camera height
+    /// </summary>
     private void CheckCrouch()
     {
-        if (!_inJournal)
+        if (!_playerJournal.GetInJournal())
         {
             if (_canMove)
             {
+                Vector3 crouchOffset = new Vector3(0, -0.5f, 0);
+                Vector3 standOffset = Vector3.zero;
                 if (_isCrouching)
                 {
                     _capsuleCollider.height = CrouchHeight;
-                    _capsuleCollider.center = new Vector3(0, -0.5f, 0); // -0.5f to adjust the _capsuleCollider center to prevent floor clipping
+                    _capsuleCollider.center = crouchOffset; // -0.5f to adjust the _capsuleCollider center to prevent floor clipping
 
                     if (PlayerCamera != null)
                     {
@@ -395,7 +282,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     _capsuleCollider.height = DefaultHeight;
-                    _capsuleCollider.center = new Vector3(0, 0, 0); // reset the _capsuleCollider center
+                    _capsuleCollider.center = standOffset; // reset the _capsuleCollider center
 
                     if (PlayerCamera != null)
                     {
@@ -409,9 +296,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies a jump force to the player's up vector allowing them to jump
+    /// </summary>
     public void Jump()
     {
-        if (!_inJournal)
+        if (!_playerJournal.GetInJournal())
         {
             if (_canMove && IsGrounded())
             {
@@ -420,6 +310,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies a gravitational force when player is airborne
+    /// </summary>
+    /// <param name="dt"></param>
     private void ApplyGravity(float dt)
     {
         if (!IsGrounded())
@@ -428,9 +322,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Allows player to smoothly lean left and right
+    /// </summary>
     private void LeanLeftRight()
     {
-        if (!_inJournal)
+        if (!_playerJournal.GetInJournal())
         {
             if (_canMove && _canLean)
             {
@@ -466,163 +363,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void AddItem(GameObject item)
-    {
-        if (_itemHotbar[_selectedItemIndex] != null)
-        {
-            return;
-        }
-
-        _itemHotbar[_selectedItemIndex] = item;
-        item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
-
-        UpdateHotbarItemIcon(); 
-
-        if(_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
+    /// <summary>
+    /// Allows player to use current item
+    /// </summary>
     public void Use()
     {
-        if (!_inJournal)
+        if (!_playerJournal.GetInJournal())
         {
-            if (_itemHotbar[_selectedItemIndex] != null)
-            {
-                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Use(this.gameObject);
-            }
+            _itemHotbar.UseItem();
         }
     }
 
-    public void DropItem()
-    {
-        if (!_inJournal)
-        {
-            if (_itemHotbar[_selectedItemIndex] != null)
-            {
-                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
-                _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
+    
 
-                if (_itemHotbar[_selectedItemIndex].GetComponent<Watch>())
-                {
-                    ToggleWatchDisplay(_itemHotbar[_selectedItemIndex].GetComponent<Watch>()._rendererComponent);
-                }
-
-                _itemHotbar[_selectedItemIndex] = null;
-
-                RemoveHotbarItemIcon();
-
-                if (_fadeCoroutine != null)
-                {
-                    StopCoroutine(_fadeCoroutine);
-                }
-
-                _fadeCoroutine = StartCoroutine(FadeSequence());
-            }
-        }
-    }
-
-    public void ToggleHandbook()
-    {
-        _inJournal = !_inJournal;
-        handbook.gameObject.SetActive(_inJournal);
-        if (_inJournal)
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.None;
-            UnityEngine.Cursor.visible = true;
-        }
-        else
-        {
-            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-            UnityEngine.Cursor.visible = false;
-        }
-    }
-
+    /// <summary>
+    /// Checks whether the player is grounded or airborne
+    /// </summary>
     private bool IsGrounded()
     {
         return Mathf.Abs(_rb.linearVelocity.y) < _groundedThreshold;
-    }
-
-    private void UpdateHotbarItemIcon()
-    {
-        switch (_selectedItemIndex)
-        {
-            case 1:
-                Item2Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item2Icon.GetComponent<RawImage>().color = Color.yellow;
-                break;
-            case 2:
-                Item3Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item3Icon.GetComponent<RawImage>().color = Color.yellow;
-                break;
-            case 3:
-                Item4Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item4Icon.GetComponent<RawImage>().color = Color.yellow;
-                break;
-            default:
-                Item1Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item1Icon.GetComponent<RawImage>().color = Color.yellow;
-                break;
-        }
-    }
-
-    private void RemoveHotbarItemIcon()
-    {
-        Color resetColor = new Color(0, 0, 0, 0.5f);
-
-        switch (_selectedItemIndex)
-        {
-            case 1:
-                Item2Icon.GetComponent<RawImage>().texture = null;
-                Item2Icon.GetComponent<RawImage>().color = resetColor;
-                break;
-            case 2:
-                Item3Icon.GetComponent<RawImage>().texture = null;
-                Item3Icon.GetComponent<RawImage>().color = resetColor;
-                break;
-            case 3:
-                Item4Icon.GetComponent<RawImage>().texture = null;
-                Item4Icon.GetComponent<RawImage>().color = resetColor;
-                break;
-            default:
-                Item1Icon.GetComponent<RawImage>().texture = null;
-                Item1Icon.GetComponent<RawImage>().color = resetColor;
-                break;
-        }
-    }
-
-    public IEnumerator FadeSequence()
-    {
-        // Fade In
-        yield return StartCoroutine(DoFade(_canvasGroup.alpha, 1));
-
-        // Stay Visible
-        yield return new WaitForSeconds(1);
-
-        // Fade Out
-        yield return StartCoroutine(DoFade(_canvasGroup.alpha, 0));
-    }
-
-    private IEnumerator DoFade(float startAlpha, float endAlpha)
-    {
-        float timer = 0;
-
-        while (timer < _fadeDuration)
-        {
-            timer += Time.deltaTime;
-            _canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, timer / _fadeDuration);
-            yield return null;
-        }
-
-        _canvasGroup.alpha = endAlpha;
-    }
-
-    private void ToggleHotbarDisplay()
-    {
-        HotbarContainer.SetActive(!HotbarContainer.activeSelf);
     }
 
     /// <summary>
@@ -639,434 +398,49 @@ public class PlayerController : MonoBehaviour
         if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
     }
 
-    public void ToggleWatchDisplay(Renderer r)
-    {
-        if (r.enabled)
-        {
-            _watchActive = !_watchActive;
-        }
-        else
-        {
-            _watchActive = false;
-        }
-
-        WatchUI.SetActive(_watchActive);
-        TimeUI.SetActive(_watchActive);
-    }
-
     private void Awake()
     {
-        _playerInputActions = new PlayerInputActions();
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
     private void OnEnable()
     {
-        _playerInputActions.Player.Enable();
-        _playerInputActions.Player.Jump.performed += OnJumpPerformed;
-        _playerInputActions.Player.Interact.started += OnInteractStarted;
-        _playerInputActions.Player.Drop.performed += OnDropPerformed;
-        _playerInputActions.Player.Use.started += OnUseStarted;
-        _playerInputActions.Player.Item1Hotbar.performed += OnItem1HotbarPerformed;
-        _playerInputActions.Player.Item2Hotbar.performed += OnItem2HotbarPerformed;
-        _playerInputActions.Player.Item3Hotbar.performed += OnItem3HotbarPerformed;
-        _playerInputActions.Player.Item4Hotbar.performed += OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenHandbook.performed += OnOpenHandbookPerformed;
-
-        _playerInputActions.Player.Sprint.performed += OnSprintPerformed;
-        _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
-        _playerInputActions.Player.Crouch.performed += OnCrouchPerformed;
-        _playerInputActions.Player.Crouch.canceled += OnCrouchCanceled;
-
-        _playerInputActions.Player.LeanLeft.performed += OnLeanLeftPerformed;
-        _playerInputActions.Player.LeanLeft.canceled += OnLeanLeftCanceled;
-        _playerInputActions.Player.LeanRight.performed += OnLeanRightPerformed;
-        _playerInputActions.Player.LeanRight.canceled += OnLeanRightCanceled;
-
         _levelLoading = new EventBinding<LevelLoading>(ResetPlayer);
         EventBus<LevelLoading>.Register(_levelLoading);
     }
 
     private void OnDisable() 
     {
-        _playerInputActions.Player.Jump.performed -= OnJumpPerformed;
-        _playerInputActions.Player.Interact.started -= OnInteractStarted;
-        _playerInputActions.Player.Use.started -= OnUseStarted;
-        _playerInputActions.Player.Item1Hotbar.performed -= OnItem1HotbarPerformed;
-        _playerInputActions.Player.Item2Hotbar.performed -= OnItem2HotbarPerformed;
-        _playerInputActions.Player.Item3Hotbar.performed -= OnItem3HotbarPerformed;
-        _playerInputActions.Player.Item4Hotbar.performed -= OnItem4HotbarPerformed;
-        _playerInputActions.Player.OpenHandbook.performed -= OnOpenHandbookPerformed;
-        _playerInputActions.Player.Disable();
-
         EventBus<LevelLoading>.DeRegister(_levelLoading);
     }
 
-    private void OnSprintPerformed(InputAction.CallbackContext ctx)
+    /// <summary>
+    /// Allows the player to interact with interactable items
+    /// </summary>
+    public void Interact() 
     {
-        if (_canSprint)
-        {
-            _isSprinting = true;
-        }
-    }
-
-    private void OnSprintCanceled(InputAction.CallbackContext ctx)
-    {
-        _isSprinting = false;
-    }
-
-    private void OnLeanLeftPerformed(InputAction.CallbackContext ctx)
-    {
-        _isLeaningLeft = true;
-        _isLeaningRight = false;
-    }
-
-    private void OnLeanLeftCanceled(InputAction.CallbackContext ctx)
-    {
-        _isLeaningLeft = false;
-    }
-
-    private void OnLeanRightPerformed(InputAction.CallbackContext ctx)
-    {
-        _isLeaningRight = true;
-        _isLeaningLeft = false;
-    }
-
-    private void OnLeanRightCanceled(InputAction.CallbackContext ctx)
-    {
-        _isLeaningRight = false;
-    }
-
-    private void OnJumpPerformed(InputAction.CallbackContext ctx)
-    {
-        Jump();
-    }
-
-    private void OnInteractStarted(InputAction.CallbackContext ctx)
-    {
-        if (_itemHotbar[_selectedItemIndex] != null)
+        if (_itemHotbar.SlotHasItem())
         {
             return;
         }
 
         // TODO: Test edges cases while pulling up the journal
-        if (!_inJournal && IInteractable.Target != null)
+        if (!_playerJournal.GetInJournal() && IInteractable.Target != null)
         {
             //IInteractable.isPressed = true;
             IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
-            //IInteractable.Target.Interact();
         }
     }
 
-    private void OnDropPerformed(InputAction.CallbackContext ctx)
+    /// <summary>
+    /// Allows player to drop current item
+    /// </summary>
+    public void DropItem()
     {
-        DropItem();
-    }
-
-    private void OnUseStarted(InputAction.CallbackContext ctx)
-    {
-        Use();
-    }
-
-    private void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)
-    {
-        if (_itemHotbar[_selectedItemIndex])
+        if (!_playerJournal.GetInJournal())
         {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
+            _itemHotbar.DropItem();
         }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 0;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item1Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
-    private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
-    {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 1;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item2Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-    private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
-    {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 2;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item3Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
-    private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
-    {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 3;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item4Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
-    public void ResetPreviousEmptySlot()
-    {
-        if (_itemHotbar[_selectedItemIndex] == null)
-        {
-            switch (_selectedItemIndex)
-            {
-                case 1:
-                    Item2Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-                case 2:
-                    Item3Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-                case 3:
-                    Item4Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-                default:
-                    Item1Icon.GetComponent<RawImage>().color = new Color(0, 0, 0, 0.5f);
-                    break;
-            }
-        }
-    }
-
-    private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
-    {
-        ToggleHandbook();
-    }
-
-    private void OnCrouchPerformed(InputAction.CallbackContext ctx)
-    {
-        _isCrouching = true;
-    }
-
-    private void OnCrouchCanceled(InputAction.CallbackContext ctx)
-    {
-        _isCrouching = false;
-    }
-
-    public void Interact() 
-    {
-        if (_itemHotbar[_selectedItemIndex] != null)
-        {
-            return;
-        }
-
-        // TODO: Test edges cases while pulling up the journal
-        if (!_inJournal && Interaction.Target != null)
-        {
-            Interaction.isPressed = true;
-            Interaction.Instigator = this.gameObject; // Save a reference of player inside interacted object
-        }
-    }
-
-    public void SwitchToItem1()
-    {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 0;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item1Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
-    public void SwitchToItem2()
-    {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 1;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item2Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
-    public void SwitchToItem3()
-    {
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        _selectedItemIndex = 2;
-
-        if (_itemHotbar[_selectedItemIndex])
-        {
-            _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            Item3Icon.GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (_fadeCoroutine != null)
-        {
-            StopCoroutine(_fadeCoroutine);
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
-    }
-
-    public void SwitchToItem4()
-    {
-        if (GetItemHotbar()[GetSelectedItemIndex()])
-        {
-            GetItemHotbar()[GetSelectedItemIndex()].GetComponent<ItemInstance>().UnEquip();
-        }
-        else
-        {
-            ResetPreviousEmptySlot();
-        }
-
-        SetSelectedItemIndex(3);
-
-        if (GetItemHotbar()[GetSelectedItemIndex()])
-        {
-            GetItemHotbar()[GetSelectedItemIndex()].GetComponent<ItemInstance>().Equip();
-        }
-        else
-        {
-            GetItem4Icon().GetComponent<RawImage>().color = Color.red;
-        }
-
-        if (GetFadeCoroutine() != null)
-        {
-            StopCoroutine(GetFadeCoroutine());
-        }
-
-        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 }

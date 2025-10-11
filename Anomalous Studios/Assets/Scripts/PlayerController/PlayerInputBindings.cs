@@ -3,23 +3,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-
 public class PlayerInputBindings : MonoBehaviour
 {
     // Player Input Actions Class
     private PlayerInputActions _playerInputActions;
     private PlayerController _playerController;
 
+    // Getter Methods
+    public PlayerInputActions GetPlayerInputActions()
+    {
+        return _playerInputActions;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();   
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     private void Awake()
@@ -101,19 +100,19 @@ public class PlayerInputBindings : MonoBehaviour
         _playerController.Jump();
     }
 
+    private void OnCrouchPerformed(InputAction.CallbackContext ctx)
+    {
+        _playerController.SetIsCrouching(true);
+    }
+
+    private void OnCrouchCanceled(InputAction.CallbackContext ctx)
+    {
+        _playerController.SetIsCrouching(false);
+    }
+
     private void OnInteractStarted(InputAction.CallbackContext ctx)
     {
-        if (_playerController.GetItemHotbar()[_playerController.GetSelectedItemIndex()] != null)
-        {
-            return;
-        }
-
-        // TODO: Test edges cases while pulling up the journal
-        if (!_playerController.GetInJournal() && Interaction.Target != null)
-        {
-            Interaction.isPressed = true;
-            Interaction.Instigator = this.gameObject; // Save a reference of player inside interacted object
-        }
+        _playerController.Interact();
     }
 
     private void OnDropPerformed(InputAction.CallbackContext ctx)
@@ -128,35 +127,25 @@ public class PlayerInputBindings : MonoBehaviour
 
     private void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SwitchToItem1();
+        _playerController.GetItemHotbar().SwitchToItem(0);
     }
 
     private void OnItem2HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SwitchToItem2();
+        _playerController.GetItemHotbar().SwitchToItem(1);
     }
     private void OnItem3HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SwitchToItem3();
+        _playerController.GetItemHotbar().SwitchToItem(2);
     }
 
     private void OnItem4HotbarPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SwitchToItem4();
+        _playerController.GetItemHotbar().SwitchToItem(3);
     }
 
     private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.ToggleHandbook();
-    }
-
-    private void OnCrouchPerformed(InputAction.CallbackContext ctx)
-    {
-        _playerController.SetIsCrouching(true);
-    }
-
-    private void OnCrouchCanceled(InputAction.CallbackContext ctx)
-    {
-        _playerController.SetIsCrouching(false);
+        _playerController.GetPlayerJournal().ToggleHandbook();
     }
 }

@@ -19,7 +19,6 @@ public class Watch : ItemInstance
     private Text _watchText;
     public Renderer _rendererComponent;
 
-    private bool _isActive;
     private float _timer = 0;
     private float _tickInterval = 1.0f;
 
@@ -37,10 +36,11 @@ public class Watch : ItemInstance
         if (_player)
         {
             _playerController = _player.GetComponent<PlayerController>();
-            _watchText = _playerController.TimeUI.GetComponent<Text>();
+            if (_playerController != null)
+            {
+                _watchText = _playerController.GetItemHotbar().TimeUI.GetComponent<Text>();
+            }
         }
-
-        _isActive = true;
 
         StartCoroutine(UpdateTimer());
     }
@@ -49,7 +49,7 @@ public class Watch : ItemInstance
     {
         TryUse(user);
 
-        _playerController.ToggleWatchDisplay(_rendererComponent);
+        _playerController.GetItemHotbar().ToggleWatchDisplay(_rendererComponent);
     }
 
     public IEnumerator UpdateTimer()
@@ -78,8 +78,8 @@ public class Watch : ItemInstance
     {
         if (IInteractable.Instigator != null)
         {
-            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
-            _playerController.ToggleWatchDisplay(_rendererComponent);
+            IInteractable.Instigator.GetComponent<PlayerController>().GetItemHotbar().AddItem(this.gameObject);
+            _playerController.GetItemHotbar().ToggleWatchDisplay(_rendererComponent);
         }
     }
 
@@ -87,14 +87,14 @@ public class Watch : ItemInstance
     {
         _isEquipped = true;
         _rendererComponent.enabled = true;
-        _playerController.ToggleWatchDisplay(_rendererComponent);
+        _playerController.GetItemHotbar().ToggleWatchDisplay(_rendererComponent);
     }
 
     public override void UnEquip()
     {
         _isEquipped = false;
         _rendererComponent.enabled = false;
-        _playerController.ToggleWatchDisplay(_rendererComponent);   
+        _playerController.GetItemHotbar().ToggleWatchDisplay(_rendererComponent);   
     }
 
     public override void AttachToParent(GameObject parent)

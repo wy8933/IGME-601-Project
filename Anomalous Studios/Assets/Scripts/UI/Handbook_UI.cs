@@ -112,7 +112,7 @@ public class Handbook_UI : MonoBehaviour
     /// </summary>
     public void Resume()
     {
-        _playerController.ToggleHandbook();
+        _playerController.GetPlayerJournal().ToggleHandbook();
         // Resume Logic
     }
 

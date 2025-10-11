@@ -61,7 +61,7 @@ public class Flashlight : ItemInstance
     {
         if (IInteractable.Instigator != null)
         {
-            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().GetItemHotbar().AddItem(this.gameObject);
         }
     }
 
