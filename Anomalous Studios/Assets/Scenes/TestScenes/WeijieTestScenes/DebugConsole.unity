@@ -230,6 +230,10 @@ MonoBehaviour:
     Description: Run test
     Format: test_command
     commandEvent: {fileID: 11400000, guid: ef22eca07abf81f4a8c02d648d95e826, type: 2}
+  - Id: message
+    Description: Print a message
+    Format: message <text...>
+    commandEvent: {fileID: 11400000, guid: 4e61840e4e73e8841a062a098c40d250, type: 2}
   _logSource: {fileID: 11400000, guid: 3adfe4d431616da4e99d15ff18763a92, type: 2}
 --- !u!1 &1735250864
 GameObject:

@@ -7,11 +7,11 @@ public abstract class BaseEventSO<TEvent> : ScriptableObject where TEvent : IEve
 
     [Header("Subscription")]
     [Tooltip("Higher number runs earlier among listeners.")]
-    [SerializeField] private int priority = 0;
+    [SerializeField] private int _priority = 0;
     [Tooltip("If true, RegisterSticky is used so the last value is replayed immediately on enable.")]
-    [SerializeField] private bool sticky = false;
+    [SerializeField] private bool _sticky = false;
     [Tooltip("Leave empty for global subscription.")]
-    [SerializeField] private string scopeKey = "";
+    [SerializeField] protected string _scopeKey = "";
 
     private EventBinding<TEvent> _binding;
     private bool _registered;
@@ -35,12 +35,12 @@ public abstract class BaseEventSO<TEvent> : ScriptableObject where TEvent : IEve
     {
         if (_registered) return;
         
-        _binding = new EventBinding<TEvent>(OnEvent, priority);
+        _binding = new EventBinding<TEvent>(OnEvent, _priority);
         
         _binding.Add(OnEventNoArgs);
 
-        var scope = ScopeRegistry.Get(scopeKey);
-        if (sticky)
+        var scope = ScopeRegistry.Get(_scopeKey);
+        if (_sticky)
         {
             
             EventBus<TEvent>.RegisterSticky(_binding, global: scope == null, scope: scope);
@@ -60,7 +60,7 @@ public abstract class BaseEventSO<TEvent> : ScriptableObject where TEvent : IEve
     {
         if (!_registered) return;
 
-        var scope = ScopeRegistry.Get(scopeKey);
+        var scope = ScopeRegistry.Get(_scopeKey);
         if (scope == null)
             EventBus<TEvent>.DeRegister(_binding);
         else
@@ -86,14 +86,14 @@ public abstract class BaseEventSO<TEvent> : ScriptableObject where TEvent : IEve
 
     public void PublishToConfiguredScope(TEvent e)
     {
-        var scope = ScopeRegistry.Get(scopeKey);
+        var scope = ScopeRegistry.Get(_scopeKey);
         if (scope == null) EventBus<TEvent>.Raise(e);
         else EventBus<TEvent>.RaiseScoped(scope, e);
     }
 
     public void PublishStickyToConfiguredScope(TEvent e)
     {
-        var scope = ScopeRegistry.Get(scopeKey);
+        var scope = ScopeRegistry.Get(_scopeKey);
         if (scope == null) EventBus<TEvent>.RaiseSticky(e);
         else EventBus<TEvent>.RaiseStickyScoped(scope, e);
     }
