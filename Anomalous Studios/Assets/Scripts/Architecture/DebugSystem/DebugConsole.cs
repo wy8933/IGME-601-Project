@@ -1,52 +1,36 @@
 using System;
 using System.Collections.Generic;
+using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class DebugConsoleEventBridge : MonoBehaviour
+public class DebugConsole : MonoBehaviour
 {
     [Header("Console")]
     [SerializeField] private bool _showConsole = true;
     private string _input = "";
     private Vector2 _scroll;
-    private readonly List<string> _logLines = new();
 
     private GUIStyle _logStyle;
 
     [Serializable]
-    public class CommandMeta { public string Id; public string Description; public string Format; }
+    public class CommandMeta { public string Id; public string Description; public string Format; public BaseEventSO<CommandRequested> commandEvent;}
 
     [SerializeField]
     private List<CommandMeta> _commands = new()
     {
         new CommandMeta{ Id="help", Description="List commands", Format="help" },
         new CommandMeta{ Id="test_command", Description="Run test", Format="test_command" },
-        new CommandMeta{ Id="message", Description="Print a message", Format="message <text...>" }
     };
 
-    private EventBinding<ConsoleLog> _logBinding;
+    [SerializeField] private ConsoleLogEventSO _logSource;
 
     void Awake()
     {
         EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = "Console ready. ` to toggle. Type 'help'.", Type = LogType.Log });
 
+        // Allows the console to print the unity's logs
         Application.logMessageReceived += OnUnityLog;
-    }
-
-    void OnEnable()
-    {
-        _logBinding = new EventBinding<ConsoleLog>(e =>
-        {
-            _logLines.Add($"[{e.Type}] {e.Message}");
-            if (_logLines.Count > 500) _logLines.RemoveAt(0);
-            _scroll.y = float.MaxValue;
-        });
-        EventBus<ConsoleLog>.Register(_logBinding);
-    }
-
-    void OnDisable()
-    {
-        EventBus<ConsoleLog>.DeRegister(_logBinding);
     }
 
     void OnDestroy()
@@ -73,6 +57,7 @@ public class DebugConsoleEventBridge : MonoBehaviour
     void OnGUI()
     {
         if (!_showConsole) return;
+        var lines = (_logSource != null) ? _logSource.Lines : Array.Empty<string>();
 
         _logStyle = new GUIStyle(GUI.skin.label)
         {
@@ -92,24 +77,25 @@ public class DebugConsoleEventBridge : MonoBehaviour
         float contentW = outerW - 15f;
 
         float y = 0f;
-        for (int i = 0; i < _logLines.Count; i++)
+        for (int i = 0; i < lines.Count; i++)
         {
-            float h = _logStyle.CalcHeight(new GUIContent(_logLines[i]), contentW);
-            y += h + 4f; 
+            float h = _logStyle.CalcHeight(new GUIContent(lines[i]), contentW);
+            y += h + 5f;
         }
         float contentH = Mathf.Max(0f, y);
 
+
         _scroll = GUI.BeginScrollView(
-            new Rect(8, logTop, outerW, Screen.height - logTop - 10),
+            new Rect(10, logTop, outerW, Screen.height - logTop - 10),
             _scroll,
             new Rect(0, 0, contentW, contentH));
 
         float drawY = 0f;
-        for (int i = 0; i < _logLines.Count; i++)
+        for (int i = 0; i < lines.Count; i++)
         {
-            var gc = new GUIContent(_logLines[i]);
+            var gc = new GUIContent(lines[i]);
             float h = _logStyle.CalcHeight(gc, contentW);
-            GUI.Label(new Rect(4, drawY, contentW - 10, h), gc, _logStyle);
+            GUI.Label(new Rect(5, drawY, contentW - 10, h), gc, _logStyle);
             drawY += h + 5f;
         }
 
@@ -120,19 +106,39 @@ public class DebugConsoleEventBridge : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(line)) return;
 
-        var tokens = Tokenize(line);
-        var id = tokens.Count > 0 ? tokens[0].ToLowerInvariant() : "";
+        var tokens = Tokenize(line.Trim());
+        var id = tokens.Count > 0 ? tokens[0].ToLowerInvariant() : string.Empty;
         var args = tokens.Count > 1 ? tokens.GetRange(1, tokens.Count - 1).ToArray() : Array.Empty<string>();
 
         if (id == "help")
         {
             foreach (var c in _commands)
-                EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = $"{c.Id} — {c.Description}\n  {c.Format}", Type = LogType.Log });
+            {
+                var fmt = string.IsNullOrEmpty(c.Format) ? c.Id : c.Format;
+                EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = $"{c.Id} — {c.Description}\n  {fmt}", Type = LogType.Log });
+            }
             return;
         }
 
-        EventBus<CommandRequested>.RaiseScoped(CommandScope.Key(id), new CommandRequested { Id = id, Args = args });
+        var cmd = _commands.Find(c => string.Equals(c.Id, id, StringComparison.OrdinalIgnoreCase));
+        if (cmd == null)
+        {
+            EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = $"Unknown command: '{id}'. Type 'help' to list commands.", Type = LogType.Warning });
+            return;
+        }
+
+        if (cmd.commandEvent == null)
+        {
+            EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = $"No handler asset assigned for '{cmd.Id}'. Publishing anyway.", Type = LogType.Warning });
+        }
+
+        // it needs to be called under scope
+        cmd.commandEvent.PublishToScopeKey(
+            id,
+            new CommandRequested { Id = cmd.Id, Args = args }
+        );
     }
+
 
     static List<string> Tokenize(string line)
     {

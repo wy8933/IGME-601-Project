@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 [CreateAssetMenu(fileName = "TestCommandEventSO", menuName = "Events/Commands/TestCommandEventSO")]
 public sealed class TestCommandEventSO : BaseEventSO<CommandRequested>
 {
