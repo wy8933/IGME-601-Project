@@ -24,7 +24,7 @@ public class Handbook_UI : MonoBehaviour
 
     private void Start()
     {
-        _playerController = FindAnyObjectByType<PlayerController>();
+        _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
@@ -120,6 +120,10 @@ public class Handbook_UI : MonoBehaviour
         if(_playerController != null)
         {
             _playerController.ToggleHandbook();
+        }
+        else
+        {
+            print("PLAYER NULL");
         }
         // Resume Logic
     }

@@ -1,9 +1,11 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class Popup : MonoBehaviour
 {
     [SerializeField] CanvasGroup _canvasGroup;
+    public TextMeshProUGUI popupText;
     // Called each time the popup is enabled
     void OnEnable()
     {
@@ -14,7 +16,7 @@ public class Popup : MonoBehaviour
             // Ignore this game object
             if (obj == this.gameObject) 
             {
-                StartCoroutine(DoFade(1, 0, 3));
+                StartCoroutine(DoFade(1, 0, 5));
             }
             else
             {
