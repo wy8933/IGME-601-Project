@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerInputBindings : MonoBehaviour
 {
-    // Player Input Actions Class
+    // Player Input Actions Script
     private PlayerInputActions _playerInputActions;
+    // Player Controller Script
     private PlayerController _playerController;
 
     // Getter Methods
