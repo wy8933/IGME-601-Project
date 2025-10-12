@@ -29,7 +29,7 @@ public class CleaningManager : MonoBehaviour
         if (Input.GetKeyDown(cleanKey))
         {
             isCleaning = !isCleaning;
-            Debug.Log(isCleaning ? "🧽 Cleaning mode ON" : "🧼 Cleaning mode OFF");
+            Debug.Log(isCleaning ? " Cleaning mode ON" : "Cleaning mode OFF");
         }
 
         // Perform cleaning when active
@@ -87,7 +87,7 @@ public class CleaningManager : MonoBehaviour
     /// </summary>
     void OnSurfaceCleaned(SurfaceCleaner cleaner)
     {
-        Debug.Log($"✅ {cleaner.name} is clean enough! (> {cleanThreshold * 100f:F0}%)");
+        Debug.Log($"{cleaner.name} is clean enough! (> {cleanThreshold * 100f:F0}%)");
         // Place your own function calls or game events here.
     }
 }
