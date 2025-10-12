@@ -1,5 +1,6 @@
 using UnityEngine;
 using ItemSystem;
+using AudioSystem;
 
 public class Garbage : ItemInstance
 {
@@ -11,6 +12,14 @@ public class Garbage : ItemInstance
 
     public string Tag = "Garbage";
 
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,9 +30,8 @@ public class Garbage : ItemInstance
     }
 
     // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
-        base.Update();
         UpdateLocation();
     }
 
@@ -32,17 +40,11 @@ public class Garbage : ItemInstance
         TryUse(user);
     }
 
-    public override void Highlight()
+    public override void Interact()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Watch");
-    }
-
-    protected override void Interact()
-    {
-        if (Instigator != null)
+        if (IInteractable.Instigator != null)
         {
-            Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
         }
     }
 
@@ -71,7 +73,7 @@ public class Garbage : ItemInstance
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
-        canInteract = true;
+        CanInteract = true;
         _pickedUp = false;
     }
 

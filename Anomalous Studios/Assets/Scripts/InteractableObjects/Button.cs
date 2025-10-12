@@ -1,11 +1,13 @@
+using AudioSystem;
 using UnityEngine;
 
 /// <summary>
 /// A test-case for the interactable interface
 /// </summary>
-public class Button : Interaction
+public class Button : MonoBehaviour, IInteractable
 {
     [SerializeField] private Level _level;
+
 
     private Renderer _renderer;
 
@@ -13,15 +15,28 @@ public class Button : Interaction
     // The level system is going to change pretty soon to accomadate new level box anyway
     private static Level _currentLevel = Level.blue;
 
+    private bool _canInteract = true;
+
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
+    [SerializeField] private float _holdTime = 0.0f;
+    public float HoldTime { get => _holdTime; }
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public SoundDataSO InitialSFX => null;
+    public SoundDataSO FailedSFX { get => _failedSFX; }
+    public SoundDataSO CancelSFX => null;
+    public SoundDataSO SuccessSFX { get => _successSFX; }
+
     public void Start()
     {
         _renderer = GetComponent<Renderer>();
     }
 
-    public override void Update()
+    public void Update()
     {
-        base.Update();
-
         if (_currentLevel == _level)
         {
             _renderer.material.color = Color.white;
@@ -33,12 +48,17 @@ public class Button : Interaction
         }
     }
 
-    public override void Highlight()
+    public void Highlight()
     {
         // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
     }
 
-    protected override void Interact()
+    public void RemoveHighlight()
+    {
+
+    }
+
+    public void Interact()
     {
         // TODO: Check to see if which levels are available to the player as yet, some sort of static condition for all elevator buttons
         if (_currentLevel != _level &&

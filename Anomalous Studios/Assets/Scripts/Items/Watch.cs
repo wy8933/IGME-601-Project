@@ -1,3 +1,4 @@
+using AudioSystem;
 using ItemSystem;
 using System;
 using System.Collections;
@@ -23,6 +24,14 @@ public class Watch : ItemInstance
     private float _timer = 0;
     private float _tickInterval = 1.0f;
 
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,12 +52,6 @@ public class Watch : ItemInstance
         _isActive = true;
 
         StartCoroutine(UpdateTimer());
-    }
-
-    // Update is called once per frame
-    public override void Update()
-    {
-        base.Update();
     }
 
     public override void Use(GameObject user)
@@ -80,17 +83,11 @@ public class Watch : ItemInstance
         StartCoroutine(UpdateTimer());
     }
 
-    public override void Highlight()
+    public override void Interact()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Watch");
-    }
-
-    protected override void Interact()
-    {
-        if (Instigator != null)
+        if (IInteractable.Instigator != null)
         {
-            Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
             _playerController.ToggleWatchDisplay(_rendererComponent);
         }
     }
@@ -126,7 +123,7 @@ public class Watch : ItemInstance
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
-        canInteract = true;
+        CanInteract = true;
         _pickedUp = false;
     }
 

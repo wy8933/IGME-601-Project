@@ -1,6 +1,6 @@
 using UnityEngine;
 using ItemSystem;
-using UnityEngine.Experimental.GlobalIllumination;
+using AudioSystem;
 
 public class Key : ItemInstance
 {
@@ -9,6 +9,14 @@ public class Key : ItemInstance
     private float _dropDistanceOffset = 1.5f;
     private Rigidbody _rb;
     private BoxCollider _boxCollider;
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -20,23 +28,16 @@ public class Key : ItemInstance
     }
 
     // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
-        base.Update();
         UpdateLocation();
     }
 
-    public override void Highlight()
+    public override void Interact()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
-        //Debug.Log("Highlighting Key");
-    }
-
-    protected override void Interact()
-    {
-        if (Instigator != null)
+        if (IInteractable.Instigator != null)
         {
-            Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
         }
     }
 
@@ -93,7 +94,7 @@ public class Key : ItemInstance
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
-        canInteract = true;
+        CanInteract = true;
         _pickedUp = false;
     }
 
