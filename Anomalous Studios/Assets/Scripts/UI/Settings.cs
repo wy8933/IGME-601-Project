@@ -78,11 +78,7 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSensitivityX(float value)
     {
-        if (playerController != null)
-        {
-            playerController.MouseSensitivityX = value;
-        }
-        
+        playerController.GetPlayerActions().MouseSensitivityX = value;
     }
 
     /// <summary>
@@ -91,10 +87,7 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSensitivityY(float value)
     {
-        if (playerController != null)
-        {
-            playerController.MouseSensitivityY = value;
-        }
+        playerController.GetPlayerActions().MouseSensitivityY = value;
     }
 
     /// <summary>

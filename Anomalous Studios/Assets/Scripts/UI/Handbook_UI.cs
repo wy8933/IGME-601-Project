@@ -117,14 +117,7 @@ public class Handbook_UI : MonoBehaviour
     /// </summary>
     public void Resume()
     {
-        if(_playerController != null)
-        {
-            _playerController.ToggleHandbook();
-        }
-        else
-        {
-            print("PLAYER NULL");
-        }
+        _playerController.GetPlayerJournal().ToggleHandbook();
         // Resume Logic
     }
 

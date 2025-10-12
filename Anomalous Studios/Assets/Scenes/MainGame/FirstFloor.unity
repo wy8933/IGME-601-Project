@@ -2427,10 +2427,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 6818411112446059803, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2462,21 +2458,11 @@ PrefabInstance:
     - target: {fileID: 7101745350206811663, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7168459518286499936, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
-      propertyPath: m_Constraints
-      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2034195278}
-    - targetCorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2034195282}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
 --- !u!114 &1437958281 stripped
 MonoBehaviour:
@@ -3235,48 +3221,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
   m_PrefabInstance: {fileID: 1437958280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2034195278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2034195274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab3e6f3667578094b95476894c48b503, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightHitMask:
-    serializedVersion: 2
-    m_Bits: 128
-  blockerMask:
-    serializedVersion: 2
-    m_Bits: 256
-  applySmoothing: 1
-  lightResponsiveness: 10
-  lightTotal: 1
-  lightDetectionCooldown: 0.25
---- !u!114 &2034195282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2034195274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SerializedVersion: 0
-  m_OverrideArea: 0
-  m_Area: 0
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 1
-  m_ApplyToChildren: 1
-  m_AffectedAgents: ffffffff
 --- !u!1 &2054880939
 GameObject:
   m_ObjectHideFlags: 0
