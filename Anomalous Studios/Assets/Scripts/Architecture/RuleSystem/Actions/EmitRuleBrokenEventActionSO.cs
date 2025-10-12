@@ -1,4 +1,5 @@
 using UnityEngine;
+using static PopupEvent;
 
 namespace RuleViolationSystem
 {
@@ -10,6 +11,7 @@ namespace RuleViolationSystem
         {
             Debug.Log($"Rule broken is set to {_isBroken}");
             EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = _isBroken }) ;
+            EventBus<OpenPopup>.Raise(new OpenPopup { RuleName = rule.name });
         }
     }
 }

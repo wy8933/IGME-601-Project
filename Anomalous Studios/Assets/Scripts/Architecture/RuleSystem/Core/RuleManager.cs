@@ -9,7 +9,7 @@ public class RuleManager : MonoBehaviour
 
     [SerializeField] private RuleSetSO ruleSet;
 
-    private IRuleQuery _query;
+    private RuleQueryAdapter _query;
 
     private readonly Dictionary<string, List<RuleAssetSO>> _depMap = new();
 
@@ -26,10 +26,9 @@ public class RuleManager : MonoBehaviour
     }
     private void Start()
     {
-        _query = new RuleQueryAdapter(
-            floorId: "first-floor",
-            variableManager: VariableConditionManager.Instance
-        );
+        _query = gameObject.AddComponent<RuleQueryAdapter>();
+        _query.setFloorID("first_floor");
+
         EvaluateAll("Init");
     }
 

@@ -19,8 +19,13 @@ public class Handbook_UI : MonoBehaviour
     [SerializeField] private GameObject _policyPrefab;
     [SerializeField] private GameObject _popupPrefabPolicy;
     [SerializeField] private GameObject _popupPrefabTask;
-    [SerializeField] private PlayerController _playerController;
+    //[SerializeField] private PlayerController _playerController;
+    PlayerController _playerController;
 
+    private void Start()
+    {
+        _playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+    }
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
     /// Will add the gameObject specified into the journal under the tasks page
