@@ -1,3 +1,4 @@
+using AudioSystem;
 using ItemSystem;
 using System;
 using System.Collections;
@@ -22,6 +23,14 @@ public class Watch : ItemInstance
     private bool _isActive;
     private float _timer = 0;
     private float _tickInterval = 1.0f;
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

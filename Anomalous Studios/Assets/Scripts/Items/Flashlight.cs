@@ -1,3 +1,4 @@
+using AudioSystem;
 using ItemSystem;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,6 +19,14 @@ public class Flashlight : ItemInstance
     private float _dropDistanceOffset = 1.5f;
     private Rigidbody _rb;
     private CapsuleCollider _capsuleCollider;
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
