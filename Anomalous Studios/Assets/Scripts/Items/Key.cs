@@ -40,8 +40,8 @@ public class Key : ItemInstance
 
         float interactRange = 10.0f;
 
-        if (Physics.Raycast(user.GetComponent<PlayerController>().PlayerCamera.transform.position, 
-            user.GetComponent<PlayerController>().PlayerCamera.transform.forward,
+        if (Physics.Raycast(user.GetComponent<PlayerController>().GetPlayerCamera().transform.position, 
+            user.GetComponent<PlayerController>().GetPlayerCamera().transform.forward,
             out RaycastHit hit, interactRange, user.GetComponent<PlayerController>().IgnorePlayerMask))
         {
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();

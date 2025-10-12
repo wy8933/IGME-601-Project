@@ -65,49 +65,49 @@ public class PlayerInputBindings : MonoBehaviour
 
     private void OnSprintPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.Sprint();
+        _playerController.GetPlayerActions().Sprint();
     }
 
     private void OnSprintCanceled(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsSprinting(false);
+        _playerController.GetPlayerActions().SetIsSprinting(false);
     }
 
     private void OnLeanLeftPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsLeanLeft(true);
-        _playerController.SetIsLeanRight(false);
+        _playerController.GetPlayerActions().SetIsLeanLeft(true);
+        _playerController.GetPlayerActions().SetIsLeanRight(false);
     }
 
     private void OnLeanLeftCanceled(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsLeanLeft(false);
+        _playerController.GetPlayerActions().SetIsLeanLeft(false);
     }
 
     private void OnLeanRightPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsLeanRight(true);
-        _playerController.SetIsLeanLeft(false);
+        _playerController.GetPlayerActions().SetIsLeanRight(true);
+        _playerController.GetPlayerActions().SetIsLeanLeft(false);
     }
 
     private void OnLeanRightCanceled(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsLeanRight(false);
+        _playerController.GetPlayerActions().SetIsLeanRight(false);
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.Jump();
+        _playerController.GetPlayerActions().Jump();
     }
 
     private void OnCrouchPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsCrouching(true);
+        _playerController.GetPlayerActions().SetIsCrouching(true);
     }
 
     private void OnCrouchCanceled(InputAction.CallbackContext ctx)
     {
-        _playerController.SetIsCrouching(false);
+        _playerController.GetPlayerActions().SetIsCrouching(false);
     }
 
     private void OnInteractStarted(InputAction.CallbackContext ctx)
@@ -117,12 +117,12 @@ public class PlayerInputBindings : MonoBehaviour
 
     private void OnDropPerformed(InputAction.CallbackContext ctx)
     {
-        _playerController.DropItem();
+        _playerController.GetPlayerActions().DropItem();
     }
 
     private void OnUseStarted(InputAction.CallbackContext ctx)
     {
-        _playerController.Use();
+        _playerController.GetPlayerActions().Use();
     }
 
     private void OnItem1HotbarPerformed(InputAction.CallbackContext ctx)

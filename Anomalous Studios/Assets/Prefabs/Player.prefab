@@ -731,6 +731,7 @@ GameObject:
   - component: {fileID: 1418722036483206452}
   - component: {fileID: 6179009668698685987}
   - component: {fileID: 570140003062454331}
+  - component: {fileID: 2695695359238799536}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -767,20 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3440044099b084ab42d3159dc70e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MouseSensitivityX: 10
-  MouseSensitivityY: 10
   PlayerCamera: {fileID: 8156612788814952234}
-  LookYawSpeed: 1
-  LookPitchSpeed: 1
-  LookPitchLimit: 60
-  LeanPivot: {fileID: 6808690005100648623}
-  LeanAngle: 20
-  LeanSmoothing: 0.3
-  Stamina: 100
-  JumpForce: 6
-  DefaultHeight: 2
-  CrouchHeight: 1
-  CrouchSpeed: 2
   IgnorePlayerMask: 0
 --- !u!54 &7168459518286499936
 Rigidbody:
@@ -934,6 +922,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handbook: {fileID: 0}
+--- !u!114 &2695695359238799536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855800098677799839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cee46b3ffd4d70409c84f6afbbc7470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MouseSensitivityX: 5
+  MouseSensitivityY: 5
+  LookYawSpeed: 2
+  LookPitchSpeed: 1
+  LookPitchLimit: 60
+  LeanPivot: {fileID: 6808690005100648623}
+  LeanAngle: 20
+  LeanSmoothing: 0.3
+  Stamina: 100
+  JumpForce: 5
+  DefaultHeight: 2
+  CrouchHeight: 1
+  CrouchSpeed: 2
 --- !u!1 &6009211873909701447
 GameObject:
   m_ObjectHideFlags: 0
