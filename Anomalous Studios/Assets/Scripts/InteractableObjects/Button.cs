@@ -1,3 +1,4 @@
+using AudioSystem;
 using UnityEngine;
 
 /// <summary>
@@ -20,6 +21,14 @@ public class Button : MonoBehaviour, IInteractable
 
     [SerializeField] private float _holdTime = 0.0f;
     public float HoldTime { get => _holdTime; }
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public SoundDataSO InitialSFX => null;
+    public SoundDataSO FailedSFX { get => _failedSFX; }
+    public SoundDataSO CancelSFX => null;
+    public SoundDataSO SuccessSFX { get => _successSFX; }
 
     public void Start()
     {

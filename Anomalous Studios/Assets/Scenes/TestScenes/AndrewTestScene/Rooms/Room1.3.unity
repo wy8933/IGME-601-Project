@@ -331,6 +331,7 @@ MonoBehaviour:
   rend: {fileID: 0}
   originalMats: []
   outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!114 &235793036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -351,6 +351,8 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  _failedSFX: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+  _successSFX: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
 --- !u!23 &235793037
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -831,7 +833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -839,6 +840,8 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  _failedSFX: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+  _successSFX: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
 --- !u!54 &960690497
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1270,6 +1273,7 @@ MonoBehaviour:
   rend: {fileID: 0}
   originalMats: []
   outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!114 &1262415658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,7 +1286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -1290,6 +1293,8 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  _failedSFX: {fileID: 11400000, guid: 39fc694df11aea24483cb0cd5acb549b, type: 2}
+  _successSFX: {fileID: 11400000, guid: 8aa1825552f1287459dc575abea939e5, type: 2}
 --- !u!65 &1262415659
 BoxCollider:
   m_ObjectHideFlags: 0
