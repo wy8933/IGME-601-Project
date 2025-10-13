@@ -214,13 +214,6 @@ public class ItemHotbar : MonoBehaviour
         _canvasGroup.alpha = endAlpha;
     }
 
-    /*
-    private void ToggleHotbarDisplay()
-    {
-        HotbarContainer.SetActive(!HotbarContainer.activeSelf);
-    }
-    */
-
     /// <summary>
     /// Checks if currently selected item hotbar slot holds an item
     /// </summary>
