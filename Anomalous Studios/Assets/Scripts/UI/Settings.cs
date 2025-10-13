@@ -9,8 +9,21 @@ public class Settings : MonoBehaviour
 {
     [SerializeField] Slider[] sliders;
     [SerializeField] Toggle[] toggles;
-    [SerializeField] private PlayerController playerController;
-    [SerializeField] private AudioManager audioManager;
+    private PlayerController playerController;
+    private AudioManager audioManager;
+
+    #region Startup Methods
+    /// <summary>
+    /// Start is called on the first frame
+    /// </summary>
+    private void Start()
+    {
+        audioManager = GetComponent<AudioManager>();
+        playerController = GetComponent<PlayerController>();
+        GetPrefs();
+        SetSliders();
+    }
+
     /// <summary>
     /// Called each time the settings menu is enabled.
     /// </summary>
@@ -46,7 +59,8 @@ public class Settings : MonoBehaviour
         //    }
         //}
     }
- 
+    #endregion 
+
     #region Slider Methods
     /// <summary>
     /// Adjusts all the sliders based on their saved preferences
@@ -64,7 +78,7 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSensitivityX(float value)
     {
-        playerController.MouseSensitivityX = value;
+        playerController.GetPlayerActions().MouseSensitivityX = value;
     }
 
     /// <summary>
@@ -73,7 +87,7 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSensitivityY(float value)
     {
-        playerController.MouseSensitivityY = value;
+        playerController.GetPlayerActions().MouseSensitivityY = value;
     }
 
     /// <summary>
@@ -82,15 +96,19 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSFXSlider(float value)
     {
-        audioManager.sfxAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Log10(value) * 20);
-        if(value == 0)
+        if (audioManager != null)
         {
-            toggles[0].isOn = true;
+            audioManager.sfxAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Log10(value) * 20);
+            if (value == 0)
+            {
+                toggles[0].isOn = true;
+            }
+            else
+            {
+                toggles[0].isOn = false;
+            }
         }
-        else
-        {
-            toggles[0].isOn = false;
-        }
+        
     }
     #endregion
 
