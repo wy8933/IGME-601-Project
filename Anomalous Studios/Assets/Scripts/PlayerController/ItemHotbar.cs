@@ -299,4 +299,34 @@ public class ItemHotbar : MonoBehaviour
         WatchUI.SetActive(_watchActive);
         TimeUI.SetActive(_watchActive);
     }
+
+    /// <summary>
+    /// Switches to the next item. Called multiple times while scrolling 
+    /// </summary>
+    public void ScrollUp()
+    {
+        if (_selectedItemIndex + 1 < 4)
+        {
+            SwitchToItem(_selectedItemIndex + 1);
+        }
+        else
+        {
+            SwitchToItem(0);
+        }
+    }
+
+    /// <summary>
+    /// Switches to the previous item. Called multiple times while scrolling 
+    /// </summary>
+    public void ScrollDown()
+    {
+        if (_selectedItemIndex - 1 > -1)
+        {
+            SwitchToItem(_selectedItemIndex - 1);
+        }
+        else
+        {
+            SwitchToItem(_itemHotbar.Length - 1);
+        }
+    }
 }
