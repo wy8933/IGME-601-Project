@@ -74,11 +74,6 @@ public class DoorController : ItemInstance
         }
     }
 
-    public override void Use(GameObject user)
-    {
-        TryUse(user);
-    }
-
     public void ToggleDoor()
     {
         if (!isAnimating)

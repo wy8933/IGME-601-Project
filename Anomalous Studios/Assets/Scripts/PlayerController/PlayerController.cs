@@ -142,10 +142,13 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        */       
+        */
+
+        Debug.Log("Interact");
         // TODO: Test edges cases while pulling up the journal
         if (!_playerJournal.GetInJournal() && IInteractable.Target != null)
         {
+            Debug.Log("Assign instigator");
             //IInteractable.isPressed = true;
             IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
         }
