@@ -732,6 +732,7 @@ GameObject:
   - component: {fileID: 6179009668698685987}
   - component: {fileID: 570140003062454331}
   - component: {fileID: 2695695359238799536}
+  - component: {fileID: 3247531684868963670}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -947,6 +948,19 @@ MonoBehaviour:
   DefaultHeight: 2
   CrouchHeight: 1
   CrouchSpeed: 2
+--- !u!114 &3247531684868963670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855800098677799839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01dff4c5c5dd0c04a80a12842a570ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactRange: 3
 --- !u!1 &6009211873909701447
 GameObject:
   m_ObjectHideFlags: 0

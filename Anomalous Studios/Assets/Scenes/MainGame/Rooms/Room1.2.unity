@@ -331,6 +331,7 @@ MonoBehaviour:
   rend: {fileID: 0}
   originalMats: []
   outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!114 &235793036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -351,6 +351,8 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
 --- !u!23 &235793037
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -831,7 +833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -839,6 +840,8 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
 --- !u!54 &960690497
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1270,6 +1273,7 @@ MonoBehaviour:
   rend: {fileID: 0}
   originalMats: []
   outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!114 &1262415658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1282,7 +1286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 0}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -1290,6 +1293,8 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
 --- !u!65 &1262415659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1398,6 +1403,7 @@ GameObject:
   - component: {fileID: 1644800392}
   - component: {fileID: 1644800397}
   - component: {fileID: 1644800396}
+  - component: {fileID: 1644800398}
   m_Layer: 8
   m_Name: Door R1
   m_TagString: Untagged
@@ -1432,6 +1438,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eee3df9423b889429c87d7faefd47d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _holdTime: 0
+  Mesh: {fileID: 0}
+  item: {fileID: 0}
+  durabilityLeft: 0
+  lastUseTime: 0
+  isUseable: 0
   openAngle: 80
   duration: 1
   easeCurve:
@@ -1461,6 +1473,8 @@ MonoBehaviour:
   interactRange: 3
   playerTag: Player
   DoorID: 101
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
 --- !u!65 &1644800393
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1571,6 +1585,22 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0.008, y: 0.003, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &1644800398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644800390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  originalMats: []
+  outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!1001 &1705275346
 PrefabInstance:
   m_ObjectHideFlags: 0

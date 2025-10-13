@@ -1,6 +1,8 @@
 using UnityEngine;
+using ItemSystem;
+using AudioSystem;
 
-public class DoorController : MonoBehaviour
+public class DoorController : ItemInstance
 {
     [Header("Parameters")]
     public float openAngle = 110f;       // Door Angle
@@ -20,9 +22,26 @@ public class DoorController : MonoBehaviour
 
     private float t = 0f;           // Anim Progress
     private Transform player;       // Reference to player
+    private bool unlocked;          // Whether the door is locked/unlocked
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public override SoundDataSO InitialSFX => null;
+    public override SoundDataSO FailedSFX { get => _failedSFX; }
+    public override SoundDataSO CancelSFX => null;
+    public override SoundDataSO SuccessSFX { get => _successSFX; }
+
+    // Getter Methods
+    public bool GetUnlocked() { return unlocked; }
+
+    // Setter Methods
+    public void SetUnlocked(bool val) { unlocked = val; }
 
     void Start()
     {
+        Initialize();
+
         closedRot = transform.rotation;
         openRot = Quaternion.Euler(transform.eulerAngles + new Vector3(0, openAngle, 0));
 
@@ -34,11 +53,12 @@ public class DoorController : MonoBehaviour
         GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
         if (playerObj != null)
             player = playerObj.transform;
+
+        unlocked = false;
     }
 
     void Update()
     {
-
         // Animate rotation
         if (isAnimating)
         {
@@ -52,6 +72,11 @@ public class DoorController : MonoBehaviour
                 isAnimating = false;
             }
         }
+    }
+
+    public override void Use(GameObject user)
+    {
+        TryUse(user);
     }
 
     public void ToggleDoor()
@@ -72,5 +97,14 @@ public class DoorController : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactRange);
+    }
+
+    public override void Interact()
+    {
+        Debug.Log("interacting with door");
+        if (IInteractable.Instigator != null && unlocked)
+        {
+            ToggleDoor();
+        }
     }
 }
