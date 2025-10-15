@@ -9,7 +9,7 @@ public class Settings : MonoBehaviour
 {
     [SerializeField] Slider[] sliders;
     [SerializeField] Toggle[] toggles;
-    private PlayerController playerController;
+    private PlayerActions playerController;
     private AudioManager audioManager;
 
     #region Startup Methods
@@ -19,7 +19,7 @@ public class Settings : MonoBehaviour
     private void Start()
     {
         audioManager = GetComponent<AudioManager>();
-        playerController = GetComponent<PlayerController>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerActions>();
         GetPrefs();
         SetSliders();
     }
@@ -78,7 +78,10 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSensitivityX(float value)
     {
-        playerController.GetPlayerActions().MouseSensitivityX = value;
+        if (playerController != null)
+        {
+            playerController.MouseSensitivityX = value;
+        }
     }
 
     /// <summary>
@@ -87,7 +90,14 @@ public class Settings : MonoBehaviour
     /// <param name="value"></param>
     public void AdjustSensitivityY(float value)
     {
-        playerController.GetPlayerActions().MouseSensitivityY = value;
+        if (playerController != null)
+        {
+            playerController.MouseSensitivityY = value;
+        }
+        else
+        {
+            print("<size=100>PLAYER CONTROLLER IS NULL</size>");
+        }
     }
 
     /// <summary>
