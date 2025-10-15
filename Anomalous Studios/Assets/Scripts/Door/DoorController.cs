@@ -2,7 +2,7 @@ using UnityEngine;
 using ItemSystem;
 using AudioSystem;
 
-public class DoorController : ItemInstance
+public class DoorController : MonoBehaviour, IInteractable
 {
     [Header("Parameters")]
     public float openAngle = 110f;       // Door Angle
@@ -24,24 +24,22 @@ public class DoorController : ItemInstance
     private Transform player;       // Reference to player
     private bool unlocked;          // Whether the door is locked/unlocked
 
+    [SerializeField] private float _holdTime = 0.0f;
+
+    private bool _canInteract = true;
+    public float HoldTime { get => _holdTime; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
     [SerializeField] private SoundDataSO _successSFX;
-    public override SoundDataSO InitialSFX => null;
-    public override SoundDataSO FailedSFX { get => _failedSFX; }
-    public override SoundDataSO CancelSFX => null;
-    public override SoundDataSO SuccessSFX { get => _successSFX; }
-
-    // Getter Methods
-    public bool GetUnlocked() { return unlocked; }
-
-    // Setter Methods
-    public void SetUnlocked(bool val) { unlocked = val; }
+    public SoundDataSO InitialSFX => null;
+    public SoundDataSO FailedSFX { get => _failedSFX; }
+    public SoundDataSO CancelSFX => null;
+    public SoundDataSO SuccessSFX { get => _successSFX; }
 
     void Start()
     {
-        Initialize();
-
         closedRot = transform.rotation;
         openRot = Quaternion.Euler(transform.eulerAngles + new Vector3(0, openAngle, 0));
 
@@ -54,7 +52,7 @@ public class DoorController : ItemInstance
         if (playerObj != null)
             player = playerObj.transform;
 
-        unlocked = false;
+        _canInteract = false;
     }
 
     void Update()
@@ -94,12 +92,22 @@ public class DoorController : ItemInstance
         Gizmos.DrawWireSphere(transform.position, interactRange);
     }
 
-    public override void Interact()
+    public void Interact()
     {
         Debug.Log("interacting with door");
-        if (IInteractable.Instigator != null && unlocked)
+        if (_canInteract)
         {
             ToggleDoor();
         }
+    }
+
+    public void Highlight()
+    {
+        // Highlight!
+    }
+
+    public void RemoveHighlight()
+    {
+        // Remove Highlight!
     }
 }

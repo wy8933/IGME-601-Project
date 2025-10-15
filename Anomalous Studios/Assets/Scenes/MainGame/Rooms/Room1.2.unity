@@ -1404,7 +1404,7 @@ GameObject:
   - component: {fileID: 1644800397}
   - component: {fileID: 1644800396}
   - component: {fileID: 1644800398}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: Door R1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1438,12 +1438,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eee3df9423b889429c87d7faefd47d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _holdTime: 0
-  Mesh: {fileID: 1644800390}
-  item: {fileID: 0}
-  durabilityLeft: 0
-  lastUseTime: 0
-  isUseable: 0
   openAngle: 80
   duration: 1
   easeCurve:
@@ -1473,6 +1467,7 @@ MonoBehaviour:
   interactRange: 3
   playerTag: Player
   DoorID: 101
+  _holdTime: 0
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
 --- !u!65 &1644800393

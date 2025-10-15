@@ -55,9 +55,9 @@ public class Key : ItemInstance
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
             if (dc != null)
             {
-                if (this.item.itemID == dc.DoorID && !dc.GetUnlocked())
+                if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
-                    dc.SetUnlocked(true);
+                    dc.CanInteract = true;
                     Debug.Log("Door unlocked!");
                 }
             }
