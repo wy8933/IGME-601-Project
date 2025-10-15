@@ -27,7 +27,7 @@ public class LightDetection : MonoBehaviour
             float target = 0f;
 
             var lights = LightManager.Instance?.Lights;
-            Debug.Log(lights.Length);
+            //Debug.Log(lights.Length);
             if (lights != null && lights.Length > 0)
             {
                 foreach (var light in lights)

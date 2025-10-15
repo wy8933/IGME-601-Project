@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class TestEventListener : MonoBehaviour
 {
-    private EventBinding<LevelLoaded> _levelLoadedHigh;
-    private EventBinding<LevelLoaded> _levelLoadedLow;
+    private EventBinding<LevelLoadedTEST> _levelLoadedHigh;
+    private EventBinding<LevelLoadedTEST> _levelLoadedLow;
     private EventBinding<CoinsChanged> _coinsChanged;
     private EventBinding<GamePaused> _pausedSticky;
     private EventBinding<HealthChanged> _healthScoped;
 
     private void OnEnable()
     {
-        _levelLoadedHigh = new EventBinding<LevelLoaded>(OnLevelLoadedHigh, pr: 100);
-        EventBus<LevelLoaded>.Register(_levelLoadedHigh);
+        _levelLoadedHigh = new EventBinding<LevelLoadedTEST>(OnLevelLoadedHigh, pr: 100);
+        EventBus<LevelLoadedTEST>.Register(_levelLoadedHigh);
 
-        _levelLoadedLow = new EventBinding<LevelLoaded>(OnLevelLoadedLow, pr: -10);
-        EventBus<LevelLoaded>.Register(_levelLoadedLow);
+        _levelLoadedLow = new EventBinding<LevelLoadedTEST>(OnLevelLoadedLow, pr: -10);
+        EventBus<LevelLoadedTEST>.Register(_levelLoadedLow);
 
         _coinsChanged = new EventBinding<CoinsChanged>(OnCoinsChanged);
         EventBus<CoinsChanged>.Register(_coinsChanged);
@@ -28,22 +28,22 @@ public class TestEventListener : MonoBehaviour
 
     private void OnDisable()
     {
-        EventBus<LevelLoaded>.DeRegister(_levelLoadedHigh);
-        EventBus<LevelLoaded>.DeRegister(_levelLoadedLow);
+        EventBus<LevelLoadedTEST>.DeRegister(_levelLoadedHigh);
+        EventBus<LevelLoadedTEST>.DeRegister(_levelLoadedLow);
         EventBus<CoinsChanged>.DeRegister(_coinsChanged);
         EventBus<GamePaused>.DeRegister(_pausedSticky);
 
         EventBus<HealthChanged>.DeRegister(_healthScoped, scope: gameObject);
     }
 
-    private void OnLevelLoadedHigh(LevelLoaded e)
+    private void OnLevelLoadedHigh(LevelLoadedTEST e)
     {
-        Debug.Log($"(High) LevelLoaded Index={e.Index}");
+        Debug.Log($"(High) LevelLoadedTEST Index={e.Index}");
     }
 
-    private void OnLevelLoadedLow(LevelLoaded e)
+    private void OnLevelLoadedLow(LevelLoadedTEST e)
     {
-        Debug.Log($"(Low ) LevelLoaded Index={e.Index}");
+        Debug.Log($"(Low ) LevelLoadedTEST Index={e.Index}");
     }
 
     private void OnCoinsChanged(CoinsChanged e)

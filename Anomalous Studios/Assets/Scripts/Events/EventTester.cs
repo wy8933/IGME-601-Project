@@ -26,7 +26,7 @@ public class EventTester : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             _levelIndex++;
-            EventBus<LevelLoaded>.Raise(new LevelLoaded { Index = _levelIndex });
+            EventBus<LevelLoadedTEST>.Raise(new LevelLoadedTEST { Index = _levelIndex });
             Debug.Log($"Raised LevelLoaded : Index={_levelIndex}");
         }
 

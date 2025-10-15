@@ -15,15 +15,15 @@ public class UserInteraction : MonoBehaviour
 
     private IEnumerator _co;
 
-    private GameObject _playerCam;
+    private Transform _playerCam;
 
     private int _ignorePlayerMask;
 
-    void Awake()
+    public void Awake()
     {
         _playerInputActions = new PlayerInputActions();
         _ignorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
-        _playerCam = GameObject.FindGameObjectWithTag("MainCamera");
+        _playerCam = transform.Find("Main Camera");
     }
 
     private void OnEnable()
@@ -42,7 +42,7 @@ public class UserInteraction : MonoBehaviour
     public void Update()
     {
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
-        if (Physics.Raycast(_playerCam.transform.position, _playerCam.transform.forward,
+        if (Physics.Raycast(_playerCam.position, _playerCam.forward,
             out RaycastHit hit, _interactRange, _ignorePlayerMask))
         {
             // Looks for only IInteractable obj, still sending null to Target if looking at nothing
