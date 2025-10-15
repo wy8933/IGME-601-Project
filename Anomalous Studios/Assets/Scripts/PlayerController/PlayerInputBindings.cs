@@ -9,7 +9,8 @@ public class PlayerInputBindings : MonoBehaviour
     private PlayerInputActions _playerInputActions;
     // Player Controller Script
     private PlayerController _playerController;
-
+    // Scroll Wheel Tracker
+    private float _scrollAmount;
     // Getter Methods
     public PlayerInputActions GetPlayerInputActions()
     {
@@ -39,6 +40,7 @@ public class PlayerInputBindings : MonoBehaviour
         _playerInputActions.Player.Item3Hotbar.performed += OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed += OnItem4HotbarPerformed;
         _playerInputActions.Player.OpenHandbook.performed += OnOpenHandbookPerformed;
+        _playerInputActions.Player.ScrollUp.performed += OnScrollUpPerformed;
 
         _playerInputActions.Player.Sprint.performed += OnSprintPerformed;
         _playerInputActions.Player.Sprint.canceled += OnSprintCanceled;
@@ -61,6 +63,7 @@ public class PlayerInputBindings : MonoBehaviour
         _playerInputActions.Player.Item3Hotbar.performed -= OnItem3HotbarPerformed;
         _playerInputActions.Player.Item4Hotbar.performed -= OnItem4HotbarPerformed;
         _playerInputActions.Player.OpenHandbook.performed -= OnOpenHandbookPerformed;
+        _playerInputActions.Player.ScrollUp.performed -= OnScrollUpPerformed;
         _playerInputActions.Player.Disable();
     }
 
@@ -148,5 +151,23 @@ public class PlayerInputBindings : MonoBehaviour
     private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
         _playerController.GetPlayerJournal().ToggleHandbook();
+    }
+
+    private void OnScrollUpPerformed(InputAction.CallbackContext ctx)
+    {
+        Vector2 scrollPos = ctx.ReadValue<Vector2>();
+        _scrollAmount += scrollPos.y;
+
+        if(_scrollAmount >= 1.5)
+        {
+            _playerController.GetItemHotbar().ScrollUp();
+            _scrollAmount = 0;
+        }
+        else if (_scrollAmount <= -1.5)
+        {
+            _playerController.GetItemHotbar().ScrollDown();
+            _scrollAmount = 0;
+        }
+        
     }
 }
