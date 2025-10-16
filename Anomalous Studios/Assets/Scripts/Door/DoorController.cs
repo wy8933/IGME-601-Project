@@ -1,6 +1,8 @@
 using UnityEngine;
+using ItemSystem;
+using AudioSystem;
 
-public class DoorController : MonoBehaviour
+public class DoorController : MonoBehaviour, IInteractable
 {
     [Header("Parameters")]
     public float openAngle = 110f;       // Door Angle
@@ -20,6 +22,21 @@ public class DoorController : MonoBehaviour
 
     private float t = 0f;           // Anim Progress
     private Transform player;       // Reference to player
+    private bool unlocked;          // Whether the door is locked/unlocked
+
+    [SerializeField] private float _holdTime = 0.0f;
+
+    private bool _canInteract = true;
+    public float HoldTime { get => _holdTime; }
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
+    [Header("Reaction SFX")]
+    [SerializeField] private SoundDataSO _failedSFX;
+    [SerializeField] private SoundDataSO _successSFX;
+    public SoundDataSO InitialSFX => null;
+    public SoundDataSO FailedSFX { get => _failedSFX; }
+    public SoundDataSO CancelSFX => null;
+    public SoundDataSO SuccessSFX { get => _successSFX; }
 
     void Start()
     {
@@ -34,11 +51,12 @@ public class DoorController : MonoBehaviour
         GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
         if (playerObj != null)
             player = playerObj.transform;
+
+        _canInteract = false;
     }
 
     void Update()
     {
-
         // Animate rotation
         if (isAnimating)
         {
@@ -72,5 +90,24 @@ public class DoorController : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactRange);
+    }
+
+    public void Interact()
+    {
+        Debug.Log("interacting with door");
+        if (_canInteract)
+        {
+            ToggleDoor();
+        }
+    }
+
+    public void Highlight()
+    {
+        // Highlight!
+    }
+
+    public void RemoveHighlight()
+    {
+        // Remove Highlight!
     }
 }

@@ -8,6 +8,8 @@ public class Paper : MonoBehaviour, IInteractable
     [SerializeField] private Handbook_UI _handbook = null;
     [SerializeField] private float _holdTime = 0.0f;
 
+    private static int ActivePapers = 0;
+
     private Renderer _renderer;
     public bool isTask;
 
@@ -16,6 +18,8 @@ public class Paper : MonoBehaviour, IInteractable
     [SerializeField] private bool _canInteract = true;
     public float HoldTime { get => _holdTime; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+
+    private EventBinding<LevelLoaded> _levelLoaded;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _initialSFX;
@@ -32,6 +36,7 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Start()
     {
+        ActivePapers += 1;
         _renderer = GetComponent<Renderer>();
     }
 
@@ -49,6 +54,13 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
+        ActivePapers -= 1;
+
+        if (ActivePapers <= 0)
+        {
+            VariableConditionManager.Instance.Set("TasksCollected", "true");
+        }
+
         this.gameObject.SetActive(false);
         AddToHandbook();
     }
@@ -71,6 +83,23 @@ public class Paper : MonoBehaviour, IInteractable
     public void OnDrawGizmos()
     {
         //Gizmos.DrawWireSphere(_center, 1);
+    }
+
+    // TODO: can we deregister the event after the handbook has been initialized? No need to reset it every time
+    private void InitReferences(LevelLoaded e)
+    {
+        _handbook = e._handbook;
+    }
+
+    public void OnEnable()
+    {
+        _levelLoaded = new EventBinding<LevelLoaded>(InitReferences);
+        EventBus<LevelLoaded>.Register(_levelLoaded);
+    }
+
+    public void OnDisable()
+    {
+        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
     }
 
 }

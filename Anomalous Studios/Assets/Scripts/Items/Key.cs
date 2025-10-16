@@ -37,7 +37,7 @@ public class Key : ItemInstance
     {
         if (IInteractable.Instigator != null)
         {
-            IInteractable.Instigator.GetComponent<PlayerController>().AddItem(this.gameObject);
+            IInteractable.Instigator.GetComponent<PlayerController>().GetItemHotbar().AddItem(this.gameObject);
         }
     }
 
@@ -48,22 +48,19 @@ public class Key : ItemInstance
 
         float interactRange = 10.0f;
 
-        if (Physics.Raycast(user.GetComponent<PlayerController>().PlayerCamera.transform.position, 
-            user.GetComponent<PlayerController>().PlayerCamera.transform.forward,
+        if (Physics.Raycast(user.GetComponent<PlayerController>().GetPlayerCamera().transform.position, 
+            user.GetComponent<PlayerController>().GetPlayerCamera().transform.forward,
             out RaycastHit hit, interactRange, user.GetComponent<PlayerController>().IgnorePlayerMask))
         {
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
             if (dc != null)
             {
-                if (this.item.itemID == dc.DoorID)
+                if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
-                    dc.ToggleDoor();
+                    dc.CanInteract = true;
+                    Debug.Log("Door unlocked!");
                 }
             }
-        }
-        else
-        {
-            Debug.Log("failed raycast");
         }
     }
 
@@ -77,9 +74,8 @@ public class Key : ItemInstance
 
     public override void AttachToParent(GameObject parent)
     {
-        //Debug.Log("Called Child AttachToParent()");
-
-        _cameraTransform = parent.transform.GetChild(1).transform.GetChild(0).transform;
+        //                 parent.transform.GetChild(0) = leanPivot | leanPivot.transform.GetChild(0) = Main Camera
+        _cameraTransform = parent.transform.GetChild(0).transform.GetChild(0).transform;
 
         PickUp();
         DisableRigidBodyCollisions();
