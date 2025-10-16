@@ -1,26 +1,21 @@
 using AudioSystem;
 using UnityEngine;
 
+public enum ButtonType
+{
+    Level,
+    Close,
+    Open
+}
+
 /// <summary>
-/// A test-case for the interactable interface
+/// Elevator buttons to navigate the basement floors
 /// </summary>
 public class Button : MonoBehaviour, IInteractable
 {
-    [SerializeField] private Level _level;
-
-
-    private Renderer _renderer;
-
-    // TODO: Change the initialization of the first level to be dynamic, raise an event
-    // The level system is going to change pretty soon to accomadate new level box anyway
-    private static Level _currentLevel = Level.blue;
-
-    private bool _canInteract = true;
-
-    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
-
+    [SerializeField] private ButtonType _buttonType = ButtonType.Level;
+    [SerializeField] private LevelTESTING _level;
     [SerializeField] private float _holdTime = 0.0f;
-    public float HoldTime { get => _holdTime; }
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -30,45 +25,54 @@ public class Button : MonoBehaviour, IInteractable
     public SoundDataSO CancelSFX => null;
     public SoundDataSO SuccessSFX { get => _successSFX; }
 
+    private Renderer _renderer;
+    private ElevatorController _elevator;
+
+    /// <summary>
+    /// FIX: By default false for elevator buttons, must meet some precondition each time anyway to unlock.
+    /// </summary>
+    private bool _canInteract = true;
+
+    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+    
+    public float HoldTime { get => _holdTime; }
+
     public void Start()
     {
         _renderer = GetComponent<Renderer>();
-    }
-
-    public void Update()
-    {
-        if (_currentLevel == _level)
-        {
-            _renderer.material.color = Color.white;
-        }
-
-        else
-        {
-            _renderer.material.color = Color.black;
-        }
+        _elevator = transform.parent.parent.GetComponent<ElevatorController>();
     }
 
     public void Highlight()
     {
-        // TODO: Replace with shader to highlight the item, or UI element to indicate it is interactable
+        GetComponent<HighlightTarget>().IsHighlighted = true;
     }
 
     public void RemoveHighlight()
     {
-
+        GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 
     public void Interact()
     {
-        // TODO: Check to see if which levels are available to the player as yet, some sort of static condition for all elevator buttons
-        if (_currentLevel != _level &&
-            VariableConditionManager.Instance.Get("InElevator").Equals("true") &&
-            VariableConditionManager.Instance.Get("TaskComplete").Equals("true") &&
-            VariableConditionManager.Instance.Get("IsLevelLoading").Equals("false"))
-        {            
-            EventBus<LevelLoading>.Raise(new LevelLoading { newLevel = _level });
-            VariableConditionManager.Instance.Set("IsLevelLoading", "true");
-            _currentLevel = _level;
+        switch (_buttonType)
+        {
+            case ButtonType.Level:
+                Debug.Log("Go to level");
+                EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _level } );
+                //_canInteract = false;
+                break;
+            
+            case ButtonType.Open:
+                Debug.Log("Close doors");
+                _elevator.OpenDoors();
+                    //_canInteract = false;
+                break;
+
+            case ButtonType.Close:
+                Debug.Log("Lmao");
+                _elevator.OpenDoors();
+                break;
         }
 
     }

@@ -14,13 +14,13 @@ public class HighlightManager : MonoBehaviour
     public float fadeSpeed = 5f;           // fade in/out speed for glow effects
     public float maxGlow = 3f;             // max glow on fade in/out
 
-    private Transform player;
+    //private Transform player;
     private static List<HighlightTarget> targets = new List<HighlightTarget>();
 
     void Awake()
     {
         Instance = this;
-        player = Camera.main.transform;
+        //player = Camera.main.transform;
     }
 
     void Update()
@@ -66,18 +66,18 @@ public class HighlightManager : MonoBehaviour
         }
     }
 
-    bool IsVisible(HighlightTarget target)
-    {
-        Vector3 dir = (target.transform.position - player.position).normalized;
-        float dist = Vector3.Distance(player.position, target.transform.position);
-
-        if (Physics.Raycast(player.position, dir, out RaycastHit hit, dist, occlusionMask))
-        {
-            if (hit.collider.gameObject != target.gameObject)
-                return false; // if vision blocked, object won't glow
-        }
-        return true;
-    }
+    //bool IsVisible(HighlightTarget target)
+    //{
+    //    Vector3 dir = (target.transform.position - player.position).normalized;
+    //    float dist = Vector3.Distance(player.position, target.transform.position);
+    //
+    //    if (Physics.Raycast(player.position, dir, out RaycastHit hit, dist, occlusionMask))
+    //    {
+    //        if (hit.collider.gameObject != target.gameObject)
+    //            return false; // if vision blocked, object won't glow
+    //    }
+    //    return true;
+    //}
 
     public static void Register(HighlightTarget target)
     {

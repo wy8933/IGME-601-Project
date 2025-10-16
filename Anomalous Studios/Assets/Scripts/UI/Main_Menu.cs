@@ -12,7 +12,8 @@ public class Main_Menu : MonoBehaviour
     /// </summary>
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        //SceneManager.LoadScene(1);
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = LevelTESTING.B1 });
     }
     public void QuitGame()
     {
