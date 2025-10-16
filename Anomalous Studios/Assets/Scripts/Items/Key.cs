@@ -55,15 +55,12 @@ public class Key : ItemInstance
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
             if (dc != null)
             {
-                if (this.item.itemID == dc.DoorID)
+                if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
-                    dc.ToggleDoor();
+                    dc.CanInteract = true;
+                    Debug.Log("Door unlocked!");
                 }
             }
-        }
-        else
-        {
-            Debug.Log("failed raycast");
         }
     }
 
