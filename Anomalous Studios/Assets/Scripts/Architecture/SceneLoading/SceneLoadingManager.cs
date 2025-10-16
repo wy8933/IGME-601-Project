@@ -32,6 +32,7 @@ public class SceneLoadingManager : MonoBehaviour
     public static LevelTESTING CurrentLevel { get; private set; } = LevelTESTING.mainMenu;
 
     [Header("Level Listings")]
+    [SerializeField] private SceneField _elevator;
     [SerializeField] private SceneField[] _mainMenu;
     [SerializeField] private SceneField[] _floorB1;
     [SerializeField] private SceneField[] _floorB2;
@@ -79,7 +80,7 @@ public class SceneLoadingManager : MonoBehaviour
         StartCoroutine(WaitForScenes(e));
     }
 
-    public IEnumerator WaitForScenes(LoadLevel e)
+    public IEnumerator WaitForScenesLegacy(LoadLevel e)
     {
         // TODO: fade to black loading screen
         _blackScreenTEMP.SetActive(true);
@@ -112,6 +113,45 @@ public class SceneLoadingManager : MonoBehaviour
         EventBus<LevelLoaded>.Raise(_levelLoaded);
 
         // TODO: fade from black loading screen
+        _blackScreenTEMP.SetActive(false);
+    }
+
+    public IEnumerator WaitForScenes(LoadLevel e)
+    {
+        _blackScreenTEMP.SetActive(true);
+
+        // If we are in the main menu going to a level, load the elevator
+
+        if (CurrentLevel == LevelTESTING.mainMenu && e.newLevel != LevelTESTING.mainMenu)
+        {
+            _scenesToLoad.Add(SceneManager.LoadSceneAsync(_elevator, LoadSceneMode.Additive));
+        }
+
+        // Load all of the new level scenes
+        foreach (SceneField scene in _floorLibrary[e.newLevel])
+        {
+            _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
+        }
+
+        // unload all of the old level scenes
+        foreach (SceneField scene in _floorLibrary[CurrentLevel])
+        {
+            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+        }
+
+        // If we are not in the main menu going to the main menu, unload the elevator
+        if (e.newLevel == LevelTESTING.mainMenu && CurrentLevel != LevelTESTING.mainMenu)
+        {
+            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_elevator));
+        }
+
+        CurrentLevel = e.newLevel;
+
+        // Comment out when testing. Cheaper to artifically extend load screen time to cover any last moments of lag
+        yield return new WaitForSeconds(0.5f);
+
+        EventBus<LevelLoaded>.Raise(_levelLoaded);
+
         _blackScreenTEMP.SetActive(false);
     }
 

@@ -29,7 +29,7 @@ public class Button : MonoBehaviour, IInteractable
     private ElevatorController _elevator;
 
     /// <summary>
-    /// By default false for elevator buttons, must meet some precondition each time anyway to unlock.
+    /// FIX: By default false for elevator buttons, must meet some precondition each time anyway to unlock.
     /// </summary>
     private bool _canInteract = true;
 
@@ -59,21 +59,19 @@ public class Button : MonoBehaviour, IInteractable
         {
             case ButtonType.Level:
                 Debug.Log("Go to level");
-                _elevator.OpenDoors();
+                EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _level } );
                 //_canInteract = false;
                 break;
             
             case ButtonType.Open:
                 Debug.Log("Close doors");
-                if (VariableConditionManager.Instance.Get("TaskComplete") === "true")
-                {
-                    _elevator.OpenDoors();
+                _elevator.OpenDoors();
                     //_canInteract = false;
-                }
                 break;
 
             case ButtonType.Close:
                 Debug.Log("Lmao");
+                _elevator.OpenDoors();
                 break;
         }
 
