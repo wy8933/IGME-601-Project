@@ -10,8 +10,10 @@ public class ItemHotbar : MonoBehaviour
     private int _selectedItemIndex = 0;
     private GameObject[] _itemHotbar = new GameObject[4];
 
+    [Header("Hotbar Container UI Gameobject")]
     [SerializeField] private GameObject HotbarContainer;
     private CanvasGroup _canvasGroup;
+    [Header("Item UI Gameobjects")]
     [SerializeField] private GameObject Item1Icon;
     [SerializeField] private GameObject Item2Icon;
     [SerializeField] private GameObject Item3Icon;
@@ -20,7 +22,7 @@ public class ItemHotbar : MonoBehaviour
     private float _fadeDuration = 1.0f;
     private Coroutine _fadeCoroutine;
 
-    [Header("Watch UI")]
+    [Header("Watch UI Gameobjects")]
     [SerializeField] public GameObject WatchUI;
     [SerializeField] public GameObject TimeUI;
     public bool _watchActive = false;
@@ -291,5 +293,35 @@ public class ItemHotbar : MonoBehaviour
 
         WatchUI.SetActive(_watchActive);
         TimeUI.SetActive(_watchActive);
+    }
+
+    /// <summary>
+    /// Switches to the next item. Called multiple times while scrolling 
+    /// </summary>
+    public void ScrollUp()
+    {
+        if (_selectedItemIndex + 1 < 4)
+        {
+            SwitchToItem(_selectedItemIndex + 1);
+        }
+        else
+        {
+            SwitchToItem(0);
+        }
+    }
+
+    /// <summary>
+    /// Switches to the previous item. Called multiple times while scrolling 
+    /// </summary>
+    public void ScrollDown()
+    {
+        if (_selectedItemIndex - 1 > -1)
+        {
+            SwitchToItem(_selectedItemIndex - 1);
+        }
+        else
+        {
+            SwitchToItem(_itemHotbar.Length - 1);
+        }
     }
 }

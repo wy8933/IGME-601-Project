@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 921242989472160827}
   m_Layer: 5
   m_Name: Handbook
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -391,8 +391,8 @@ MonoBehaviour:
   _ruleContainer: {fileID: 0}
   _taskPrefab: {fileID: 0}
   _policyPrefab: {fileID: 0}
-  _popupPrefab: {fileID: 0}
-  _playerController: {fileID: 0}
+  _popupPrefabPolicy: {fileID: 0}
+  _popupPrefabTask: {fileID: 0}
 --- !u!1 &567305116439995259
 GameObject:
   m_ObjectHideFlags: 0
@@ -4332,8 +4332,6 @@ MonoBehaviour:
   - {fileID: 3046938642039594266}
   toggles:
   - {fileID: 4307822501012915647}
-  playerController: {fileID: 0}
-  audioManager: {fileID: 0}
 --- !u!1 &4345151851711010828
 GameObject:
   m_ObjectHideFlags: 0

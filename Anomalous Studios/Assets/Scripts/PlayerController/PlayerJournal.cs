@@ -4,12 +4,18 @@ public class PlayerJournal : MonoBehaviour
 {
     private bool _inJournal = false;
     [Header("Handbook")]
-    [SerializeField] private Handbook_UI handbook;
+    //[SerializeField] private Handbook_UI handbook; <-- WILL BE REMOVED
+    private Handbook_UI handbook;
 
     private EventBinding<LevelLoaded> _levelLoaded;
 
     // Getter Methods
     public bool GetInJournal() { return _inJournal; }
+
+    private void Start()
+    {
+        handbook = GameObject.FindGameObjectWithTag("UI").GetComponent<Handbook_UI>();
+    }
 
     public void ToggleHandbook()
     {
