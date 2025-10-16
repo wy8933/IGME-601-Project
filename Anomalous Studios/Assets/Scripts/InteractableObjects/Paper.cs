@@ -8,6 +8,8 @@ public class Paper : MonoBehaviour, IInteractable
     [SerializeField] private Handbook_UI _handbook = null;
     [SerializeField] private float _holdTime = 0.0f;
 
+    private static int ActivePapers = 0;
+
     private Renderer _renderer;
     public bool isTask;
 
@@ -34,6 +36,7 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Start()
     {
+        ActivePapers += 1;
         _renderer = GetComponent<Renderer>();
     }
 
@@ -51,6 +54,13 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
+        ActivePapers -= 1;
+
+        if (ActivePapers <= 0)
+        {
+            VariableConditionManager.Instance.Set("TasksCollected", "true");
+        }
+
         this.gameObject.SetActive(false);
         AddToHandbook();
     }

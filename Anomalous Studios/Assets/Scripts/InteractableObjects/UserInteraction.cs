@@ -23,7 +23,7 @@ public class UserInteraction : MonoBehaviour
     {
         _playerInputActions = new PlayerInputActions();
         _ignorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
-        _playerCam = transform.Find("Main Camera");
+        _playerCam = transform.Find("LeanPivot/Main Camera");
     }
 
     private void OnEnable()

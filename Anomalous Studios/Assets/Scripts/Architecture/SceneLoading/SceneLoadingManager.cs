@@ -29,6 +29,7 @@ public enum LevelTESTING
 public class SceneLoadingManager : MonoBehaviour
 {
     // TODO: Fade in and fade out a black screen BEFORE the loading process and AFTER the loading is fully done
+    public static LevelTESTING CurrentLevel { get; private set; } = LevelTESTING.mainMenu;
 
     [Header("Level Listings")]
     [SerializeField] private SceneField[] _mainMenu;
@@ -48,6 +49,9 @@ public class SceneLoadingManager : MonoBehaviour
 
     void Start()
     {
+        VariableConditionManager.Instance.Set("TaskComplete", "true");
+        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
+
         _floorLibrary = new Dictionary<LevelTESTING, SceneField[]>
         {
             { LevelTESTING.currentLevel, _mainMenu },
@@ -56,7 +60,6 @@ public class SceneLoadingManager : MonoBehaviour
             { LevelTESTING.B2, _floorB2 },
             { LevelTESTING.B3, _floorB3 }
         };
-
 
         GameObject _mainUI = GameObject.Find("MainUI");
 

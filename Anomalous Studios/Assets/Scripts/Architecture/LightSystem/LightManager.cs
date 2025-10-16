@@ -18,16 +18,7 @@ public class LightManager : MonoBehaviour
         }
     }
     private Light[] lights; //List of active lights
-    //public Light[] Lights => lights;
-    public Light[] Lights
-    {
-        get 
-        {
-            if (lights == null) Debug.LogWarning("LightManager: Called too early, wait for lights to references");
-                
-            return lights;
-        }
-    }
+    public Light[] Lights => lights;
 
     void Start()
     {

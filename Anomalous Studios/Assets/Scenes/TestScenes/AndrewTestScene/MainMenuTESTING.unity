@@ -1160,7 +1160,6 @@ GameObject:
   - component: {fileID: 575225034}
   - component: {fileID: 575225033}
   - component: {fileID: 575225032}
-  - component: {fileID: 575225031}
   m_Layer: 6
   m_Name: ClickButton
   m_TagString: Untagged
@@ -1183,22 +1182,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 329052330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &575225031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575225029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6ceec25871d644986bf77c2c73ce8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 0
-  _holdTime: 0
-  _failedSFX: {fileID: 0}
-  _successSFX: {fileID: 0}
 --- !u!65 &575225032
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4191,7 +4174,6 @@ GameObject:
   - component: {fileID: 2114634348}
   - component: {fileID: 2114634347}
   - component: {fileID: 2114634346}
-  - component: {fileID: 2114634345}
   m_Layer: 6
   m_Name: HoldButton
   m_TagString: Untagged
@@ -4214,22 +4196,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 329052330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2114634345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114634343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c6ceec25871d644986bf77c2c73ce8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _level: 0
-  _holdTime: 2
-  _failedSFX: {fileID: 0}
-  _successSFX: {fileID: 0}
 --- !u!65 &2114634346
 BoxCollider:
   m_ObjectHideFlags: 0
