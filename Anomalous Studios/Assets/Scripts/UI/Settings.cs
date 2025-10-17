@@ -96,7 +96,7 @@ public class Settings : MonoBehaviour
         }
         else
         {
-            print("<size=100>PLAYER CONTROLLER IS NULL</size>");
+            //print("<size=100>PLAYER CONTROLLER IS NULL</size>");
         }
     }
 

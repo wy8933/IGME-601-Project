@@ -142,8 +142,6 @@ public class Handbook_UI : MonoBehaviour
     }
     #endregion
 
-    
-
     #region Test
     // Testing
     //public void TestTask()
