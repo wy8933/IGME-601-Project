@@ -137,12 +137,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Interact() 
     {
-        /*
         if (_itemHotbar.SlotHasItem())
         {
             return;
         }
-        */
 
         // TODO: Test edges cases while pulling up the journal
         if (!_playerJournal.GetInJournal() && IInteractable.Target != null)

@@ -54,7 +54,6 @@ public class Key : ItemInstance
                 if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
                     dc.CanInteract = true;
-                    Debug.Log("Door unlocked!");
                 }
             }
         }

@@ -1,13 +1,13 @@
 using UnityEngine;
 using ItemSystem;
 using AudioSystem;
-using System.Collections.Generic;
+using System.Collections;
 
 public class Trap : ItemInstance
 {
     private BoxCollider _boxCollider;
 
-    private float _slowDuration = 1.0f;
+    private float _slowDuration = 4.0f;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -52,23 +52,43 @@ public class Trap : ItemInstance
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
+
+        PlayerController pc = parent.GetComponent<PlayerController>();
+
+        if (pc != null)
+        {
+            pc.GetItemHotbar().DropItem();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // change player to rulekeeper
+        // replace player with rulekeeper
         if(collision.gameObject.tag == "Player")
         {
-            Debug.Log("Trap collision detected with player!");
             GameObject gameObject = collision.gameObject;
 
+            this.gameObject.GetComponent<Renderer>().enabled = false;
             StartCoroutine(ApplySlowdown(gameObject));
         }
     }
 
     private IEnumerator ApplySlowdown(GameObject obj)
     {
-        
-        yield return new WaitForSeconds(_slowDuration);
+        // Access rulekeeper walk speed here and change it temporarily
+        PlayerActions pa = obj.GetComponent<PlayerActions>();
+
+        if(pa != null)
+        {
+            pa.SetWalkSpeed(0.5f);
+            Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
+
+            yield return new WaitForSeconds(_slowDuration);
+
+            pa.SetWalkSpeed(3.0f);
+            Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
+
+            Destroy(this.gameObject);
+        }
     }
 }

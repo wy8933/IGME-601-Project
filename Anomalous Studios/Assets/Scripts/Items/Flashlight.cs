@@ -55,8 +55,6 @@ public class Flashlight : ItemInstance
                 _lightComponent.intensity = 0;
                 _isOn = false;
             }
-
-           //Debug.Log("Battery: " + Battery);
         }
 
         UpdateLocation();
