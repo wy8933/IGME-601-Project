@@ -7,7 +7,8 @@ public class Trap : ItemInstance
 {
     private BoxCollider _boxCollider;
 
-    private float _slowDuration = 4.0f;
+    [Header("Trap Slow Duration")]
+    [SerializeField] private float _slowDuration = 4.0f;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
