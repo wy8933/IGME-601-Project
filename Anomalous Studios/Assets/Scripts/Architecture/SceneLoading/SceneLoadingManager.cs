@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -47,6 +49,7 @@ public class SceneLoadingManager : MonoBehaviour
     private LevelLoaded _levelLoaded;
 
     private GameObject _blackScreenTEMP;
+    private NavMeshSurface _navMeshSurface;
 
     void Start()
     {
@@ -73,10 +76,13 @@ public class SceneLoadingManager : MonoBehaviour
         };
 
         _blackScreenTEMP = _mainUI.transform.Find("LoadingScreen").gameObject;
+        _navMeshSurface = GetComponent<NavMeshSurface>();
     }
 
     private void LoadLevel(LoadLevel e)
     {
+        _blackScreenTEMP.SetActive(true);
+
         StartCoroutine(WaitForScenes(e));
     }
 
@@ -118,7 +124,6 @@ public class SceneLoadingManager : MonoBehaviour
 
     public IEnumerator WaitForScenes(LoadLevel e)
     {
-        _blackScreenTEMP.SetActive(true);
 
         // If we are in the main menu going to a level, load the elevator
 
@@ -147,8 +152,14 @@ public class SceneLoadingManager : MonoBehaviour
 
         CurrentLevel = e.newLevel;
 
+        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+
         // Comment out when testing. Cheaper to artifically extend load screen time to cover any last moments of lag
         yield return new WaitForSeconds(0.5f);
+
+        _scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));
+
+        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
         EventBus<LevelLoaded>.Raise(_levelLoaded);
 

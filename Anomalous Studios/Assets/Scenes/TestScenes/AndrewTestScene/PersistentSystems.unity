@@ -1162,6 +1162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1532180636}
   - component: {fileID: 1532180637}
+  - component: {fileID: 1532180638}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -1203,14 +1204,46 @@ MonoBehaviour:
   - m_SceneAsset: {fileID: 102900000, guid: f8be98f399a8dbe4692f80b4b40d0048, type: 3}
     m_SceneName: MainMenuTESTING
   _floorB1:
-  - m_SceneAsset: {fileID: 102900000, guid: dd4b7bce4f422564cbcb7036167d1742, type: 3}
-    m_SceneName: Room1.3
-  - m_SceneAsset: {fileID: 102900000, guid: cd76420fae0932447a2bfb757d623b78, type: 3}
-    m_SceneName: Room6.3
-  _floorB2:
   - m_SceneAsset: {fileID: 102900000, guid: 36f840d610b891c43804bb956c937d8a, type: 3}
     m_SceneName: Room3.3
+  _floorB2:
+  - m_SceneAsset: {fileID: 102900000, guid: 4523c0b1ca921dd49879534a5fac7288, type: 3}
+    m_SceneName: Room2.3
+  - m_SceneAsset: {fileID: 102900000, guid: 49e10c8536506fa46b4ebd79185ea788, type: 3}
+    m_SceneName: Room5.3
   _floorB3: []
+--- !u!114 &1532180638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532180634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.083333336
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 5bb0d71588037ec42a7a1e5e622cc14f, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &1643553494
 GameObject:
   m_ObjectHideFlags: 0
