@@ -2,6 +2,11 @@ using AudioSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Raised when 
+/// </summary>
+public struct TaskComplete : IEvent { }
+
 public class ElevatorController : MonoBehaviour
 {
     [SerializeField] private SoundDataSO _floorChime;
@@ -14,20 +19,22 @@ public class ElevatorController : MonoBehaviour
     // TODO: replace with an actual array, using id values when creating the notes
     [SerializeField] private List<Paper> _notes;
 
-    private Dictionary<LevelTESTING, Button> _buttons;
-    private static Button _openButton; 
+    private Dictionary<Level, ElevatorButton> _buttons;
+    private static ElevatorButton _openButton;
+
+    private EventBinding<TaskComplete> _taskComplete;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
         _corkboard = transform.Find("Corkboard").gameObject;
 
-        _openButton = transform.Find("Buttons/Open").GetComponent<Button>();
-        _buttons = new Dictionary<LevelTESTING, Button>
+        _openButton = transform.Find("Buttons/Open").GetComponent<ElevatorButton>();
+        _buttons = new Dictionary<Level, ElevatorButton>
         {
-            { LevelTESTING.B1, transform.Find("Buttons/B1").GetComponent<Button>() },
-            { LevelTESTING.B2, transform.Find("Buttons/B2").GetComponent<Button>() },
-            { LevelTESTING.B3, transform.Find("Buttons/B3").GetComponent<Button>() }
+            { Level.B1, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
+            { Level.B2, transform.Find("Buttons/B2").GetComponent<ElevatorButton>() },
+            { Level.B3, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
         };
     }
 
@@ -60,6 +67,14 @@ public class ElevatorController : MonoBehaviour
     }
 
     /// <summary>
+    /// Called when the task of the level is complete, enabling the next floor's button
+    /// </summary>
+    public void EnableElevatorButtons()
+    {
+        _buttons[SceneLoader.CurrentLevel+1].Enable();
+    }
+
+    /// <summary>
     /// TODO: Initializes the notes on the corkboard when the scene loads
     /// </summary>
     /// <param name="Notes">The Papers to spawn on the corkboard</param>
@@ -81,5 +96,16 @@ public class ElevatorController : MonoBehaviour
     public void OnTriggerExit(Collider other)
     {
         VariableConditionManager.Instance.Set("InElevator", "false");
+    }
+
+    public void OnEnable()
+    {
+        _taskComplete = new EventBinding<TaskComplete>(EnableElevatorButtons);
+        EventBus<TaskComplete>.Register(_taskComplete);
+    }
+
+    public void OnDisable()
+    {
+        EventBus<TaskComplete>.DeRegister(_taskComplete);
     }
 }

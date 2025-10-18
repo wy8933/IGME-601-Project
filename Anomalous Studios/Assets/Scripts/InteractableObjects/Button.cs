@@ -11,10 +11,10 @@ public enum ButtonType
 /// <summary>
 /// Elevator buttons to navigate the basement floors
 /// </summary>
-public class Button : MonoBehaviour, IInteractable
+public class ElevatorButton : MonoBehaviour, IInteractable
 {
     [SerializeField] private ButtonType _buttonType = ButtonType.Level;
-    [SerializeField] private LevelTESTING _level;
+    [SerializeField] private Level _level;
     [SerializeField] private float _holdTime = 0.0f;
 
     [Header("Reaction SFX")]
@@ -41,11 +41,6 @@ public class Button : MonoBehaviour, IInteractable
     {
         _renderer = GetComponent<Renderer>();
         _elevator = transform.parent.parent.GetComponent<ElevatorController>();
-
-        // TEMP: remove when level loading is done testing with
-        if (_buttonType == ButtonType.Level)
-            Enable();
-
     }
 
     public void Highlight()
@@ -62,16 +57,20 @@ public class Button : MonoBehaviour, IInteractable
     {
         switch (_buttonType)
         {
+            // When a task has been completed, used to move to the very next level
             case ButtonType.Level:
+                _elevator.OpenDoors();
                 EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _level } );
-                // Disable(); TEMP: use disable when we are able to move to the next levels
+                Disable();
                 break;
             
+            // After all the papers have been collected, used to open the elevator doors
             case ButtonType.Open:
                 _elevator.OpenDoors();
                 Disable();
                 break;
 
+            // The close button in the elevator is a joke, might make an electrical sounds when pressed, or fall off the wall
             case ButtonType.Close:
                 Debug.Log("Lmao");
                 break;
