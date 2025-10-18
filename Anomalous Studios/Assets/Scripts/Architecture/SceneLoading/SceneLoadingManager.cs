@@ -54,7 +54,7 @@ public class SceneLoadingManager : MonoBehaviour
     void Start()
     {
         VariableConditionManager.Instance.Set("TaskComplete", "true");
-        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
+        VariableConditionManager.Instance.Set("IsLevelLoading", "true"); // TODO: Remove, legacy
 
         _floorLibrary = new Dictionary<LevelTESTING, SceneField[]>
         {
@@ -124,7 +124,6 @@ public class SceneLoadingManager : MonoBehaviour
 
     public IEnumerator WaitForScenes(LoadLevel e)
     {
-
         // If we are in the main menu going to a level, load the elevator
 
         if (CurrentLevel == LevelTESTING.mainMenu && e.newLevel != LevelTESTING.mainMenu)
@@ -154,7 +153,7 @@ public class SceneLoadingManager : MonoBehaviour
 
         if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
-        // Comment out when testing. Cheaper to artifically extend load screen time to cover any last moments of lag
+        // An artifical amount of loading time to prevent the NavMesh from trying to rebuild too quickly
         yield return new WaitForSeconds(0.5f);
 
         _scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));

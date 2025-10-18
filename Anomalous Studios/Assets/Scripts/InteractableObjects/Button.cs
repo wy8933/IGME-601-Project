@@ -31,7 +31,7 @@ public class Button : MonoBehaviour, IInteractable
     /// <summary>
     /// FIX: By default false for elevator buttons, must meet some precondition each time anyway to unlock.
     /// </summary>
-    private bool _canInteract = true;
+    private bool _canInteract = false;
 
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     
@@ -41,6 +41,11 @@ public class Button : MonoBehaviour, IInteractable
     {
         _renderer = GetComponent<Renderer>();
         _elevator = transform.parent.parent.GetComponent<ElevatorController>();
+
+        // TEMP: remove when level loading is done testing with
+        if (_buttonType == ButtonType.Level)
+            Enable();
+
     }
 
     public void Highlight()
@@ -58,22 +63,38 @@ public class Button : MonoBehaviour, IInteractable
         switch (_buttonType)
         {
             case ButtonType.Level:
-                Debug.Log("Go to level");
                 EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _level } );
-                //_canInteract = false;
+                // Disable(); TEMP: use disable when we are able to move to the next levels
                 break;
             
             case ButtonType.Open:
-                Debug.Log("Close doors");
                 _elevator.OpenDoors();
-                    //_canInteract = false;
+                Disable();
                 break;
 
             case ButtonType.Close:
                 Debug.Log("Lmao");
-                _elevator.OpenDoors();
                 break;
         }
 
+    }
+
+    /// <summary>
+    /// Highlights this button to be pressed by the player
+    /// </summary>
+    public void Enable()
+    {
+        // A temporary "glow" effect to prompt the player to press this button, should probably pulse yellow eventually
+        _renderer.material.color = Color.yellow;
+        _canInteract = true;
+    }
+
+    /// <summary>
+    /// Prevents the usage of this button
+    /// </summary>
+    public void Disable()
+    {
+        _renderer.material.color = Color.black;
+        _canInteract = false;
     }
 }
