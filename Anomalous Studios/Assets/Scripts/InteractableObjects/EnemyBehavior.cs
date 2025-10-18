@@ -17,7 +17,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     [SerializeField] private float _holdTime = 0.0f;
 
     private EventBinding<RuleBroken> _ruleBroken;
-    private EventBinding<LevelLoading> _levelLoading;
+    private EventBinding<LevelLoaded> _levelLoading;
 
     private BehaviorGraphAgent self;
 
@@ -73,7 +73,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     /// TODO: have this register as an event on level loading, then a coroutine 
     /// </summary>
     /// <param name="spawnPoint">Optionally update the Rulekeeper's spawn position</param>
-    private void OnLevelLoaded(LevelLoading e)
+    private void OnLevelLoaded(LevelLoaded e)
     {
         self.enabled = false;
         GetComponent<NavMeshAgent>().enabled = false;
@@ -84,7 +84,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         StartCoroutine(EnableRuleKeeper(e));
     }
 
-    private IEnumerator EnableRuleKeeper(LevelLoading e)
+    private IEnumerator EnableRuleKeeper(LevelLoaded e)
     {
         while (VariableConditionManager.Instance.Get("IsLevelLoading") == "false") { yield return null; }
 
@@ -97,14 +97,14 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     {
         _ruleBroken = new EventBinding<RuleBroken>(OnRuleBroken);
         EventBus<RuleBroken>.Register(_ruleBroken);
-        _levelLoading = new EventBinding<LevelLoading>(OnLevelLoaded);
-        EventBus<LevelLoading>.Register(_levelLoading);
+        _levelLoading = new EventBinding<LevelLoaded>(OnLevelLoaded);
+        EventBus<LevelLoaded>.Register(_levelLoading);
     }
 
     public void OnDisable()
     {
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
-        EventBus<LevelLoading>.DeRegister(_levelLoading);
+        EventBus<LevelLoaded>.DeRegister(_levelLoading);
     }
 
 

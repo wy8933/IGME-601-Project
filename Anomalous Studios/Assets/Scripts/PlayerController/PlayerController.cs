@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// When a new level starts to load in, the player should be in the elevator or dead
     /// </summary>
-    private EventBinding<LevelLoading> _levelLoading;
+    private EventBinding<LoadLevel> _levelLoading;
 
     private Vector3 _spawnPoint = Vector3.zero;
 
@@ -83,13 +83,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelLoading = new EventBinding<LevelLoading>(ResetPlayer);
-        EventBus<LevelLoading>.Register(_levelLoading);
+        _levelLoading = new EventBinding<LoadLevel>(ResetPlayer);
+        EventBus<LoadLevel>.Register(_levelLoading);
     }
 
     private void OnDisable()
     {
-        EventBus<LevelLoading>.DeRegister(_levelLoading);
+        EventBus<LoadLevel>.DeRegister(_levelLoading);
     }
 
     private void FixedUpdate()
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// When the player dies and the level restarts, reset everything about the player to the last iteration
     /// </summary>
-    private void ResetPlayer(LevelLoading e)
+    private void ResetPlayer(LoadLevel e)
     {
         // Remove items from inventory?
         // Fade in fade out black screen of death?
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
         // What other edge cases when the level is reset..?
 
         // If this level is the last level, reset the player spawn
-        if (e.newLevel == Level.currentLevel) { transform.position = _spawnPoint; }
+        if (e.newLevel == SceneLoader.CurrentLevel) { transform.position = _spawnPoint; }
     }
 
     /// <summary>
