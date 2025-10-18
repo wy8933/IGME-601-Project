@@ -12,12 +12,8 @@ public class Flashlight : ItemInstance
 
     [Header("Battery")]
     [SerializeField] float Battery = 100.0f;
-    private float _batteryDrainAmount;
-
-    private Transform _cameraTransform;
-    private Vector3 _itemCamPosOffset = new Vector3(0.3f, -0.3f, 0.3f);
-    private float _dropDistanceOffset = 1.5f;
-    private Rigidbody _rb;
+    private float _batteryDrainAmount; 
+    
     private CapsuleCollider _capsuleCollider;
 
     [Header("Reaction SFX")]
@@ -83,41 +79,25 @@ public class Flashlight : ItemInstance
 
     public override void AttachToParent(GameObject parent)
     {
-        //Debug.Log("Called Child AttachToParent()");
-
-        _cameraTransform = parent.transform.GetChild(1).transform.GetChild(0).transform;
-        
-        PickUp();
+        base.AttachToParent(parent);
         DisableRigidBodyCollisions();
-
-        this.gameObject.transform.SetParent(_cameraTransform, false);
-        transform.localPosition = _itemCamPosOffset;
-        transform.localRotation = Quaternion.Euler(90, 0, 0);
     }
 
     public override void DetachFromParent(GameObject parent)
     {
-        Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
-        transform.position = newPos;
-        this.gameObject.transform.parent = null;
-        CanInteract = true;
-        _pickedUp = false;
+        base.DetachFromParent(parent);
     }
 
     public override void DisableRigidBodyCollisions()
     {
+        base.DisableRigidBodyCollisions();
         _capsuleCollider.enabled = false;
-        _rb.isKinematic = true;
-        _rb.detectCollisions = false;
-        _rb.useGravity = false;
     }
 
     public override void EnableRigidBodyCollisions()
     {
+        base.EnableRigidBodyCollisions();
         _capsuleCollider.enabled = true;
-        _rb.isKinematic = false;
-        _rb.detectCollisions = true;
-        _rb.useGravity = true;
     }
 
     private void UpdateLocation()

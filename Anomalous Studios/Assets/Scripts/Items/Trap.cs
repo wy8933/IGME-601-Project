@@ -1,12 +1,13 @@
 using UnityEngine;
 using ItemSystem;
 using AudioSystem;
+using System.Collections.Generic;
 
-public class Garbage : ItemInstance
+public class Trap : ItemInstance
 {
     private BoxCollider _boxCollider;
 
-    public string Tag = "Garbage";
+    private float _slowDuration = 1.0f;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -26,14 +27,9 @@ public class Garbage : ItemInstance
     }
 
     // Update is called once per frame
-    public void Update()
+    void Update()
     {
-        UpdateLocation();
-    }
 
-    public override void Use(GameObject user)
-    {
-        TryUse(user);
     }
 
     public override void Interact()
@@ -44,34 +40,35 @@ public class Garbage : ItemInstance
         }
     }
 
-    private void UpdateLocation()
+    public override void Use(GameObject user)
     {
-        if (_cameraTransform && _pickedUp)
+        TryUse(user);
+
+        PlaceTrap(user);
+    }
+
+    private void PlaceTrap(GameObject parent)
+    {
+        Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
+        transform.position = newPos;
+        this.gameObject.transform.parent = null;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // change player to rulekeeper
+        if(collision.gameObject.tag == "Player")
         {
-            transform.localPosition = _itemCamPosOffset;
+            Debug.Log("Trap collision detected with player!");
+            GameObject gameObject = collision.gameObject;
+
+            StartCoroutine(ApplySlowdown(gameObject));
         }
     }
 
-    public override void AttachToParent(GameObject parent)
+    private IEnumerator ApplySlowdown(GameObject obj)
     {
-        base.AttachToParent(parent);
-        DisableRigidBodyCollisions();
-    }
-
-    public override void DetachFromParent(GameObject parent)
-    {
-        base.DetachFromParent(parent);
-    }
-
-    public override void DisableRigidBodyCollisions()
-    {
-        base.DisableRigidBodyCollisions();
-        _boxCollider.enabled = false;
-    }
-
-    public override void EnableRigidBodyCollisions()
-    {
-        base.EnableRigidBodyCollisions();
-        _boxCollider.enabled = true;
+        
+        yield return new WaitForSeconds(_slowDuration);
     }
 }
