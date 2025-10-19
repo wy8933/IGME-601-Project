@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 498282879550055359}
   - component: {fileID: 5985687368893123888}
   - component: {fileID: 1970723029315211880}
+  - component: {fileID: 6868175425084985164}
   m_Layer: 6
   m_Name: Key
   m_TagString: Untagged
@@ -157,3 +158,19 @@ MonoBehaviour:
   isUseable: 1
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
+--- !u!114 &6868175425084985164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3415862674739262255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  originalMats: []
+  outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0

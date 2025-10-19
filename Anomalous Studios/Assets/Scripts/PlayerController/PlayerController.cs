@@ -137,11 +137,26 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void Interact() 
     {
-        if (_itemHotbar.SlotHasItem())
+        // If current item slot is empty
+        if (!_itemHotbar.SlotHasItem())
         {
-            return;
+            InteractWithItem();
         }
+        // Else find the next available item slot
+        else
+        {
+            if (_itemHotbar.CheckAvailableItemSlots())
+            {
+                InteractWithItem();
+            }
+        }
+    }
 
+    /// <summary>
+    /// On successful item interaction, saves a reference of the player inside interacted object
+    /// </summary>
+    public void InteractWithItem()
+    {
         // TODO: Test edges cases while pulling up the journal
         if (!_playerJournal.GetInJournal() && IInteractable.Target != null)
         {

@@ -54,7 +54,10 @@ public class Watch : ItemInstance
     {
         TryUse(user);
 
-        _playerController.GetItemHotbar().ToggleWatchDisplay(_rendererComponent);
+        if (_isEquipped)
+        {
+            _playerController.GetItemHotbar().ToggleWatchDisplay(_rendererComponent);
+        }
     }
 
     public IEnumerator UpdateTimer()

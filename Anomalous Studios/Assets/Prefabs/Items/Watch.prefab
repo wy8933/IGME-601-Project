@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4928655697395186961}
   - component: {fileID: 7325035855726767813}
   - component: {fileID: 7481799920662168061}
+  - component: {fileID: 5543946041865024832}
   m_Layer: 6
   m_Name: Watch
   m_TagString: Untagged
@@ -149,7 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d41d5cac9d905ab4087d3dd2ef251277, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 502968477811387274}
   item: {fileID: 11400000, guid: 8402e17dc79716548b89988d3d073b7b, type: 2}
@@ -157,3 +157,22 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   _player: {fileID: 0}
+  _rendererComponent: {fileID: 0}
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
+--- !u!114 &5543946041865024832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502968477811387274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  originalMats: []
+  outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0

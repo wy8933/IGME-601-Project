@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6210681305137054527}
   - component: {fileID: 2528809396701859204}
   - component: {fileID: 6005740828813823833}
+  - component: {fileID: 2555514544423802663}
   m_Layer: 6
   m_Name: Flashlight
   m_TagString: Untagged
@@ -125,7 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c45cce0919cf2c4da95484358a3bcce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 668576737456316230}
   item: {fileID: 11400000, guid: 9a430d3945bb33a458e4d8406657ac9e, type: 2}
@@ -134,6 +134,8 @@ MonoBehaviour:
   isUseable: 1
   Spotlight: {fileID: 2949226002875351128}
   Battery: 100
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
 --- !u!54 &6005740828813823833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -161,6 +163,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2555514544423802663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668576737456316230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  originalMats: []
+  outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
 --- !u!1 &2949226002875351128
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,9 +7,8 @@ public class Garbage : ItemInstance
     private BoxCollider _boxCollider;
 
     public string Tag = "Garbage";
-    public float launchForce = 1000.0f;
+    public float launchForce = 1.5f;
     public Transform launchPoint;
-
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -38,18 +37,22 @@ public class Garbage : ItemInstance
     {
         TryUse(user);
 
-        Throw();
+        Throw(user);
     }
 
-    private void Throw()
+    private void Throw(GameObject parent)
     {
+        Vector3 newPos = parent.transform.position + parent.transform.forward * 2.0f;
+        transform.position = newPos;
         this.gameObject.transform.parent = null;
         CanInteract = true;
         _pickedUp = false;
         EnableRigidBodyCollisions();
-        Debug.Log("throwing garbage");
-        launchPoint = this.transform;
-        _rb.AddForce(launchPoint.forward * launchForce, ForceMode.Impulse);
+
+        Vector3 throwForce = transform.up;
+        _rb.AddForce(throwForce, ForceMode.Impulse);
+
+        IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
     }
 
     public override void Interact()
