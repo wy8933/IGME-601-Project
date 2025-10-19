@@ -30,7 +30,7 @@ public enum Level
 public class SceneLoader : MonoBehaviour
 {
     // TODO: Fade in and fade out a black screen BEFORE the loading process and AFTER the loading is fully done
-    public static Level CurrentLevel { get; private set; } = Level.mainMenu;
+    public static Level ?CurrentLevel { get; private set; }
 
     [Header("Level Listings")]
     [SerializeField] private SceneField _elevator;
@@ -50,7 +50,7 @@ public class SceneLoader : MonoBehaviour
     private GameObject _blackScreenTEMP;
     private NavMeshSurface _navMeshSurface;
 
-    void Start()
+    public void Start()
     {
         //VariableConditionManager.Instance.Set("TaskComplete", "false"); // TODO: Remove, legacy
         //VariableConditionManager.Instance.Set("IsLevelLoading", "true"); // TODO: Remove, legacy
@@ -75,6 +75,8 @@ public class SceneLoader : MonoBehaviour
 
         _blackScreenTEMP = _mainUI.transform.Find("LoadingScreen").gameObject;
         _navMeshSurface = GetComponent<NavMeshSurface>();
+
+        LoadLevel(new LoadLevel { newLevel = Level.mainMenu });
     }
 
     private void LoadLevel(LoadLevel e)
@@ -83,42 +85,6 @@ public class SceneLoader : MonoBehaviour
 
         StartCoroutine(WaitForScenes(e));
     }
-
-    //public IEnumerator WaitForScenesLegacy(LoadLevel e)
-    //{
-    //    // TODO: fade to black loading screen
-    //    _blackScreenTEMP.SetActive(true);
-    //
-    //    if (_floorLibrary[Level.currentLevel] != _floorLibrary[e.newLevel])
-    //    {
-    //
-    //        foreach (SceneField scene in _floorLibrary[e.newLevel])
-    //        {
-    //            _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
-    //        }
-    //
-    //        if (_floorLibrary[Level.currentLevel] != null)
-    //        {
-    //            foreach (SceneField scene in _floorLibrary[Level.currentLevel])
-    //            {
-    //                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
-    //            }
-    //        }
-    //
-    //        // Wait until the scenes are all loaded
-    //        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
-    //    }
-    //
-    //    _floorLibrary[Level.currentLevel] = _floorLibrary[e.newLevel];
-    //
-    //    // Comment out when testing. Cheaper to artifically extend load screen time to cover any last moments of lag
-    //    yield return new WaitForSeconds(0.5f);
-    //
-    //    EventBus<LevelLoaded>.Raise(_levelLoaded);
-    //
-    //    // TODO: fade from black loading screen
-    //    _blackScreenTEMP.SetActive(false);
-    //}
 
     /// <summary>
     /// Displays the loading screen, and loads all the new scenes additively. The navmesh is rebaked after all scenes are loaded safely
@@ -140,13 +106,16 @@ public class SceneLoader : MonoBehaviour
         }
 
         // unload all of the old level scenes
-        foreach (SceneField scene in _floorLibrary[CurrentLevel])
+        if (CurrentLevel != null)
         {
-            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+            foreach (SceneField scene in _floorLibrary[(Level)CurrentLevel])
+            {
+                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+            }
         }
 
         // If we are not in the main menu going to the main menu, unload the elevator
-        if (e.newLevel == Level.mainMenu && CurrentLevel != Level.mainMenu)
+        if (e.newLevel == Level.mainMenu && CurrentLevel != Level.mainMenu && CurrentLevel != null)
         {
             _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_elevator));
         }

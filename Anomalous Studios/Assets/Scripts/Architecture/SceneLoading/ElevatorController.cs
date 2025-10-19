@@ -71,7 +71,7 @@ public class ElevatorController : MonoBehaviour
     /// </summary>
     public void EnableElevatorButtons()
     {
-        _buttons[SceneLoader.CurrentLevel+1].Enable();
+        _buttons[(Level)SceneLoader.CurrentLevel+1].Enable();
     }
 
     /// <summary>
