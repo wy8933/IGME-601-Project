@@ -94,7 +94,6 @@ public class DoorController : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("interacting with door");
         if (_canInteract)
         {
             ToggleDoor();

@@ -4,13 +4,11 @@ using AudioSystem;
 
 public class Garbage : ItemInstance
 {
-    private Transform _cameraTransform;
-    private Vector3 _itemCamPosOffset = new Vector3(0.3f, -0.3f, 0.3f);
-    private float _dropDistanceOffset = 1.5f;
-    private Rigidbody _rb;
     private BoxCollider _boxCollider;
 
     public string Tag = "Garbage";
+    public float launchForce = 1.5f;
+    public Transform launchPoint;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -38,6 +36,23 @@ public class Garbage : ItemInstance
     public override void Use(GameObject user)
     {
         TryUse(user);
+
+        Throw(user);
+    }
+
+    private void Throw(GameObject parent)
+    {
+        Vector3 newPos = parent.transform.position + parent.transform.forward * 2.0f;
+        transform.position = newPos;
+        this.gameObject.transform.parent = null;
+        CanInteract = true;
+        _pickedUp = false;
+        EnableRigidBodyCollisions();
+
+        Vector3 throwForce = transform.up;
+        _rb.AddForce(throwForce, ForceMode.Impulse);
+
+        IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
     }
 
     public override void Interact()
@@ -58,38 +73,24 @@ public class Garbage : ItemInstance
 
     public override void AttachToParent(GameObject parent)
     {
-        _cameraTransform = parent.transform.GetChild(1).transform.GetChild(0).transform;
-
-        PickUp();
+        base.AttachToParent(parent);
         DisableRigidBodyCollisions();
-
-        this.gameObject.transform.SetParent(_cameraTransform, false);
-        transform.localPosition = _itemCamPosOffset;
-        transform.localRotation = Quaternion.Euler(90, 0, 0);
     }
 
     public override void DetachFromParent(GameObject parent)
     {
-        Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
-        transform.position = newPos;
-        this.gameObject.transform.parent = null;
-        CanInteract = true;
-        _pickedUp = false;
+        base.DetachFromParent(parent);
     }
 
     public override void DisableRigidBodyCollisions()
     {
+        base.DisableRigidBodyCollisions();
         _boxCollider.enabled = false;
-        _rb.isKinematic = true;
-        _rb.detectCollisions = false;
-        _rb.useGravity = false;
     }
 
     public override void EnableRigidBodyCollisions()
     {
+        base.EnableRigidBodyCollisions();
         _boxCollider.enabled = true;
-        _rb.isKinematic = false;
-        _rb.detectCollisions = true;
-        _rb.useGravity = true;
     }
 }

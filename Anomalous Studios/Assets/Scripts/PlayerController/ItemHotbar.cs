@@ -1,6 +1,5 @@
 using ItemSystem;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +25,9 @@ public class ItemHotbar : MonoBehaviour
     [SerializeField] public GameObject WatchUI;
     [SerializeField] public GameObject TimeUI;
     public bool _watchActive = false;
+
+    // Getter Methods
+    public int GetSelectedItemIndex() { return _selectedItemIndex; }
 
     public void Start()
     {
@@ -97,6 +99,20 @@ public class ItemHotbar : MonoBehaviour
 
             _fadeCoroutine = StartCoroutine(FadeSequence());
         }
+    }
+
+    public void OnThrown()
+    {
+        _itemHotbar[_selectedItemIndex] = null;
+
+        RemoveHotbarItemIcon();
+
+        if (_fadeCoroutine != null)
+        {
+            StopCoroutine(_fadeCoroutine);
+        }
+
+        _fadeCoroutine = StartCoroutine(FadeSequence());
     }
 
     /// <summary>
@@ -323,5 +339,26 @@ public class ItemHotbar : MonoBehaviour
         {
             SwitchToItem(_itemHotbar.Length - 1);
         }
+    }
+
+    /// <summary>
+    /// Checks for the next empty available slot in item hotbar
+    /// </summary>
+    /// <returns>Returns true or false if an empty slot is available</returns>
+    public bool CheckAvailableItemSlots()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            int tempIndex = (_selectedItemIndex + 1) % 4;
+
+            if (_itemHotbar[tempIndex] == null)
+            {
+                SwitchToItem(tempIndex);
+                return true;
+            }
+            _selectedItemIndex = tempIndex;
+        }
+
+        return false;
     }
 }
