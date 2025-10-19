@@ -26,7 +26,7 @@ public class RageTotem : MonoBehaviour, IInteractable
 
     public void Start()
     {
-        _ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
+        //_ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
     }
 
     public void Highlight()
@@ -36,7 +36,8 @@ public class RageTotem : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        _ruleKeeper.SetVariableValue("ruleBroken", true);
+        //_ruleKeeper.SetVariableValue("ruleBroken", true);
+        EventBus<TaskComplete>.Raise(new TaskComplete { });
     }
 
     public void RemoveHighlight()
