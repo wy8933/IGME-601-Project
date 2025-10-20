@@ -56,8 +56,6 @@ public class Flashlight : ItemInstance
                 _isOn = false;
             }
         }
-
-        UpdateLocation();
     }
 
     public override void Interact()
@@ -96,14 +94,6 @@ public class Flashlight : ItemInstance
     {
         base.EnableRigidBodyCollisions();
         _capsuleCollider.enabled = true;
-    }
-
-    private void UpdateLocation()
-    {
-        if (_cameraTransform && _pickedUp)
-        {
-            transform.localPosition = _itemCamPosOffset;
-        }
     }
 
     public override void Equip()
