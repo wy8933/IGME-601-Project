@@ -552,10 +552,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Handbook
       objectReference: {fileID: 0}
-    - target: {fileID: 340064670764389729, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 417326476171760149, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
       propertyPath: m_Spacing
       value: 50
@@ -585,10 +581,6 @@ PrefabInstance:
       value: Policies
       objectReference: {fileID: 0}
     - target: {fileID: 921242989472160827, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
-      propertyPath: _taskPrefab
-      value: 
-      objectReference: {fileID: 4984375273693659956, guid: 9203b52017a592148a1e89b70582d194, type: 3}
-    - target: {fileID: 921242989472160827, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
       propertyPath: _popupPrefab
       value: 
       objectReference: {fileID: 3089796551230878461, guid: 3cbc886c62b654b44858cfd24da7da93, type: 3}
@@ -600,10 +592,6 @@ PrefabInstance:
       propertyPath: _ruleContainer
       value: 
       objectReference: {fileID: 1779702726549302657}
-    - target: {fileID: 921242989472160827, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
-      propertyPath: _taskContainer
-      value: 
-      objectReference: {fileID: 2106641767057240838}
     - target: {fileID: 921242989472160827, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
       propertyPath: _popupPrefabTask
       value: 
@@ -960,10 +948,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6116715112221038214, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6148067665315597045, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1188,11 +1172,6 @@ PrefabInstance:
 --- !u!224 &1779702726549302657 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7229497844952960865, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
-  m_PrefabInstance: {fileID: 9000043426323653344}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &2106641767057240838 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7051185975978807782, guid: 84719ab3c9d0f034d9add7f7a97d31a3, type: 3}
   m_PrefabInstance: {fileID: 9000043426323653344}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5795026840100231923 stripped

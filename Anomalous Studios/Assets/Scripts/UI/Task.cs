@@ -5,9 +5,15 @@ public class Task : MonoBehaviour
 {
     private string _description;
     private string _title;
-    private bool _isComplete;
+    private bool _isComplete = false;
+    private bool _isFirstTask = false;
+    private bool _isLastTask = false;
+    private Handbook_UI _handbook;
 
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private TextMeshProUGUI completionText;
+    [SerializeField] private GameObject leftArrow;
+    [SerializeField] private GameObject rightArrow;
 
     /// <summary>
     /// Public property to get and set task description
@@ -17,6 +23,7 @@ public class Task : MonoBehaviour
         get { return _description; }
         set { _description = value; }
     }
+
     /// <summary>
     /// Public property to get and set task title
     /// </summary>
@@ -25,6 +32,7 @@ public class Task : MonoBehaviour
         get { return _title; }
         set { _title = value; }
     }
+
     /// <summary>
     /// Public property to get and set task completion status
     /// </summary>
@@ -33,19 +41,62 @@ public class Task : MonoBehaviour
         get { return _isComplete; }
         set { _isComplete = value; }
     }
-    
+
+    /// <summary>
+    /// Public property to get and set the arrow visibility
+    /// True hides left arrow
+    /// </summary>
+    public bool IsFirstTask
+    {
+        get { return _isFirstTask; }
+        set { _isFirstTask = value; }
+    }
+
+    /// <summary>
+    /// Public property to get and set the arrow visibility
+    /// True hides right arrow 
+    /// </summary>
+    public bool IsLastTask
+    {
+        get { return _isLastTask; }
+        set { _isLastTask = value; }
+    }
+
     /// <summary>
     /// Sets text to description
     /// </summary>
     private void Start()
     {
         descriptionText.text = _description;
+        _handbook = GameObject.FindGameObjectWithTag("UI").GetComponent<Handbook_UI>();
+        if (_isFirstTask)
+        {
+           leftArrow.SetActive(false);
+        }
+        if(_isLastTask)
+        {
+            rightArrow.SetActive(false);
+        }
     }
 
     public void CompleteTask()
     {
-        
-        descriptionText.fontStyle = FontStyles.Strikethrough;
-        
+        completionText.text = "<color=green>Task Completed</color>";
+    }
+
+    /// <summary>
+    /// Right arrow button
+    /// </summary>
+    public void RightArrow()
+    {
+        _handbook.NextTask();
+    }
+
+    /// <summary>
+    /// Left arrow button method
+    /// </summary>
+    public void LeftArrow()
+    {
+        _handbook.PreviousTask();
     }
 }

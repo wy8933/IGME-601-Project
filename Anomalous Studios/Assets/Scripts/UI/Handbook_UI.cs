@@ -12,6 +12,10 @@ public class Handbook_UI : MonoBehaviour
 {
     public List <Policy> policiesList;
     public List <Task> taskList;
+    Task _currentTask;
+    int _currentTaskId;
+    Policy _currentPolicy;
+    int _currentPolicyId;
     public GameObject[] pages;
     [SerializeField] private Transform _taskContainer;
     [SerializeField] private Transform _ruleContainer;
@@ -39,16 +43,36 @@ public class Handbook_UI : MonoBehaviour
         task.Description = $"{taskList.Count + 1}. {description}";
         task.Title = title;
 
+        // Checks position in list
+        if (taskList.Count == 0)
+        {
+            task.IsFirstTask = true;
+        }
+        else
+        {
+            task.IsLastTask = true;
+            if(taskList.Count > 2)
+            {
+                taskList[taskList.Count - 1].IsLastTask = false;
+            }
+        }
+
+        // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
         popupText.transform.SetParent(transform.parent, false);
+
+        // Adds task to list and sets it as current task
         taskList.Add(task);
+        _currentTaskId = taskList.Count;
+        // Update current shown task to display this page
+        UpdateTask(0);
     }
 
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
     /// Will add the gameObject specified into the journal under the tasks page
     /// </summary>
-    /// <param name="task"></param>
+    /// <param name="policy"></param>
     public void AddPolicy(string description, string title)
     {
         GameObject policyObj = Instantiate(_policyPrefab, _ruleContainer);
@@ -83,35 +107,35 @@ public class Handbook_UI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Arrow method to increase slider by 20% of sliders max value
-    /// </summary>
-    /// <param name="slider"></param>
-    public void SliderArrowUp(Slider slider)
+    public void NextTask()
     {
-        float amount = slider.maxValue/20;
-        slider.value += amount;  
+        // Update current shown task to be the next one in the list
+        UpdateTask(1);
     }
 
-    /// <summary>
-    /// Arrow method to decrease slider by 20% of sliders max value
-    /// </summary>
-    /// <param name="slider"></param>
-    public void SliderArrowDown(Slider slider)
+    public void PreviousTask()
     {
-        float amount = slider.maxValue / 20;
-        slider.value -= amount;
+        // Update current shown task to be the previous one in the list
+        UpdateTask(-1);
     }
 
-    /// <summary>
-    /// Sets the volume slider to 0
-    /// </summary>
-    /// <param name="volumeSlider"></param>
-    public void Mute(Slider volumeSlider)
+    public void UpdateTask(int value)
     {
-        volumeSlider.value = 0;
+        // Adds 1, 0, or -1 to change task to next, added, or previous in list.
+        _currentTaskId += value;
+        _currentTask = taskList[_currentTaskId];
+        _currentTask.gameObject.SetActive(true);
+
+        // Checks neighbors to turn them off so only one page is seen at a time
+        if (taskList[_currentTaskId + 1])
+        {
+            taskList[_currentTaskId + 1].gameObject.SetActive(false);
+        }
+        if (taskList[_currentTaskId - 1])
+        {
+            taskList[_currentTaskId - 1].gameObject.SetActive(false);
+        }
     }
-    
     /// <summary>
     /// Hides the journal and resumes play
     /// </summary>
@@ -119,26 +143,6 @@ public class Handbook_UI : MonoBehaviour
     {
         _playerController.GetPlayerJournal().ToggleHandbook();
         // Resume Logic
-    }
-
-    /// <summary>
-    /// Loads the Main Menu scene
-    /// </summary>
-    public void MainMenu()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    /// <summary>
-    /// Checks if the game is playing in editor or build and then closes the game.
-    /// </summary>
-    public void QuitGame()
-    {
-    #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-    #else
-        Application.Quit();
-    #endif
     }
     #endregion
 
