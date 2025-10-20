@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -69,12 +70,17 @@ public class Task : MonoBehaviour
     {
         descriptionText.text = _description;
         _handbook = FindFirstObjectByType<Handbook_UI>();
-        if (_isFirstTask && _handbook.taskList.Count == 1)
+        UpdatePage(_handbook.taskList);   
+    }
+
+    public void UpdatePage(List<Task> taskList)
+    {
+        if (_isFirstTask && taskList.Count == 1)
         {
-           leftArrow.SetActive(false);
-           rightArrow.SetActive(false);
+            leftArrow.SetActive(false);
+            rightArrow.SetActive(false);
         }
-        if(_isFirstTask && _handbook.taskList.Count > 1)
+        if (_isFirstTask && taskList.Count > 1)
         {
             rightArrow.SetActive(true);
         }
@@ -84,7 +90,6 @@ public class Task : MonoBehaviour
             leftArrow.SetActive(true);
         }
     }
-
     public void CompleteTask()
     {
         completionText.text = "<color=green>Task Completed</color>";

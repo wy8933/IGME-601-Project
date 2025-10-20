@@ -51,11 +51,15 @@ public class Handbook_UI : MonoBehaviour
         else
         {
             task.IsLastTask = true;
-            if(taskList.Count > 2)
+            // Turns previously last task to false.
+            if(taskList.Count > 1)
             {
                 taskList[taskList.Count - 1].IsLastTask = false;
+                taskList[taskList.Count - 1].UpdatePage(taskList);
             }
         }
+        // Updates the arrows on the page
+        task.UpdatePage(taskList);
 
         // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
@@ -129,14 +133,13 @@ public class Handbook_UI : MonoBehaviour
         _currentTask.gameObject.SetActive(true);
 
         // Checks neighbors to turn them off so only one page is seen at a time
-        if (taskList.Count >= 2)
+        if (taskList.Count > 2)
         {
-            taskList[_currentTaskId - 1].gameObject.SetActive(false);
-
-            if (_currentTaskId < taskList.Count - 1) 
-            {
-                taskList[_currentTaskId + 1].gameObject.SetActive(false);
-            } 
+            taskList[_currentTaskId - 1].gameObject.SetActive(false); 
+        }
+        if (_currentTaskId < taskList.Count - 2)
+        {
+            taskList[_currentTaskId + 1].gameObject.SetActive(false);
         }
     }
     /// <summary>
