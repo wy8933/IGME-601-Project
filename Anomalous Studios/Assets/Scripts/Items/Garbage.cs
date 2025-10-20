@@ -7,8 +7,11 @@ public class Garbage : ItemInstance
     private BoxCollider _boxCollider;
 
     public string Tag = "Garbage";
-    public float launchForce = 1.5f;
-    public Transform launchPoint;
+    private float _positionOffset = 1.5f;
+
+    [Header("Throw Force")]
+    [SerializeField] private float _throwForwardForce = 5.0f;
+    [SerializeField] private float _throwUpForce = 5.0f;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -42,15 +45,22 @@ public class Garbage : ItemInstance
 
     private void Throw(GameObject parent)
     {
-        Vector3 newPos = parent.transform.position + parent.transform.forward * 2.0f;
+        Vector3 newPos = parent.transform.position + parent.transform.forward * _positionOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
         CanInteract = true;
         _pickedUp = false;
+
         EnableRigidBodyCollisions();
 
-        Vector3 throwForce = transform.up;
-        _rb.AddForce(throwForce, ForceMode.Impulse);
+        Vector3 throwForwardDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.forward; 
+        Vector3 throwForwardForce = throwForwardDirection.normalized * _throwForwardForce;
+
+        Vector3 throwUpDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.up;
+        Vector3 throwUpForce = throwUpDirection.normalized * _throwUpForce;
+
+        _rb.AddForce(throwForwardForce, ForceMode.Impulse);
+        _rb.AddForce(throwUpForce, ForceMode.Impulse);
 
         IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
     }

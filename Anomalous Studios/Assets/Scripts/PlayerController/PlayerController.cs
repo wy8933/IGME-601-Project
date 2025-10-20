@@ -147,6 +147,7 @@ public class PlayerController : MonoBehaviour
         {
             if (_itemHotbar.CheckAvailableItemSlots())
             {
+                //_itemHotbar.SwitchToItem(_itemHotbar.GetSelectedItemIndex());
                 InteractWithItem();
             }
         }
