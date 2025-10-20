@@ -65,17 +65,23 @@ public class Task : MonoBehaviour
     /// <summary>
     /// Sets text to description
     /// </summary>
-    private void Start()
+    private void Awake()
     {
         descriptionText.text = _description;
-        _handbook = GameObject.FindGameObjectWithTag("UI").GetComponent<Handbook_UI>();
-        if (_isFirstTask)
+        _handbook = FindFirstObjectByType<Handbook_UI>();
+        if (_isFirstTask && _handbook.taskList.Count == 1)
         {
            leftArrow.SetActive(false);
+           rightArrow.SetActive(false);
         }
-        if(_isLastTask)
+        if(_isFirstTask && _handbook.taskList.Count > 1)
+        {
+            rightArrow.SetActive(true);
+        }
+        if (_isLastTask)
         {
             rightArrow.SetActive(false);
+            leftArrow.SetActive(true);
         }
     }
 

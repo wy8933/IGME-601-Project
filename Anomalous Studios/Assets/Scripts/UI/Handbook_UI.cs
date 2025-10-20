@@ -63,7 +63,9 @@ public class Handbook_UI : MonoBehaviour
 
         // Adds task to list and sets it as current task
         taskList.Add(task);
-        _currentTaskId = taskList.Count;
+        _currentTaskId = taskList.Count - 1;
+        print("Task list count " + taskList.Count);
+        print("Task list ID " + _currentTaskId);
         // Update current shown task to display this page
         UpdateTask(0);
     }
@@ -127,13 +129,14 @@ public class Handbook_UI : MonoBehaviour
         _currentTask.gameObject.SetActive(true);
 
         // Checks neighbors to turn them off so only one page is seen at a time
-        if (taskList[_currentTaskId + 1])
-        {
-            taskList[_currentTaskId + 1].gameObject.SetActive(false);
-        }
-        if (taskList[_currentTaskId - 1])
+        if (taskList.Count >= 2)
         {
             taskList[_currentTaskId - 1].gameObject.SetActive(false);
+
+            if (_currentTaskId < taskList.Count - 1) 
+            {
+                taskList[_currentTaskId + 1].gameObject.SetActive(false);
+            } 
         }
     }
     /// <summary>
