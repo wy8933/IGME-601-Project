@@ -45,23 +45,30 @@ public class Garbage : ItemInstance
 
     private void Throw(GameObject parent)
     {
+        // Set initital position of garbage item 
         Vector3 newPos = parent.transform.position + parent.transform.forward * _positionOffset;
         transform.position = newPos;
+
+        // Unparent garbage item
         this.gameObject.transform.parent = null;
+
+        // Re-enable necessary settings 
         CanInteract = true;
         _pickedUp = false;
-
         EnableRigidBodyCollisions();
 
+        // Calculate throwing forces
         Vector3 throwForwardDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.forward; 
         Vector3 throwForwardForce = throwForwardDirection.normalized * _throwForwardForce;
 
         Vector3 throwUpDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.up;
         Vector3 throwUpForce = throwUpDirection.normalized * _throwUpForce;
 
+        // Apply throwing forces
         _rb.AddForce(throwForwardForce, ForceMode.Impulse);
         _rb.AddForce(throwUpForce, ForceMode.Impulse);
 
+        // Update ItemHotbar 
         IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
     }
 

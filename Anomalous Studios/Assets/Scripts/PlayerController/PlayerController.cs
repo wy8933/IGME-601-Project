@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     [Header("Follow Camera")]
     [SerializeField] private Camera PlayerCamera;
 
+    [Header("Item Container")]
+    public Transform _itemContainerTransform;
+
     // Item Hotbar Script
     private ItemHotbar _itemHotbar;
 
