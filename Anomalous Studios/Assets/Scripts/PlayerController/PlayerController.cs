@@ -140,21 +140,10 @@ public class PlayerController : MonoBehaviour
     public void Interact() 
     {
         // If current item slot is empty
-        if (_itemHotbar.SlotHasNoItem())
-        {
+        //if (_itemHotbar.SlotHasNoItem())
+        //{
             InteractWithItem();
-        }
-        // Else find the next available item slot
-        /*else
-        {
-            Debug.Log("there is item");
-            if (_itemHotbar.CheckAvailableItemSlots())
-            {
-                Debug.Log("available item");
-                //_itemHotbar.SwitchToItem(_itemHotbar.GetSelectedItemIndex());
-                InteractWithItem();
-            }
-        }*/
+        //}
     }
 
     /// <summary>

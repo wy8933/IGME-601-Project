@@ -96,7 +96,10 @@ public class ItemHotbar : MonoBehaviour
 
             if (_itemHotbar[_selectedItemIndex].GetComponent<Watch>())
             {
-                ToggleWatchDisplay(_itemHotbar[_selectedItemIndex].GetComponent<Watch>()._rendererComponent);
+                if (WatchUI.activeSelf)
+                {
+                    ToggleWatchDisplay(_itemHotbar[_selectedItemIndex].GetComponent<Watch>()._rendererComponent);
+                }
             }
 
             _itemHotbar[_selectedItemIndex] = null;
