@@ -326,15 +326,4 @@ public class PlayerActions : MonoBehaviour
             _playerController.GetItemHotbar().DropItem();
         }
     }
-
-    public IEnumerator ApplySlowdown(float slowDuration)
-    {
-        _walkSpeed = 0.5f;
-        Debug.Log("Walk speed: " + _walkSpeed);
-
-        yield return new WaitForSeconds(slowDuration);
-
-        _walkSpeed = 3.0f;
-        Debug.Log("Walk speed: " + _walkSpeed);
-    }
 }
