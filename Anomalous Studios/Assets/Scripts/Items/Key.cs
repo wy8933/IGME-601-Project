@@ -23,12 +23,6 @@ public class Key : ItemInstance
         _boxCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        UpdateLocation();
-    }
-
     public override void Interact()
     {
         if (IInteractable.Instigator != null)
@@ -56,14 +50,6 @@ public class Key : ItemInstance
                     dc.CanInteract = true;
                 }
             }
-        }
-    }
-
-    private void UpdateLocation()
-    {
-        if (_cameraTransform && _pickedUp)
-        {
-            transform.localPosition = _itemCamPosOffset;
         }
     }
 

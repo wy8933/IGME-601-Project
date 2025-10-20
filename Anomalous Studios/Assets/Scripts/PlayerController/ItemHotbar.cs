@@ -1,5 +1,6 @@
 using ItemSystem;
 using System.Collections;
+using UnityEditor.SceneTemplate;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,8 +23,8 @@ public class ItemHotbar : MonoBehaviour
     private Coroutine _fadeCoroutine;
 
     [Header("Watch UI Gameobjects")]
-    [SerializeField] public GameObject WatchUI;
-    [SerializeField] public GameObject TimeUI;
+    public GameObject WatchUI;
+    public GameObject TimeUI;
     public bool _watchActive = false;
 
     // Getter Methods
@@ -36,6 +37,7 @@ public class ItemHotbar : MonoBehaviour
 
         WatchUI.SetActive(_watchActive);
         TimeUI.SetActive(_watchActive);
+
     }
 
     /// <summary>
@@ -46,9 +48,19 @@ public class ItemHotbar : MonoBehaviour
     {
         if (_itemHotbar[_selectedItemIndex] != null)
         {
-            return;
-        }
+            int i = CheckAvailableItemSlots();
 
+            if (i == _selectedItemIndex)
+            {
+                return;
+            }
+            else
+            {
+                //SwitchToItem(_selectedItemIndex);
+                _selectedItemIndex = i;
+            }
+        }
+        
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
 
@@ -236,9 +248,9 @@ public class ItemHotbar : MonoBehaviour
     /// Checks if currently selected item hotbar slot holds an item
     /// </summary>
     /// <returns></returns>
-    public bool SlotHasItem()
+    public bool SlotHasNoItem()
     {
-        return _itemHotbar[_selectedItemIndex] != null;
+        return _itemHotbar[_selectedItemIndex] == null;
     }
 
     /// <summary>
@@ -345,20 +357,19 @@ public class ItemHotbar : MonoBehaviour
     /// Checks for the next empty available slot in item hotbar
     /// </summary>
     /// <returns>Returns true or false if an empty slot is available</returns>
-    public bool CheckAvailableItemSlots()
+    public int CheckAvailableItemSlots()
     {
-        for(int i = 0; i < 3; i++)
-        {
-            int tempIndex = (_selectedItemIndex + 1) % 4;
+        int tempIndex = _selectedItemIndex;
 
+        for(int i = 0; i < 4; i++)
+        {
+            tempIndex = (tempIndex + 1) % 4;
             if (_itemHotbar[tempIndex] == null)
             {
-                SwitchToItem(tempIndex);
-                return true;
+                return tempIndex;
             }
-            _selectedItemIndex = tempIndex;
         }
 
-        return false;
+        return _selectedItemIndex;
     }
 }

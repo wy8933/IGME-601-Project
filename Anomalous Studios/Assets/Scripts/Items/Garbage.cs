@@ -30,12 +30,6 @@ public class Garbage : ItemInstance
         _boxCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        UpdateLocation();
-    }
-
     public override void Use(GameObject user)
     {
         TryUse(user);
@@ -77,14 +71,6 @@ public class Garbage : ItemInstance
         if (IInteractable.Instigator != null)
         {
             IInteractable.Instigator.GetComponent<PlayerController>().GetItemHotbar().AddItem(this.gameObject);
-        }
-    }
-
-    private void UpdateLocation()
-    {
-        if (_cameraTransform && _pickedUp)
-        {
-            transform.localPosition = _itemCamPosOffset;
         }
     }
 
