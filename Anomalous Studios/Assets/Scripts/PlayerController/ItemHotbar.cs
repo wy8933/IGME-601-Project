@@ -56,8 +56,7 @@ public class ItemHotbar : MonoBehaviour
             }
             else
             {
-                //SwitchToItem(_selectedItemIndex);
-                _selectedItemIndex = i;
+                SwitchToItem(i);
             }
         }
         
