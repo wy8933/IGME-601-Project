@@ -7,8 +7,7 @@ public class Garbage : ItemInstance
     private BoxCollider _boxCollider;
 
     public string Tag = "Garbage";
-    public float launchForce = 1.5f;
-    public Transform launchPoint;
+    private float _positionOffset = 1.5f;
 
     [Header("Throw Force")]
     [SerializeField] private float _throwForwardForce = 5.0f;
@@ -46,7 +45,7 @@ public class Garbage : ItemInstance
 
     private void Throw(GameObject parent)
     {
-        Vector3 newPos = parent.transform.position + parent.transform.forward * 1.5f;
+        Vector3 newPos = parent.transform.position + parent.transform.forward * _positionOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
         CanInteract = true;
