@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8966709947236400573}
   - component: {fileID: 5773822676803645220}
   - component: {fileID: 6038487540737067773}
+  - component: {fileID: 541532723287766684}
   m_Layer: 6
   m_Name: garbage2
   m_TagString: Garbage
@@ -122,7 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7d5938aaa56dd45b1cf7612faaa023, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canInteract: 1
   _holdTime: 0
   Mesh: {fileID: 4909583182963073201}
   item: {fileID: 11400000, guid: e98bcc345b3a3894f916a81b310bd929, type: 2}
@@ -130,6 +130,12 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   Tag: Garbage
+  launchForce: 1000
+  launchPoint: {fileID: 0}
+  _throwForwardForce: 5
+  _throwUpForce: 5
+  _failedSFX: {fileID: 0}
+  _successSFX: {fileID: 0}
 --- !u!54 &6038487540737067773
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -157,3 +163,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &541532723287766684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4909583182963073201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rend: {fileID: 0}
+  originalMats: []
+  outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0

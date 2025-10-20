@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -68,6 +69,8 @@ public class PlayerActions : MonoBehaviour
 
     public bool CanLean() { return _canLean; }
 
+    public float GetWalkSpeed() { return _walkSpeed; }
+
     // Setter Methods
     public void SetIsSprinting(bool InSprint) { _isSprinting = InSprint; }
 
@@ -76,6 +79,8 @@ public class PlayerActions : MonoBehaviour
     public void SetIsLeanRight(bool InLeanRight) { _isLeaningRight = InLeanRight; }
 
     public void SetIsCrouching(bool InIsCrouching) { _isCrouching = InIsCrouching; }
+
+    public void SetWalkSpeed(float InWalkSpeed) { _walkSpeed = InWalkSpeed; }
 
     private void Start()
     {

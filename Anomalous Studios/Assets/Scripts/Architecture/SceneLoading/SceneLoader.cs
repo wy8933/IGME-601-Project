@@ -2,145 +2,151 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+
+/// <summary>
+/// Raised when a level has been fully loaded, shoud alert managers to start referencing objects in the scene.
+/// Passes references of managers 
+/// </summary>
+public struct LevelLoaded : IEvent 
+{
+    public Handbook_UI _handbook;
+}
+
+/// <summary>
+/// Raised when a script wants to load a new level. Called by the elevator and menus.
+/// </summary>
+public struct LoadLevel : IEvent { public Level newLevel; }
 
 public enum Level
 {
-    currentLevel,
-    blue,
-    green,
-    red
+    mainMenu,
+    B1,
+    B2,
+    B3
 }
-
-public struct LevelLoading : IEvent { public Level newLevel; }
 
 public class SceneLoader : MonoBehaviour
 {
-    [Tooltip("Artificially creates some time in-between levels")]
-    [Range(0.0f, 5.0f)]
-    [SerializeField] private float _waitTime = 3.0f;
+    // TODO: Fade in and fade out a black screen BEFORE the loading process and AFTER the loading is fully done
+    public static Level ?CurrentLevel { get; private set; }
 
-    /// <summary>
-    /// Temporary reference for rebaking the navmesh when the scene reloads.
-    /// TODO: move the sceneloader to a persistant obj w/ the game managers, that obj also has navmesh.
-    /// </summary>
-    [SerializeField] private NavMeshSurface _nav;
-
-    [SerializeField] private SceneField[] _floorB7;
-    [SerializeField] private SceneField[] _floorB6;
-    [SerializeField] private SceneField[] _floorB5;
+    [Header("Level Listings")]
+    [SerializeField] private SceneField _elevator;
+    [SerializeField] private SceneField[] _mainMenu;
+    [SerializeField] private SceneField[] _floorB1;
+    [SerializeField] private SceneField[] _floorB2;
+    [SerializeField] private SceneField[] _floorB3;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
 
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
-    private Animator _animator;
+    private EventBinding<LoadLevel> _levelLoading;
 
-    private EventBinding<LevelLoading> _levelLoading;
+    private LevelLoaded _levelLoaded;
+
+    private GameObject _blackScreenTEMP;
+    private NavMeshSurface _navMeshSurface;
 
     public void Start()
     {
-        // TODO: should these var be init here? Is there a better place to init all the var?
-        VariableConditionManager.Instance.Set("TaskComplete", "true");
-        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
-
-        _animator = GetComponent<Animator>();
+        //VariableConditionManager.Instance.Set("TaskComplete", "false"); // TODO: Remove, legacy
+        //VariableConditionManager.Instance.Set("IsLevelLoading", "true"); // TODO: Remove, legacy
 
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
-            { Level.currentLevel, null },
-            { Level.blue, _floorB7 },
-            { Level.green, _floorB6 },
-            { Level.red, _floorB5 }
+            { Level.mainMenu, _mainMenu },
+            { Level.B1, _floorB1 },
+            { Level.B2, _floorB2 },
+            { Level.B3, _floorB3 }
         };
 
-        // TODO: The initial scene load should all be done in one method (variables, items, etc.)
-        // TODO: Load in the Rulekeeper every level, don't keep it active between scenes. Can throw errors w/ navmesh
-        StartCoroutine(LoadScenes(new LevelLoading { newLevel = Level.red }));
-    }
+        GameObject _mainUI = GameObject.Find("MainUI");
 
-    /// <summary>
-    /// EventBus event, starts the process of moving to the next level
-    /// </summary>
-    /// <param name="e"></param>
-    private void OnLevelLoaded(LevelLoading e)
-    {
-        _animator.SetTrigger("moveDoors");
-
-        StartCoroutine(LoadScenes(e));
-    }
-
-    /// <summary>
-    /// Waits for scenes to unload and load before opening the elevator doors
-    /// </summary>
-    /// <param name="e"></param>
-    /// <returns></returns>
-    private IEnumerator LoadScenes(LevelLoading e)
-    {
-        // TODO: Refactor this to use some sort of bitmask. Right now just brute-forcing it
-
-        // Wait for the doors to close before unloading any scenes
-        while (_animator.GetBool("isOpen")) { yield return null; }
-
-        // Unload all the scenes from the previous level, and load in all the new level's scenes
-        if (_floorLibrary[Level.currentLevel] != _floorLibrary[e.newLevel])
+        // Holds a reference to any managers, passes them along when the level is loaded to help initialize new scenes
+        // transform.Find() is able to search for inactive objects, unlike GameObject.Find()
+        // QUESTION: Should the managers all be singletons since they are persistent, rather than passing their references?
+        _levelLoaded = new LevelLoaded
         {
-            if (_floorLibrary[Level.currentLevel] != null)
-            {
-                foreach (SceneField scene in _floorLibrary[Level.currentLevel])
-                {
-                    _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
-                }
-            }
+            _handbook = _mainUI.transform.Find("Handbook").GetComponent<Handbook_UI>()
+        };
 
-            foreach (SceneField scene in _floorLibrary[e.newLevel])
-            {
-                _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
-            }
+        _blackScreenTEMP = _mainUI.transform.Find("LoadingScreen").gameObject;
+        _navMeshSurface = GetComponent<NavMeshSurface>();
 
-            // Wait until the scenes are all loaded before opening the doors
-            if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+        LoadLevel(new LoadLevel { newLevel = Level.mainMenu });
+    }
+
+    private void LoadLevel(LoadLevel e)
+    {
+        _blackScreenTEMP.SetActive(true);
+
+        StartCoroutine(WaitForScenes(e));
+    }
+
+    /// <summary>
+    /// Displays the loading screen, and loads all the new scenes additively. The navmesh is rebaked after all scenes are loaded safely
+    /// </summary>
+    /// <param name="e"></param>
+    private IEnumerator WaitForScenes(LoadLevel e)
+    {
+        // If we are in the main menu going to a level, load the elevator
+
+        if (CurrentLevel == Level.mainMenu && e.newLevel != Level.mainMenu)
+        {
+            _scenesToLoad.Add(SceneManager.LoadSceneAsync(_elevator, LoadSceneMode.Additive));
         }
 
-        _floorLibrary[Level.currentLevel] = _floorLibrary[e.newLevel];
+        // Load all of the new level scenes
+        foreach (SceneField scene in _floorLibrary[e.newLevel])
+        {
+            _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
+        }
 
-        // Artificially create some amount of time in the elevator for ambiance and SFX
-        if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
+        // unload all of the old level scenes
+        if (CurrentLevel != null)
+        {
+            foreach (SceneField scene in _floorLibrary[(Level)CurrentLevel])
+            {
+                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+            }
+        }
 
-        //_nav.BuildNavMesh();
-        VariableConditionManager.Instance.Set("IsLevelLoading", "false");
-        
-        _scenesToLoad.Clear();
+        // If we are not in the main menu going to the main menu, unload the elevator
+        if (e.newLevel == Level.mainMenu && CurrentLevel != Level.mainMenu && CurrentLevel != null)
+        {
+            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_elevator));
+        }
 
-        _animator.SetTrigger("moveDoors");
+        CurrentLevel = e.newLevel;
+
+        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+
+        // An artifical amount of loading time to prevent the NavMesh from trying to rebuild too quickly
+        yield return new WaitForSeconds(0.5f);
+
+        _scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));
+
+        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+
+        EventBus<LevelLoaded>.Raise(_levelLoaded);
+
+        _blackScreenTEMP.SetActive(false);
     }
 
-    /// <summary>
-    /// Waits for the close / open animation to fully finish before changing values
-    /// </summary>
-    public void IsOpen()
-    {
-        _animator.SetBool("isOpen", !_animator.GetBool("isOpen"));
-    }
+    // TODO: add a method that only resets the current scene, doesn't worry about resetting the whole thing
 
-    public void OnTriggerEnter(Collider other)
-    {
-        VariableConditionManager.Instance.Set("InElevator", "true");
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        VariableConditionManager.Instance.Set("InElevator", "false");
-    }
 
     public void OnEnable()
     {
-        _levelLoading = new EventBinding<LevelLoading>(OnLevelLoaded);
-        EventBus<LevelLoading>.Register(_levelLoading);
+        _levelLoading = new EventBinding<LoadLevel>(LoadLevel);
+        EventBus<LoadLevel>.Register(_levelLoading);
     }
 
     public void OnDisable()
     {
-        EventBus<LevelLoading>.DeRegister(_levelLoading);
+        EventBus<LoadLevel>.DeRegister(_levelLoading);
     }
 }

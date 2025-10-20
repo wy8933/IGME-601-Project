@@ -11,10 +11,10 @@ public enum ButtonType
 /// <summary>
 /// Elevator buttons to navigate the basement floors
 /// </summary>
-public class Button : MonoBehaviour, IInteractable
+public class ElevatorButton : MonoBehaviour, IInteractable
 {
     [SerializeField] private ButtonType _buttonType = ButtonType.Level;
-    [SerializeField] private LevelTESTING _level;
+    [SerializeField] private Level _level;
     [SerializeField] private float _holdTime = 0.0f;
 
     [Header("Reaction SFX")]
@@ -31,7 +31,7 @@ public class Button : MonoBehaviour, IInteractable
     /// <summary>
     /// FIX: By default false for elevator buttons, must meet some precondition each time anyway to unlock.
     /// </summary>
-    private bool _canInteract = true;
+    private bool _canInteract = false;
 
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
     
@@ -57,23 +57,43 @@ public class Button : MonoBehaviour, IInteractable
     {
         switch (_buttonType)
         {
+            // When a task has been completed, used to move to the very next level
             case ButtonType.Level:
-                Debug.Log("Go to level");
+                _elevator.OpenDoors();
                 EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _level } );
-                //_canInteract = false;
+                Disable();
                 break;
             
+            // After all the papers have been collected, used to open the elevator doors
             case ButtonType.Open:
-                Debug.Log("Close doors");
                 _elevator.OpenDoors();
-                    //_canInteract = false;
+                Disable();
                 break;
 
+            // The close button in the elevator is a joke, might make an electrical sounds when pressed, or fall off the wall
             case ButtonType.Close:
                 Debug.Log("Lmao");
-                _elevator.OpenDoors();
                 break;
         }
 
+    }
+
+    /// <summary>
+    /// Highlights this button to be pressed by the player
+    /// </summary>
+    public void Enable()
+    {
+        // A temporary "glow" effect to prompt the player to press this button, should probably pulse yellow eventually
+        _renderer.material.color = Color.yellow;
+        _canInteract = true;
+    }
+
+    /// <summary>
+    /// Prevents the usage of this button
+    /// </summary>
+    public void Disable()
+    {
+        _renderer.material.color = Color.black;
+        _canInteract = false;
     }
 }

@@ -4,7 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class Main_Menu : MonoBehaviour
 {
+    [Tooltip("Where to go from the main menu, this should be the first level in the list")]
+    [SerializeField] private Level _startLevel;
+
     [SerializeField] GameObject credits;
+    
     bool isVisible = false;
 
     /// <summary>
@@ -13,7 +17,7 @@ public class Main_Menu : MonoBehaviour
     public void StartGame()
     {
         //SceneManager.LoadScene(1);
-        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = LevelTESTING.B1 });
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _startLevel });
     }
     public void QuitGame()
     {

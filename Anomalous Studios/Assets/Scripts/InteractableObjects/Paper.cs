@@ -8,7 +8,7 @@ public class Paper : MonoBehaviour, IInteractable
     [SerializeField] private Handbook_UI _handbook = null;
     [SerializeField] private float _holdTime = 0.0f;
 
-    private static int ActivePapers = 0;
+    private ElevatorController _elevator;
 
     private Renderer _renderer;
     public bool isTask;
@@ -36,7 +36,7 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Start()
     {
-        ActivePapers += 1;
+        _elevator = transform.parent.parent.GetComponent<ElevatorController>();
         _renderer = GetComponent<Renderer>();
     }
 
@@ -54,12 +54,7 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
-        ActivePapers -= 1;
-
-        if (ActivePapers <= 0)
-        {
-            VariableConditionManager.Instance.Set("TasksCollected", "true");
-        }
+        _elevator.RemoveNote(this);
 
         this.gameObject.SetActive(false);
         AddToHandbook();
@@ -86,6 +81,7 @@ public class Paper : MonoBehaviour, IInteractable
     }
 
     // TODO: can we deregister the event after the handbook has been initialized? No need to reset it every time
+    // Alternatively, have the elevator pass in a reference to the handbook when the notes are created
     private void InitReferences(LevelLoaded e)
     {
         _handbook = e._handbook;

@@ -1,0 +1,146 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.AI.Navigation;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public enum LevelLEGACY 
+{
+    currentLevel,
+    blue,
+    green,
+    red
+}
+
+public struct LevelLoadingLEGACY : IEvent { public LevelLEGACY newLevel; }
+
+public class SceneLoaderLEGACY : MonoBehaviour
+{
+    [Tooltip("Artificially creates some time in-between levels")]
+    [Range(0.0f, 5.0f)]
+    [SerializeField] private float _waitTime = 3.0f;
+
+    /// <summary>
+    /// Temporary reference for rebaking the navmesh when the scene reloads.
+    /// TODO: move the sceneloader to a persistant obj w/ the game managers, that obj also has navmesh.
+    /// </summary>
+    [SerializeField] private NavMeshSurface _nav;
+
+    [SerializeField] private SceneField[] _floorB7;
+    [SerializeField] private SceneField[] _floorB6;
+    [SerializeField] private SceneField[] _floorB5;
+
+    private Dictionary<LevelLEGACY, SceneField[]> _floorLibrary;
+
+    private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
+
+    private Animator _animator;
+
+    private EventBinding<LevelLoadingLEGACY> _levelLoading;
+
+    public void Start()
+    {
+        // TODO: should these var be init here? Is there a better place to init all the var?
+        VariableConditionManager.Instance.Set("TaskComplete", "true");
+        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
+
+        _animator = GetComponent<Animator>();
+
+        _floorLibrary = new Dictionary<LevelLEGACY, SceneField[]>
+        {
+            { LevelLEGACY.currentLevel, null },
+            { LevelLEGACY.blue, _floorB7 },
+            { LevelLEGACY.green, _floorB6 },
+            { LevelLEGACY.red, _floorB5 }
+        };
+
+        // TODO: The initial scene load should all be done in one method (variables, items, etc.)
+        // TODO: Load in the Rulekeeper every level, don't keep it active between scenes. Can throw errors w/ navmesh
+        StartCoroutine(LoadScenes(new LevelLoadingLEGACY { newLevel = LevelLEGACY.red }));
+    }
+
+    /// <summary>
+    /// EventBus event, starts the process of moving to the next level
+    /// </summary>
+    /// <param name="e"></param>
+    private void OnLevelLoaded(LevelLoadingLEGACY e)
+    {
+        _animator.SetTrigger("moveDoors");
+
+        StartCoroutine(LoadScenes(e));
+    }
+
+    /// <summary>
+    /// Waits for scenes to unload and load before opening the elevator doors
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    private IEnumerator LoadScenes(LevelLoadingLEGACY e)
+    {
+        // TODO: Refactor this to use some sort of bitmask. Right now just brute-forcing it
+
+        // Wait for the doors to close before unloading any scenes
+        while (_animator.GetBool("isOpen")) { yield return null; }
+
+        // Unload all the scenes from the previous level, and load in all the new level's scenes
+        if (_floorLibrary[LevelLEGACY.currentLevel] != _floorLibrary[e.newLevel])
+        {
+            if (_floorLibrary[LevelLEGACY.currentLevel] != null)
+            {
+                foreach (SceneField scene in _floorLibrary[LevelLEGACY.currentLevel])
+                {
+                    _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
+                }
+            }
+
+            foreach (SceneField scene in _floorLibrary[e.newLevel])
+            {
+                _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
+            }
+
+            // Wait until the scenes are all loaded before opening the doors
+            if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+        }
+
+        _floorLibrary[LevelLEGACY.currentLevel] = _floorLibrary[e.newLevel];
+
+        // Artificially create some amount of time in the elevator for ambiance and SFX
+        if (_waitTime != 0) { yield return new WaitForSeconds(_waitTime); }
+
+        //_nav.BuildNavMesh();
+        VariableConditionManager.Instance.Set("IsLevelLoading", "false");
+        
+        _scenesToLoad.Clear();
+
+        _animator.SetTrigger("moveDoors");
+    }
+
+    /// <summary>
+    /// Waits for the close / open animation to fully finish before changing values
+    /// </summary>
+    public void IsOpen()
+    {
+        _animator.SetBool("isOpen", !_animator.GetBool("isOpen"));
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        VariableConditionManager.Instance.Set("InElevator", "true");
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        VariableConditionManager.Instance.Set("InElevator", "false");
+    }
+
+    public void OnEnable()
+    {
+        _levelLoading = new EventBinding<LevelLoadingLEGACY>(OnLevelLoaded);
+        EventBus<LevelLoadingLEGACY>.Register(_levelLoading);
+    }
+
+    public void OnDisable()
+    {
+        EventBus<LevelLoadingLEGACY>.DeRegister(_levelLoading);
+    }
+}
