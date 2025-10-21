@@ -17,10 +17,12 @@ public class Handbook_UI : MonoBehaviour
     Policy _currentPolicy;
     int _currentPolicyId;
     public GameObject[] pages;
-    [SerializeField] private Transform _taskContainer;
-    [SerializeField] private Transform _ruleContainer;
-    [SerializeField] private GameObject _taskPrefab;
-    [SerializeField] private GameObject _policyPrefab;
+    [SerializeField] private Transform _taskPage;
+    [SerializeField] private Transform _policyPage;
+    [SerializeField] private GameObject _taskPrefabLeft;
+    [SerializeField] private GameObject _taskPrefabRight;
+    [SerializeField] private GameObject _policyPrefabLeft;
+    [SerializeField] private GameObject _policyPrefabRight;
     [SerializeField] private GameObject _popupPrefabPolicy;
     [SerializeField] private GameObject _popupPrefabTask;
     //[SerializeField] private PlayerController _playerController;
@@ -37,7 +39,15 @@ public class Handbook_UI : MonoBehaviour
     /// <param name="task"></param>
     public void AddTask(string description, string title)
     {
-        GameObject taskObj = Instantiate(_taskPrefab, _taskContainer);
+        GameObject taskObj;
+        if ((taskList.Count + 1 ) % 2 == 0)
+        {
+            taskObj = Instantiate(_taskPrefabLeft, _taskPage);
+        }
+        else
+        {
+            taskObj = Instantiate(_taskPrefabRight, _taskPage);
+        }
         Task task = taskObj.GetComponent<Task>();
         
         task.Description = $"{taskList.Count + 1}. {description}";
@@ -70,32 +80,25 @@ public class Handbook_UI : MonoBehaviour
     }
 
     /// <summary>
-    /// Global Add rule method that can be called when player gets a new task. 
-    /// Will add the gameObject specified into the journal under the tasks page
+    /// Global Add rule method that can be called when player gets a new policy. 
+    /// Will add the gameObject specified into the journal under the policies page
     /// </summary>
     /// <param name="policy"></param>
     public void AddPolicy(string description, string title)
     {
-        GameObject policyObj = Instantiate(_policyPrefab, _ruleContainer);
+        GameObject policyObj;
+        if ((policiesList.Count + 1) % 2 == 0)
+        {
+            policyObj = Instantiate(_policyPrefabLeft, _policyPage);
+        }
+        else
+        {
+            policyObj = Instantiate(_policyPrefabRight, _policyPage);
+        }
         Policy policy = policyObj.GetComponent<Policy>();
 
         policy.Description = $"{policiesList.Count+1}. {description}";
         policy.Title = title;
-
-        // Checks position in list
-        if (policiesList.Count == 0)
-        {
-            policy.IsFirstPolicy = true;
-        }
-        else
-        {
-            policy.IsLastPolicy = true;
-            // Turns previously last task to false.
-            if (policiesList.Count > 1)
-            {
-                policiesList[policiesList.Count - 1].IsLastPolicy = false;
-            }
-        }
 
         // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
@@ -137,7 +140,6 @@ public class Handbook_UI : MonoBehaviour
         foreach (Task task in taskList)
         {
             task.gameObject.SetActive(false);
-            task.UpdatePage(taskList);
         }
 
         // Adds 1, 0, or -1 to change task to next, added, or previous in list.
@@ -155,7 +157,6 @@ public class Handbook_UI : MonoBehaviour
         foreach (Policy policy in policiesList)
         {
             policy.gameObject.SetActive(false);
-            policy.UpdatePage(policiesList);
         }
 
         // Adds 1, 0, or -1 to change task to next, added, or previous in list.

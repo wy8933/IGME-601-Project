@@ -58,6 +58,16 @@ public class Policy : MonoBehaviour
         get { return _isLastPolicy; }
         set { _isLastPolicy = value; }
     }
+    public GameObject LeftArrow
+    {
+        get { return _leftArrow; }
+        set { _leftArrow = value; }
+    }
+    public GameObject RightArrow
+    {
+        get { return _rightArrow; }
+        set { _rightArrow = value; }
+    }
     /// <summary>
     /// Sets text to description
     /// </summary>
@@ -68,37 +78,37 @@ public class Policy : MonoBehaviour
         _handbook = FindFirstObjectByType<Handbook_UI>();
     }
 
-    /// <summary>
-    /// Updates the arrows on the page based on its position and size of the list
-    /// </summary>
-    /// <param name="policiesList"></param>
-    public void UpdatePage(List<Policy> policiesList)
-    {
-        if (_isFirstPolicy && policiesList.Count == 1)
-        {
-            _leftArrow.SetActive(false);
-            _rightArrow.SetActive(false);
-        }
-        if (_isFirstPolicy && policiesList.Count > 1)
-        {
-            _rightArrow.SetActive(true);
-        }
-        if (_isLastPolicy)
-        {
-            _rightArrow.SetActive(false);
-            _leftArrow.SetActive(true);
-        }
-        if (!_isFirstPolicy && !_isLastPolicy)
-        {
-            _leftArrow.SetActive(true);
-            _rightArrow.SetActive(true);
-        }
-    }
+    ///// <summary>
+    ///// Updates the arrows on the page based on its position and size of the list
+    ///// </summary>
+    ///// <param name="policiesList"></param>
+    //public void UpdatePage(List<Policy> policiesList)
+    //{
+    //    if (_isFirstPolicy && policiesList.Count == 1)
+    //    {
+    //        _leftArrow.SetActive(false);
+    //        _rightArrow.SetActive(false);
+    //    }
+    //    if (_isFirstPolicy && policiesList.Count > 1)
+    //    {
+    //        _rightArrow.SetActive(true);
+    //    }
+    //    if (_isLastPolicy)
+    //    {
+    //        _rightArrow.SetActive(false);
+    //        _leftArrow.SetActive(true);
+    //    }
+    //    if (!_isFirstPolicy && !_isLastPolicy)
+    //    {
+    //        _leftArrow.SetActive(true);
+    //        _rightArrow.SetActive(true);
+    //    }
+    //}
 
     /// <summary>
     /// Right arrow button
     /// </summary>
-    public void RightArrow()
+    public void RightArrowClicked()
     {
         _handbook.UpdatePolicy(1);
     }
@@ -106,7 +116,7 @@ public class Policy : MonoBehaviour
     /// <summary>
     /// Left arrow button method
     /// </summary>
-    public void LeftArrow()
+    public void LeftArrowClicked()
     {
         _handbook.UpdatePolicy(-1);
     }
