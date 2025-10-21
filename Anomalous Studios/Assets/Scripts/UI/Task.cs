@@ -95,6 +95,11 @@ public class Task : MonoBehaviour
             rightArrow.SetActive(false);
             leftArrow.SetActive(true);
         }
+        if (!_isFirstTask && !_isLastTask)
+        {
+            leftArrow.SetActive(true);
+            rightArrow.SetActive(true);
+        }
     }
     public void CompleteTask()
     {

@@ -131,6 +131,7 @@ public class Handbook_UI : MonoBehaviour
         foreach (Task task in taskList)
         {
             task.gameObject.SetActive(false);
+            task.UpdatePage(taskList);
         }
 
         // Adds 1, 0, or -1 to change task to next, added, or previous in list.
