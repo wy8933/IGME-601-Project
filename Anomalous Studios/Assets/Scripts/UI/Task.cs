@@ -70,9 +70,15 @@ public class Task : MonoBehaviour
     {
         descriptionText.text = _description;
         _handbook = FindFirstObjectByType<Handbook_UI>();
-        UpdatePage(_handbook.taskList);   
     }
 
+    private void OnEnable()
+    {
+        if (_handbook != null)
+        {
+            UpdatePage(_handbook.taskList);
+        }
+    }
     public void UpdatePage(List<Task> taskList)
     {
         if (_isFirstTask && taskList.Count == 1)
@@ -108,6 +114,8 @@ public class Task : MonoBehaviour
     /// </summary>
     public void LeftArrow()
     {
+        print("Left Arrow Pressed");
+
         _handbook.PreviousTask();
     }
 }

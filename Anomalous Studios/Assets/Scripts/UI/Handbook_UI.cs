@@ -121,26 +121,22 @@ public class Handbook_UI : MonoBehaviour
 
     public void PreviousTask()
     {
+        print("Called");
         // Update current shown task to be the previous one in the list
         UpdateTask(-1);
     }
 
     public void UpdateTask(int value)
     {
+        foreach (Task task in taskList)
+        {
+            task.gameObject.SetActive(false);
+        }
+
         // Adds 1, 0, or -1 to change task to next, added, or previous in list.
         _currentTaskId += value;
         _currentTask = taskList[_currentTaskId];
         _currentTask.gameObject.SetActive(true);
-
-        // Checks neighbors to turn them off so only one page is seen at a time
-        if (taskList.Count > 2)
-        {
-            taskList[_currentTaskId - 1].gameObject.SetActive(false); 
-        }
-        if (_currentTaskId < taskList.Count - 2)
-        {
-            taskList[_currentTaskId + 1].gameObject.SetActive(false);
-        }
     }
     /// <summary>
     /// Hides the journal and resumes play
