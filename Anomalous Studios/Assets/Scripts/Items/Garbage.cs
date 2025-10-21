@@ -30,12 +30,6 @@ public class Garbage : ItemInstance
         _boxCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    public void Update()
-    {
-        UpdateLocation();
-    }
-
     public override void Use(GameObject user)
     {
         TryUse(user);
@@ -45,23 +39,30 @@ public class Garbage : ItemInstance
 
     private void Throw(GameObject parent)
     {
+        // Set initital position of garbage item 
         Vector3 newPos = parent.transform.position + parent.transform.forward * _positionOffset;
         transform.position = newPos;
+
+        // Unparent garbage item
         this.gameObject.transform.parent = null;
+
+        // Re-enable necessary settings 
         CanInteract = true;
         _pickedUp = false;
-
         EnableRigidBodyCollisions();
 
+        // Calculate throwing forces
         Vector3 throwForwardDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.forward; 
         Vector3 throwForwardForce = throwForwardDirection.normalized * _throwForwardForce;
 
         Vector3 throwUpDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.up;
         Vector3 throwUpForce = throwUpDirection.normalized * _throwUpForce;
 
+        // Apply throwing forces
         _rb.AddForce(throwForwardForce, ForceMode.Impulse);
         _rb.AddForce(throwUpForce, ForceMode.Impulse);
 
+        // Update ItemHotbar 
         IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
     }
 
@@ -70,14 +71,6 @@ public class Garbage : ItemInstance
         if (IInteractable.Instigator != null)
         {
             IInteractable.Instigator.GetComponent<PlayerController>().GetItemHotbar().AddItem(this.gameObject);
-        }
-    }
-
-    private void UpdateLocation()
-    {
-        if (_cameraTransform && _pickedUp)
-        {
-            transform.localPosition = _itemCamPosOffset;
         }
     }
 

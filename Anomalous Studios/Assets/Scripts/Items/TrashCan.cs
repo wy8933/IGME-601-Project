@@ -11,12 +11,6 @@ public class TrashCan : MonoBehaviour
         _capsuleCollider = GetComponent<CapsuleCollider>();
     }
 
-    // Update is called once per frame
-     void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         Garbage garbageScript = collision.gameObject.GetComponent<Garbage>();
