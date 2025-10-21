@@ -11,10 +11,10 @@ public class Task : MonoBehaviour
     private bool _isLastTask = false;
     private Handbook_UI _handbook;
 
-    [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private TextMeshProUGUI completionText;
-    [SerializeField] private GameObject leftArrow;
-    [SerializeField] private GameObject rightArrow;
+    [SerializeField] private TextMeshProUGUI _descriptionText;
+    [SerializeField] private TextMeshProUGUI _completionText;
+    [SerializeField] private GameObject _leftArrow;
+    [SerializeField] private GameObject _rightArrow;
 
     /// <summary>
     /// Public property to get and set task description
@@ -68,42 +68,39 @@ public class Task : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        descriptionText.text = _description;
+        _descriptionText.text = _description;
         _handbook = FindFirstObjectByType<Handbook_UI>();
     }
 
-    private void OnEnable()
-    {
-        if (_handbook != null)
-        {
-            UpdatePage(_handbook.taskList);
-        }
-    }
+    /// <summary>
+    /// Updates the arrows on each page when the list is altered 
+    /// </summary>
+    /// <param name="taskList"></param>
     public void UpdatePage(List<Task> taskList)
     {
         if (_isFirstTask && taskList.Count == 1)
         {
-            leftArrow.SetActive(false);
-            rightArrow.SetActive(false);
+            _leftArrow.SetActive(false);
+            _rightArrow.SetActive(false);
         }
         if (_isFirstTask && taskList.Count > 1)
         {
-            rightArrow.SetActive(true);
+            _rightArrow.SetActive(true);
         }
         if (_isLastTask)
         {
-            rightArrow.SetActive(false);
-            leftArrow.SetActive(true);
+            _rightArrow.SetActive(false);
+            _leftArrow.SetActive(true);
         }
         if (!_isFirstTask && !_isLastTask)
         {
-            leftArrow.SetActive(true);
-            rightArrow.SetActive(true);
+            _leftArrow.SetActive(true);
+            _rightArrow.SetActive(true);
         }
     }
     public void CompleteTask()
     {
-        completionText.text = "<color=green>Task Completed</color>";
+        _completionText.text = "<color=green>Task Completed</color>";
     }
 
     /// <summary>
@@ -111,7 +108,7 @@ public class Task : MonoBehaviour
     /// </summary>
     public void RightArrow()
     {
-        _handbook.NextTask();
+        _handbook.UpdateTask(1);
     }
 
     /// <summary>
@@ -119,8 +116,7 @@ public class Task : MonoBehaviour
     /// </summary>
     public void LeftArrow()
     {
-        print("Left Arrow Pressed");
+        _handbook.UpdateTask(-1);
 
-        _handbook.PreviousTask();
     }
 }

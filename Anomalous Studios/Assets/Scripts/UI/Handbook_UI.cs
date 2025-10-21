@@ -55,12 +55,9 @@ public class Handbook_UI : MonoBehaviour
             if(taskList.Count > 1)
             {
                 taskList[taskList.Count - 1].IsLastTask = false;
-                taskList[taskList.Count - 1].UpdatePage(taskList);
             }
         }
-        // Updates the arrows on the page
-        task.UpdatePage(taskList);
-
+        
         // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
         popupText.transform.SetParent(transform.parent, false);
@@ -68,8 +65,6 @@ public class Handbook_UI : MonoBehaviour
         // Adds task to list and sets it as current task
         taskList.Add(task);
         _currentTaskId = taskList.Count - 1;
-        print("Task list count " + taskList.Count);
-        print("Task list ID " + _currentTaskId);
         // Update current shown task to display this page
         UpdateTask(0);
     }
@@ -87,10 +82,30 @@ public class Handbook_UI : MonoBehaviour
         policy.Description = $"{policiesList.Count+1}. {description}";
         policy.Title = title;
 
-        policiesList.Add(policy);
+        // Checks position in list
+        if (policiesList.Count == 0)
+        {
+            policy.IsFirstPolicy = true;
+        }
+        else
+        {
+            policy.IsLastPolicy = true;
+            // Turns previously last task to false.
+            if (policiesList.Count > 1)
+            {
+                policiesList[policiesList.Count - 1].IsLastPolicy = false;
+            }
+        }
 
-        GameObject popupText = Instantiate(_popupPrefabPolicy);
+        // Lets user know that they picked up a new task
+        GameObject popupText = Instantiate(_popupPrefabTask);
         popupText.transform.SetParent(transform.parent, false);
+
+        // Adds policy to list and sets it as current policy
+        policiesList.Add(policy);
+        _currentPolicyId = policiesList.Count - 1;
+        // Update current shown policy to display this page
+        UpdatePolicy(0);
     }
 
     #region Button Methods
@@ -113,19 +128,10 @@ public class Handbook_UI : MonoBehaviour
         }
     }
 
-    public void NextTask()
-    {
-        // Update current shown task to be the next one in the list
-        UpdateTask(1);
-    }
-
-    public void PreviousTask()
-    {
-        print("Called");
-        // Update current shown task to be the previous one in the list
-        UpdateTask(-1);
-    }
-
+    /// <summary>
+    /// Hides all other pages and updates their arrows as well as updating the current task
+    /// </summary>
+    /// <param name="value"></param>
     public void UpdateTask(int value)
     {
         foreach (Task task in taskList)
@@ -138,6 +144,24 @@ public class Handbook_UI : MonoBehaviour
         _currentTaskId += value;
         _currentTask = taskList[_currentTaskId];
         _currentTask.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Hides all other pages and updates their arrows as well as updating the current policy
+    /// </summary>
+    /// <param name="value"></param>
+    public void UpdatePolicy(int value)
+    {
+        foreach (Policy policy in policiesList)
+        {
+            policy.gameObject.SetActive(false);
+            policy.UpdatePage(policiesList);
+        }
+
+        // Adds 1, 0, or -1 to change task to next, added, or previous in list.
+        _currentPolicyId += value;
+        _currentPolicy = policiesList[_currentPolicyId];
+        _currentPolicy.gameObject.SetActive(true);
     }
     /// <summary>
     /// Hides the journal and resumes play
