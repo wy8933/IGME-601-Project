@@ -12,6 +12,10 @@ public class Handbook_UI : MonoBehaviour
 {
     public List <Policy> policiesList;
     public List <Task> taskList;
+    Task _currentTask;
+    int _currentTaskId;
+    Policy _currentPolicy;
+    int _currentPolicyId;
     public GameObject[] pages;
     [SerializeField] private Transform _taskContainer;
     [SerializeField] private Transform _ruleContainer;
@@ -39,16 +43,37 @@ public class Handbook_UI : MonoBehaviour
         task.Description = $"{taskList.Count + 1}. {description}";
         task.Title = title;
 
+        // Checks position in list
+        if (taskList.Count == 0)
+        {
+            task.IsFirstTask = true;
+        }
+        else
+        {
+            task.IsLastTask = true;
+            // Turns previously last task to false.
+            if(taskList.Count > 1)
+            {
+                taskList[taskList.Count - 1].IsLastTask = false;
+            }
+        }
+        
+        // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
         popupText.transform.SetParent(transform.parent, false);
+
+        // Adds task to list and sets it as current task
         taskList.Add(task);
+        _currentTaskId = taskList.Count - 1;
+        // Update current shown task to display this page
+        UpdateTask(0);
     }
 
     /// <summary>
     /// Global Add rule method that can be called when player gets a new task. 
     /// Will add the gameObject specified into the journal under the tasks page
     /// </summary>
-    /// <param name="task"></param>
+    /// <param name="policy"></param>
     public void AddPolicy(string description, string title)
     {
         GameObject policyObj = Instantiate(_policyPrefab, _ruleContainer);
@@ -57,10 +82,30 @@ public class Handbook_UI : MonoBehaviour
         policy.Description = $"{policiesList.Count+1}. {description}";
         policy.Title = title;
 
-        policiesList.Add(policy);
+        // Checks position in list
+        if (policiesList.Count == 0)
+        {
+            policy.IsFirstPolicy = true;
+        }
+        else
+        {
+            policy.IsLastPolicy = true;
+            // Turns previously last task to false.
+            if (policiesList.Count > 1)
+            {
+                policiesList[policiesList.Count - 1].IsLastPolicy = false;
+            }
+        }
 
-        GameObject popupText = Instantiate(_popupPrefabPolicy);
+        // Lets user know that they picked up a new task
+        GameObject popupText = Instantiate(_popupPrefabTask);
         popupText.transform.SetParent(transform.parent, false);
+
+        // Adds policy to list and sets it as current policy
+        policiesList.Add(policy);
+        _currentPolicyId = policiesList.Count - 1;
+        // Update current shown policy to display this page
+        UpdatePolicy(0);
     }
 
     #region Button Methods
@@ -84,34 +129,40 @@ public class Handbook_UI : MonoBehaviour
     }
 
     /// <summary>
-    /// Arrow method to increase slider by 20% of sliders max value
+    /// Hides all other pages and updates their arrows as well as updating the current task
     /// </summary>
-    /// <param name="slider"></param>
-    public void SliderArrowUp(Slider slider)
+    /// <param name="value"></param>
+    public void UpdateTask(int value)
     {
-        float amount = slider.maxValue/20;
-        slider.value += amount;  
+        foreach (Task task in taskList)
+        {
+            task.gameObject.SetActive(false);
+            task.UpdatePage(taskList);
+        }
+
+        // Adds 1, 0, or -1 to change task to next, added, or previous in list.
+        _currentTaskId += value;
+        _currentTask = taskList[_currentTaskId];
+        _currentTask.gameObject.SetActive(true);
     }
 
     /// <summary>
-    /// Arrow method to decrease slider by 20% of sliders max value
+    /// Hides all other pages and updates their arrows as well as updating the current policy
     /// </summary>
-    /// <param name="slider"></param>
-    public void SliderArrowDown(Slider slider)
+    /// <param name="value"></param>
+    public void UpdatePolicy(int value)
     {
-        float amount = slider.maxValue / 20;
-        slider.value -= amount;
-    }
+        foreach (Policy policy in policiesList)
+        {
+            policy.gameObject.SetActive(false);
+            policy.UpdatePage(policiesList);
+        }
 
-    /// <summary>
-    /// Sets the volume slider to 0
-    /// </summary>
-    /// <param name="volumeSlider"></param>
-    public void Mute(Slider volumeSlider)
-    {
-        volumeSlider.value = 0;
+        // Adds 1, 0, or -1 to change task to next, added, or previous in list.
+        _currentPolicyId += value;
+        _currentPolicy = policiesList[_currentPolicyId];
+        _currentPolicy.gameObject.SetActive(true);
     }
-    
     /// <summary>
     /// Hides the journal and resumes play
     /// </summary>
@@ -120,29 +171,7 @@ public class Handbook_UI : MonoBehaviour
         _playerController.GetPlayerJournal().ToggleHandbook();
         // Resume Logic
     }
-
-    /// <summary>
-    /// Loads the Main Menu scene
-    /// </summary>
-    public void MainMenu()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    /// <summary>
-    /// Checks if the game is playing in editor or build and then closes the game.
-    /// </summary>
-    public void QuitGame()
-    {
-    #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-    #else
-        Application.Quit();
-    #endif
-    }
     #endregion
-
-    
 
     #region Test
     // Testing
