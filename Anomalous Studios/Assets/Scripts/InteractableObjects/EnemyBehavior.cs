@@ -3,9 +3,11 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 using AudioSystem;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
-/// TODO: Temporary broken rule event, should be refactored with rule event system
+/// If a rule is broken or resolved, passes the type of affected rule to the Rulekeeper
 /// </summary>
 public struct RuleBroken : IEvent { public bool isBroken; }
 
@@ -14,18 +16,18 @@ public struct RuleBroken : IEvent { public bool isBroken; }
 /// </summary>
 public class EnemyBehavior : MonoBehaviour, IInteractable
 {
-    [SerializeField] private float _holdTime = 0.0f;
-
     private EventBinding<RuleBroken> _ruleBroken;
+    // TODO: refactor reset of scene
     private EventBinding<LevelLoaded> _levelLoading;
 
     private BehaviorGraphAgent self;
 
+    // TODO: refactor reset of scene
     private Vector3 _spawnPoint = Vector3.zero;
 
     private bool _canInteract = true;
 
-    public float HoldTime { get => _holdTime; }
+    public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
     [Header("Reaction SFX")]
@@ -36,12 +38,24 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public SoundDataSO CancelSFX => null;
     public SoundDataSO SuccessSFX { get => _successSFX; }
 
+    // TODO: change to an enum value instead of string names for rules
+    private Dictionary<string, bool> _rulesLibrary = new Dictionary<string, bool>
+        {
+            { "lights", false },
+            { "camera", false },
+            { "action!", false }
+        };
+
     public void Start()
     {
         self = GetComponent<BehaviorGraphAgent>();
         self.SetVariableValue("Player", 
             GameObject.FindGameObjectWithTag("Player"));
-        _spawnPoint = new Vector3(-14, 2.5f, 0.0f); // TODO: Change to this position, just need to test other things 1st
+
+        // TODO: refactor reset of scene
+        _spawnPoint = new Vector3(-14, 2.5f, 0.0f);
+
+        EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true });
     }
 
     public void Highlight()
@@ -56,7 +70,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public void Interact()
     {
         // TODO: replace with textbox interaction, should be able to simply say 'hello,' or sign a paper
-        GetComponent<Renderer>().material.color = Color.red;
     }
 
     /// <summary>
@@ -64,15 +77,16 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     /// </summary>
     private void OnRuleBroken(RuleBroken e)
     {
-        self.SetVariableValue("ruleBroken", e.isBroken);
+        _rulesLibrary["lights"] = e.isBroken;
+
+        // One giant OR statement of dictionary values
+        self.SetVariableValue("ruleBroken", _rulesLibrary.Values.Any(value => value));
     }
 
 
     /// <summary>
     /// Brings the Rulekeepr back to spawn, resets their behaviors in between levels
-    /// TODO: have this register as an event on level loading, then a coroutine 
     /// </summary>
-    /// <param name="spawnPoint">Optionally update the Rulekeeper's spawn position</param>
     private void OnLevelLoaded(LevelLoaded e)
     {
         self.enabled = false;
@@ -82,6 +96,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         transform.position = _spawnPoint;
 
         StartCoroutine(EnableRuleKeeper(e));
+
+        // TODO: set up the list of rules with a new dataset
     }
 
     private IEnumerator EnableRuleKeeper(LevelLoaded e)
