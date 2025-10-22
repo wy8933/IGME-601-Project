@@ -317,23 +317,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
   m_PrefabInstance: {fileID: 1954910251}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &241108509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241108496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2c967f53745ed242b5c61f52d3f954e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
-  cleanDistance: 3
-  cleanKey: 108
-  progressCheckInterval: 1
-  cleanThreshold: 0.8
 --- !u!1 &366973570
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,7 +1734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maskResolution: 1024
   maskFormat: 16
-  brushRadiusUV: 0.05
+  brushRadiusUV: 0.137
   brushSoftness: 0.5
   brushStrength: 0.6
   brushShader: {fileID: 0}
@@ -1986,10 +1969,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 241108509}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
 --- !u!1 &2012261840
 GameObject:
