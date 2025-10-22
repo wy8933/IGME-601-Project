@@ -7,11 +7,9 @@ public class Policy : MonoBehaviour
     private string _description;
     private string _title;
     private bool _isBroken;
-    private bool _isFirstPolicy = false;
-    private bool _isLastPolicy = false;
+    private bool _isRightPage = false;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private GameObject _leftArrow;
-    [SerializeField] private GameObject _rightArrow;
+    [SerializeField] private GameObject _arrow;
     private Handbook_UI _handbook = null;
 
     /// <summary>
@@ -43,31 +41,18 @@ public class Policy : MonoBehaviour
     /// Public property to get and set the arrow visibility
     /// True hides left arrow
     /// </summary>
-    public bool IsFirstPolicy
+    public bool IsRightPage
     {
-        get { return _isFirstPolicy; }
-        set { _isFirstPolicy = value; }
+        get { return _isRightPage; }
+        set { _isRightPage = value; }
     }
 
-    /// <summary>
-    /// Public property to get and set the arrow visibility
-    /// True hides right arrow 
-    /// </summary>
-    public bool IsLastPolicy
+    public GameObject Arrow
     {
-        get { return _isLastPolicy; }
-        set { _isLastPolicy = value; }
+        get { return _arrow; }
+        set { _arrow = value; }
     }
-    public GameObject LeftArrow
-    {
-        get { return _leftArrow; }
-        set { _leftArrow = value; }
-    }
-    public GameObject RightArrow
-    {
-        get { return _rightArrow; }
-        set { _rightArrow = value; }
-    }
+    
     /// <summary>
     /// Sets text to description
     /// </summary>
@@ -110,7 +95,7 @@ public class Policy : MonoBehaviour
     /// </summary>
     public void RightArrowClicked()
     {
-        _handbook.UpdatePolicy(1);
+        _handbook.UpdatePolicy(2);
     }
 
     /// <summary>
@@ -118,6 +103,6 @@ public class Policy : MonoBehaviour
     /// </summary>
     public void LeftArrowClicked()
     {
-        _handbook.UpdatePolicy(-1);
+        _handbook.UpdatePolicy(-2);
     }
 }

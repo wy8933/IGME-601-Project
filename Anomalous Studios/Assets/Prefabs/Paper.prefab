@@ -169,8 +169,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Find Watch
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 89fd192976b1c7e4ab92b9420d44b5cd, type: 2}
-  m_sharedMaterial: {fileID: 5425489843443911069, guid: 89fd192976b1c7e4ab92b9420d44b5cd, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c83037a5cd68bc54f924e8dbc5d16c8c, type: 2}
+  m_sharedMaterial: {fileID: 6766334716109190705, guid: c83037a5cd68bc54f924e8dbc5d16c8c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -194,8 +194,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.125
-  m_fontSizeBase: 0.125
+  m_fontSize: 0.1
+  m_fontSizeBase: 0.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -251,7 +251,6 @@ GameObject:
   - component: {fileID: 191617482429489020}
   - component: {fileID: 6558053461169900325}
   - component: {fileID: 8226039405100605265}
-  - component: {fileID: 3894050511371284914}
   m_Layer: 6
   m_Name: Paper
   m_TagString: Interactable
@@ -350,27 +349,6 @@ BoxCollider:
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8226039405100605265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8247500365295783521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f9b04a9ac84a5b4b8f53803ee8a104e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _description: {fileID: 5120098635643790907}
-  _handbook: {fileID: 0}
-  _holdTime: 0
-  isTask: 1
-  _canInteract: 1
-  _initialSFX: {fileID: 0}
-  _failedSFX: {fileID: 0}
-  _cancelSFX: {fileID: 0}
-  _successSFX: {fileID: 0}
---- !u!114 &3894050511371284914
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

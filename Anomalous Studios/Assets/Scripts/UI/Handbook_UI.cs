@@ -37,7 +37,7 @@ public class Handbook_UI : MonoBehaviour
     /// Will add the gameObject specified into the journal under the tasks page
     /// </summary>
     /// <param name="task"></param>
-    public void AddTask(string description, string title)
+    public void AddTask(string description)
     {
         GameObject taskObj;
         Task task;
@@ -53,9 +53,8 @@ public class Handbook_UI : MonoBehaviour
             task = taskObj.GetComponent<Task>();
             task.IsRightPage = true;
         }
-        
+
         task.Description = $"{taskList.Count + 1}. {description}";
-        task.Title = title;
 
         // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
@@ -73,7 +72,7 @@ public class Handbook_UI : MonoBehaviour
     /// Will add the gameObject specified into the journal under the policies page
     /// </summary>
     /// <param name="policy"></param>
-    public void AddPolicy(string description, string title)
+    public void AddPolicy(string description)
     {
         GameObject policyObj;
         if ((policiesList.Count + 1) % 2 == 0)
@@ -86,7 +85,6 @@ public class Handbook_UI : MonoBehaviour
         }
         Policy policy = policyObj.GetComponent<Policy>();
         policy.Description = $"{policiesList.Count+1}. {description}";
-        policy.Title = title;
 
         // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
@@ -134,7 +132,7 @@ public class Handbook_UI : MonoBehaviour
         _currentTaskId += value;
 
         // Catches edge cases of changing pages
-        if (_currentTaskId > taskList.Count)
+        if (_currentTaskId >= taskList.Count)
         {
             _currentTaskId = taskList.Count - 1;
         }
@@ -144,21 +142,34 @@ public class Handbook_UI : MonoBehaviour
         }
         _currentTask = taskList[_currentTaskId];
         
+        // Turns on the game object
         _currentTask.gameObject.SetActive(true);
-        if (_currentTask.IsRightPage)
+
+        // Right page turns on left page unless it is first page
+        if (_currentTask.IsRightPage && _currentTaskId > 1)
         {
             taskList[_currentTaskId - 1].gameObject.SetActive(true);
-            _currentTask.Arrow.SetActive(true);
-            
-            if(_currentTaskId + 1 == taskList.Count)
+            if(_currentTaskId + 1 < taskList.Count)
             {
-                _currentTask.Arrow.SetActive(false);
+                _currentTask.Arrow.SetActive(true);
             }
         }
-        else
+
+        // Left page turns on right page if it exists
+        else if (_currentTaskId >= 1 && _currentTaskId+ 1 < taskList.Count) 
         {
             taskList[_currentTaskId + 1].gameObject.SetActive(true);
             _currentTaskId += 1;
+            if (_currentTaskId + 1 < taskList.Count)
+            {
+                taskList[_currentTaskId].Arrow.SetActive(true);
+            }
+        }
+
+        // First page gets the arrow if there is another task in the list
+        else if (taskList.Count >= 2) 
+        { 
+            _currentTask.Arrow.SetActive(true);
         }
     }
 
@@ -173,10 +184,49 @@ public class Handbook_UI : MonoBehaviour
             policy.gameObject.SetActive(false);
         }
 
-        // Adds 1, 0, or -1 to change task to next, added, or previous in list.
+        // Adds 1, 0, or -2 to change task to next, added, or previous in list.
         _currentPolicyId += value;
+
+        // Catches edge cases of changing pages
+        if (_currentPolicyId >= policiesList.Count)
+        {
+            _currentPolicyId = policiesList.Count - 1;
+        }
+        if (_currentPolicyId < 0)
+        {
+            _currentPolicyId = 0;
+        }
         _currentPolicy = policiesList[_currentPolicyId];
+
+        // Turns on the game object
         _currentPolicy.gameObject.SetActive(true);
+
+        // Right page turns on left page unless it is first page
+        if (_currentPolicy.IsRightPage && _currentPolicyId > 1)
+        {
+            policiesList[_currentPolicyId - 1].gameObject.SetActive(true);
+            if (_currentPolicyId + 1 < policiesList.Count)
+            {
+                _currentPolicy.Arrow.SetActive(true);
+            }
+        }
+
+        // Left page turns on right page if it exists
+        else if (_currentPolicyId >= 1 && _currentPolicyId + 1 < policiesList.Count)
+        {
+            policiesList[_currentPolicyId + 1].gameObject.SetActive(true);
+            _currentPolicyId += 1;
+            if (_currentPolicyId + 1 < policiesList.Count)
+            {
+                policiesList[_currentPolicyId].Arrow.SetActive(true);
+            }
+        }
+
+        // First page gets the arrow if there is another task in the list
+        else if (policiesList.Count >= 2)
+        {
+            _currentPolicy.Arrow.SetActive(true);
+        }
     }
     /// <summary>
     /// Hides the journal and resumes play
