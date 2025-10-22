@@ -7,14 +7,12 @@ public class Task : MonoBehaviour
     private string _description;
     private string _title;
     private bool _isComplete = false;
-    private bool _isFirstTask = false;
-    private bool _isLastTask = false;
+    private bool _isRightPage = false;
     private Handbook_UI _handbook;
 
     [SerializeField] private TextMeshProUGUI _descriptionText;
     [SerializeField] private TextMeshProUGUI _completionText;
-    [SerializeField] private GameObject _leftArrow;
-    [SerializeField] private GameObject _rightArrow;
+    [SerializeField] private GameObject _arrow;
 
     /// <summary>
     /// Public property to get and set task description
@@ -43,34 +41,15 @@ public class Task : MonoBehaviour
         set { _isComplete = value; }
     }
 
-    /// <summary>
-    /// Public property to get and set the arrow visibility
-    /// True hides left arrow
-    /// </summary>
-    public bool IsFirstTask
+    public bool IsRightPage
     {
-        get { return _isFirstTask; }
-        set { _isFirstTask = value; }
+        get { return _isRightPage; }
+        set { _isRightPage = value; }
     }
-
-    /// <summary>
-    /// Public property to get and set the arrow visibility
-    /// True hides right arrow 
-    /// </summary>
-    public bool IsLastTask
+    public GameObject Arrow
     {
-        get { return _isLastTask; }
-        set { _isLastTask = value; }
-    }
-    public GameObject LeftArrow
-    {
-        get { return _leftArrow; }
-        set { _leftArrow = value; }
-    }
-    public GameObject RightArrow
-    {
-        get { return _rightArrow; }
-        set { _rightArrow = value; }
+        get { return _arrow; }
+        set { _arrow = value; }
     }
     /// <summary>
     /// Sets text to description
@@ -117,7 +96,7 @@ public class Task : MonoBehaviour
     /// </summary>
     public void RightArrowClicked()
     {
-        _handbook.UpdateTask(1);
+        _handbook.UpdateTask(2);
     }
 
     /// <summary>
@@ -125,7 +104,7 @@ public class Task : MonoBehaviour
     /// </summary>
     public void LeftArrowClicked()
     {
-        _handbook.UpdateTask(-1);
+        _handbook.UpdateTask(-2);
 
     }
 }

@@ -40,34 +40,23 @@ public class Handbook_UI : MonoBehaviour
     public void AddTask(string description, string title)
     {
         GameObject taskObj;
+        Task task;
         if ((taskList.Count + 1 ) % 2 == 0)
         {
             taskObj = Instantiate(_taskPrefabLeft, _taskPage);
+            task = taskObj.GetComponent<Task>();
+            task.IsRightPage = false;
         }
         else
         {
             taskObj = Instantiate(_taskPrefabRight, _taskPage);
+            task = taskObj.GetComponent<Task>();
+            task.IsRightPage = true;
         }
-        Task task = taskObj.GetComponent<Task>();
         
         task.Description = $"{taskList.Count + 1}. {description}";
         task.Title = title;
 
-        // Checks position in list
-        if (taskList.Count == 0)
-        {
-            task.IsFirstTask = true;
-        }
-        else
-        {
-            task.IsLastTask = true;
-            // Turns previously last task to false.
-            if(taskList.Count > 1)
-            {
-                taskList[taskList.Count - 1].IsLastTask = false;
-            }
-        }
-        
         // Lets user know that they picked up a new task
         GameObject popupText = Instantiate(_popupPrefabTask);
         popupText.transform.SetParent(transform.parent, false);
@@ -96,7 +85,6 @@ public class Handbook_UI : MonoBehaviour
             policyObj = Instantiate(_policyPrefabRight, _policyPage);
         }
         Policy policy = policyObj.GetComponent<Policy>();
-
         policy.Description = $"{policiesList.Count+1}. {description}";
         policy.Title = title;
 
@@ -141,11 +129,37 @@ public class Handbook_UI : MonoBehaviour
         {
             task.gameObject.SetActive(false);
         }
-
-        // Adds 1, 0, or -1 to change task to next, added, or previous in list.
+        
+        // Adds 1, 0, or -2 to change task to next, added, or previous in list.
         _currentTaskId += value;
+
+        // Catches edge cases of changing pages
+        if (_currentTaskId > taskList.Count)
+        {
+            _currentTaskId = taskList.Count - 1;
+        }
+        if(_currentTaskId < 0)
+        {
+            _currentTaskId = 0;
+        }
         _currentTask = taskList[_currentTaskId];
+        
         _currentTask.gameObject.SetActive(true);
+        if (_currentTask.IsRightPage)
+        {
+            taskList[_currentTaskId - 1].gameObject.SetActive(true);
+            _currentTask.Arrow.SetActive(true);
+            
+            if(_currentTaskId + 1 == taskList.Count)
+            {
+                _currentTask.Arrow.SetActive(false);
+            }
+        }
+        else
+        {
+            taskList[_currentTaskId + 1].gameObject.SetActive(true);
+            _currentTaskId += 1;
+        }
     }
 
     /// <summary>
