@@ -75,7 +75,7 @@ public class CleaningManager : MonoBehaviour
     /// </summary>
     void CheckCleaningProgress()
     {
-        SurfaceCleaner[] cleaners = FindObjectsOfType<SurfaceCleaner>();
+        SurfaceCleaner[] cleaners =  FindObjectsOfType<SurfaceCleaner>(); // Object.FindObjectsByType<SurfaceCleaner>(FindObjectsSortMode.None);
         if (cleaners.Length == 0) return;
 
         foreach (var cleaner in cleaners)
