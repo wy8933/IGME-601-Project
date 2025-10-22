@@ -17,13 +17,10 @@ public struct RuleBroken : IEvent { public bool isBroken; }
 public class EnemyBehavior : MonoBehaviour, IInteractable
 {
     private EventBinding<RuleBroken> _ruleBroken;
-    // TODO: refactor reset of scene
-    private EventBinding<LevelLoaded> _levelLoading;
+    private EventBinding<LevelLoaded> _levelLoaded;
+    private EventBinding<LoadLevel> _loadLevel;
 
     private BehaviorGraphAgent self;
-
-    // TODO: refactor reset of scene
-    private Vector3 _spawnPoint = Vector3.zero;
 
     private bool _canInteract = true;
 
@@ -51,9 +48,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         self = GetComponent<BehaviorGraphAgent>();
         self.SetVariableValue("Player", 
             GameObject.FindGameObjectWithTag("Player"));
-
-        // TODO: refactor reset of scene
-        _spawnPoint = new Vector3(-14, 2.5f, 0.0f);
 
         EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true });
     }
@@ -87,40 +81,37 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     /// <summary>
     /// Brings the Rulekeepr back to spawn, resets their behaviors in between levels
     /// </summary>
-    private void OnLevelLoaded(LevelLoaded e)
+    private void OnLoadLevel(LevelLoaded e)
     {
         self.enabled = false;
         GetComponent<NavMeshAgent>().enabled = false;
         self.SetVariableValue("ruleBroken", false);
         self.Restart();
-        transform.position = _spawnPoint;
-
-        StartCoroutine(EnableRuleKeeper(e));
 
         // TODO: set up the list of rules with a new dataset
     }
 
-    private IEnumerator EnableRuleKeeper(LevelLoaded e)
+    private void EnableRuleKeeper(LevelLoaded e)
     {
-        while (VariableConditionManager.Instance.Get("IsLevelLoading") == "false") { yield return null; }
-
         self.enabled = true;
         GetComponent<NavMeshAgent>().enabled = true;
-
     }
 
     public void OnEnable()
     {
         _ruleBroken = new EventBinding<RuleBroken>(OnRuleBroken);
         EventBus<RuleBroken>.Register(_ruleBroken);
-        _levelLoading = new EventBinding<LevelLoaded>(OnLevelLoaded);
-        EventBus<LevelLoaded>.Register(_levelLoading);
+        _loadLevel = new EventBinding<LoadLevel>(OnLoadLevel);
+        EventBus<LoadLevel>.Register(_loadLevel);
+        _levelLoaded = new EventBinding<LevelLoaded>(EnableRuleKeeper);
+        EventBus<LevelLoaded>.Register(_levelLoaded);
     }
 
     public void OnDisable()
     {
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
-        EventBus<LevelLoaded>.DeRegister(_levelLoading);
+        EventBus<LoadLevel>.DeRegister(_loadLevel);
+        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
     }
 
 
