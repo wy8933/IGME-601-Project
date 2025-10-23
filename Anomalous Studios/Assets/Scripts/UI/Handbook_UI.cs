@@ -1,12 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using AudioSystem;
-using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class Handbook_UI : MonoBehaviour
 {
