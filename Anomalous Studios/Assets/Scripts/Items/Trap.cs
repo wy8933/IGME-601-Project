@@ -64,8 +64,7 @@ public class Trap : ItemInstance
 
     private void OnCollisionEnter(Collision collision)
     {
-        // replace player with rulekeeper
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "RuleKeeper")
         {
             GameObject gameObject = collision.gameObject;
 
@@ -77,11 +76,11 @@ public class Trap : ItemInstance
     private IEnumerator ApplySlowdown(GameObject obj)
     {
         // Access rulekeeper walk speed here and change it temporarily
-        PlayerActions pa = obj.GetComponent<PlayerActions>();
+        EnemyBehavior pa = obj.GetComponent<EnemyBehavior>();
 
         if(pa != null)
         {
-            pa.SetWalkSpeed(0.5f);
+            //pa.Speed;
             Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
 
             yield return new WaitForSeconds(_slowDuration);
