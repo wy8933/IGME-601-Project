@@ -30,7 +30,11 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     private BehaviorGraphAgent _behaviorAgent;
     private NavMeshAgent _navAgent;
 
+    private float _walkSpeed = 5.0f;
+
     private bool _canInteract = true;
+
+    public float WalkSpeed { get => _walkSpeed; }
 
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
