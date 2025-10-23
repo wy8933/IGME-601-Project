@@ -8,8 +8,13 @@ public class StringKeyValue
     public string value;
 }
 
+public interface IVariableKeySource
+{
+    IEnumerable<string> GetAllKeys();
+}
+
 [CreateAssetMenu(fileName = "ConditionBlackboard", menuName = "Systems/Condition Blackboard SO")]
-public class ConditionBlackboardSO : ScriptableObject
+public class ConditionBlackboardSO : ScriptableObject, IVariableKeySource
 {
     [SerializeField] private List<StringKeyValue> _variableList = new List<StringKeyValue>();
     private Dictionary<string, string> _variables = null;
@@ -90,5 +95,14 @@ public class ConditionBlackboardSO : ScriptableObject
 #if UNITY_EDITOR
         UnityEditor.EditorUtility.SetDirty(this);
 #endif
+    }
+
+    public IEnumerable<string> GetAllKeys()
+    {
+        foreach (var e in _variableList)
+        {
+            if (!string.IsNullOrWhiteSpace(e.key))
+                yield return e.key;
+        }
     }
 }
