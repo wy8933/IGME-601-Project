@@ -23,7 +23,9 @@ public partial class AttackAction : Action
 
     protected override Status OnUpdate()
     {
-        //EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
+        SceneManager.LoadScene("GameOver");
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
+        VariableConditionManager.Instance.Set("IsLevelLoading", "true");
         return Status.Success;
     }
 }

@@ -3,44 +3,30 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
 using AudioSystem;
-using System.Collections.Generic;
-using System.Linq;
 
 /// <summary>
-/// If a rule is broken or resolved, passes the type of affected rule to the Rulekeeper
+/// TODO: Temporary broken rule event, should be refactored with rule event system
 /// </summary>
-public struct RuleBroken : IEvent 
-{ 
-    public bool isBroken;
-    public Vector3 target;
-}
-
-public struct MakeNoise : IEvent { public Vector2 target; }
-
+public struct RuleBroken : IEvent { public bool isBroken; }
 
 /// <summary>
 /// A controller for the Rulekeeper's unique rules-dependent behaviors
 /// </summary>
 public class EnemyBehavior : MonoBehaviour, IInteractable
 {
-    private EventBinding<RuleBroken> _ruleBroken;
-    private EventBinding<LevelLoaded> _levelLoaded;
-    private EventBinding<LoadLevel> _loadLevel;
+    [SerializeField] private float _holdTime = 0.0f;
 
-    private BehaviorGraphAgent _behaviorAgent;
-    private NavMeshAgent _navAgent;
+    private EventBinding<RuleBroken> _ruleBroken;
+    private EventBinding<LevelLoaded> _levelLoading;
+
+    private BehaviorGraphAgent self;
+
+    private Vector3 _spawnPoint = Vector3.zero;
 
     private bool _canInteract = true;
 
-    public float HoldTime { get => 0.0f; }
+    public float HoldTime { get => _holdTime; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
-
-    public float Speed
-    {
-        get { _behaviorAgent.GetVariable("Speed", out BlackboardVariable<float> speed); return speed; }
-
-        set => _behaviorAgent.SetVariableValue("Speed", value);
-    }
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -50,22 +36,12 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public SoundDataSO CancelSFX => null;
     public SoundDataSO SuccessSFX { get => _successSFX; }
 
-    // TODO: change to an enum value instead of string names for rules
-    private Dictionary<string, bool> _rulesLibrary = new Dictionary<string, bool>
-    {
-        { "lights", false },
-        { "camera", false },
-        { "action!", false }
-    };
-
-    private Vector3[] _sightCone; 
-
     public void Start()
     {
-        _behaviorAgent = GetComponent<BehaviorGraphAgent>();
-        _navAgent = GetComponent<NavMeshAgent>();
-        _behaviorAgent.SetVariableValue("Player", 
+        self = GetComponent<BehaviorGraphAgent>();
+        self.SetVariableValue("Player", 
             GameObject.FindGameObjectWithTag("Player"));
+        _spawnPoint = new Vector3(-14, 2.5f, 0.0f); // TODO: Change to this position, just need to test other things 1st
     }
 
     public void Highlight()
@@ -80,27 +56,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public void Interact()
     {
         // TODO: replace with textbox interaction, should be able to simply say 'hello,' or sign a paper
-    }
-
-    public void CheckLineOfSight(Transform target)
-    {
-        // create a direction arrow towards the player
-        
-        // If that arrow is within the arc of enemy vision
-
-        // TODO: make a bunch of rays or direction vectors before hand, raycast all of them
-
-        // If target is not already seen, I-C-U SFX
-        if (Physics.Raycast(transform.position, target.position - transform.position, 
-            out RaycastHit hit) && hit.collider.CompareTag("Player"))
-        {
-            _behaviorAgent.SetVariableValue("playerSeen", true);
-        }
-        else
-        {
-            _behaviorAgent.SetVariableValue("playerSeen", false);
-
-        }
+        GetComponent<Renderer>().material.color = Color.red;
     }
 
     /// <summary>
@@ -108,52 +64,48 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     /// </summary>
     private void OnRuleBroken(RuleBroken e)
     {
-        _rulesLibrary["lights"] = e.isBroken;
-
-        _behaviorAgent.GetVariable("ruleBroken", out BlackboardVariable<bool> ruleBroken);
-
-        if (!ruleBroken.Value)
-        {
-            _behaviorAgent.SetVariableValue("TargetLocation", e.target);
-        }
-
-        // One giant OR statement of dictionary values
-        _behaviorAgent.SetVariableValue("ruleBroken", _rulesLibrary.Values.Any(value => value));
+        self.SetVariableValue("ruleBroken", e.isBroken);
     }
+
 
     /// <summary>
     /// Brings the Rulekeepr back to spawn, resets their behaviors in between levels
+    /// TODO: have this register as an event on level loading, then a coroutine 
     /// </summary>
-    private void DisableRulekeeper(LoadLevel e)
+    /// <param name="spawnPoint">Optionally update the Rulekeeper's spawn position</param>
+    private void OnLevelLoaded(LevelLoaded e)
     {
-        _behaviorAgent.enabled = false;
-        _navAgent.enabled = false;
-        _behaviorAgent.SetVariableValue("ruleBroken", false);
-        _behaviorAgent.Restart();
+        self.enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
+        self.SetVariableValue("ruleBroken", false);
+        self.Restart();
+        transform.position = _spawnPoint;
 
-        // TODO: set up the list of rules with a new dataset
+        StartCoroutine(EnableRuleKeeper(e));
     }
 
-    private void EnableRuleKeeper(LevelLoaded e)
+    private IEnumerator EnableRuleKeeper(LevelLoaded e)
     {
-        _behaviorAgent.enabled = true;
-        _navAgent.enabled = true;
+        while (VariableConditionManager.Instance.Get("IsLevelLoading") == "false") { yield return null; }
+
+        self.enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+
     }
 
     public void OnEnable()
     {
         _ruleBroken = new EventBinding<RuleBroken>(OnRuleBroken);
         EventBus<RuleBroken>.Register(_ruleBroken);
-        _loadLevel = new EventBinding<LoadLevel>(DisableRulekeeper);
-        EventBus<LoadLevel>.Register(_loadLevel);
-        _levelLoaded = new EventBinding<LevelLoaded>(EnableRuleKeeper);
-        EventBus<LevelLoaded>.Register(_levelLoaded);
+        _levelLoading = new EventBinding<LevelLoaded>(OnLevelLoaded);
+        EventBus<LevelLoaded>.Register(_levelLoading);
     }
 
     public void OnDisable()
     {
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
-        EventBus<LoadLevel>.DeRegister(_loadLevel);
-        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
+        EventBus<LevelLoaded>.DeRegister(_levelLoading);
     }
+
+
 }
