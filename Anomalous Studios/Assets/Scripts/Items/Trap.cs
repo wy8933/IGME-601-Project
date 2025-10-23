@@ -80,13 +80,14 @@ public class Trap : ItemInstance
 
         if(pa != null)
         {
-            //pa.Speed;
+            /*pa.Speed;
             Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
 
             yield return new WaitForSeconds(_slowDuration);
 
             pa.SetWalkSpeed(3.0f);
             Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
+            */
 
             Destroy(this.gameObject);
         }
