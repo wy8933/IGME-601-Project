@@ -67,11 +67,11 @@ public class Paper : MonoBehaviour, IInteractable
     {
         if (isTask)
         {
-            _handbook.AddTask(_description.text);
+            _handbook.AddTask(_description.text, "Task1");
         }
         else
         {
-            _handbook.AddPolicy(_description.text);
+            _handbook.AddPolicy(_description.text, "Rule1");
         }
     }
 
