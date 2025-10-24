@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class RageTotem : MonoBehaviour, IInteractable
 {
-    [SerializeField] private BehaviorGraphAgent _ruleKeeper;
 
     [SerializeField] private float _holdTime = 0.0f;
 
@@ -24,24 +23,27 @@ public class RageTotem : MonoBehaviour, IInteractable
     public SoundDataSO CancelSFX => null;
     public SoundDataSO SuccessSFX { get => _successSFX; }
 
+    private BehaviorGraphAgent _ruleKeeper;
+
     public void Start()
     {
-        //_ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
+        _ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
     }
 
     public void Highlight()
     {
-        // Highlight!
+        GetComponent<HighlightTarget>().IsHighlighted = true;
     }
 
     public void Interact()
     {
         //_ruleKeeper.SetVariableValue("ruleBroken", true);
+        EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true, target = transform.position });
         EventBus<TaskComplete>.Raise(new TaskComplete { });
     }
 
     public void RemoveHighlight()
     {
-        // Remove Highlight!
+        GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 }
