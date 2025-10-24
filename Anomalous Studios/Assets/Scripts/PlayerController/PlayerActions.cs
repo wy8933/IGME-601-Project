@@ -130,6 +130,14 @@ public class PlayerActions : MonoBehaviour
                 Vector3 movement = _isSprinting ? transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _runSpeed * dt
                                                 : transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _walkSpeed * dt;
                 _playerController.GetRB().MovePosition(movement + _playerController.GetRB().position);
+                if (movement != Vector3.zero && _playerController.IsGrounded())
+                {
+                    SoundEffectTrigger.Instance.PlayFootsteps();
+                }
+                else
+                {
+                    SoundEffectTrigger.Instance.StopFootsteps();
+                }
             }
         }
     }
