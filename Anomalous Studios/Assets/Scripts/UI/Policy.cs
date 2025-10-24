@@ -7,11 +7,9 @@ public class Policy : MonoBehaviour
     private string _description;
     private string _title;
     private bool _isBroken;
-    private bool _isFirstPolicy = false;
-    private bool _isLastPolicy = false;
+    private bool _isRightPage = false;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] private GameObject _leftArrow;
-    [SerializeField] private GameObject _rightArrow;
+    [SerializeField] private GameObject _arrow;
     private Handbook_UI _handbook = null;
 
     /// <summary>
@@ -43,21 +41,18 @@ public class Policy : MonoBehaviour
     /// Public property to get and set the arrow visibility
     /// True hides left arrow
     /// </summary>
-    public bool IsFirstPolicy
+    public bool IsRightPage
     {
-        get { return _isFirstPolicy; }
-        set { _isFirstPolicy = value; }
+        get { return _isRightPage; }
+        set { _isRightPage = value; }
     }
 
-    /// <summary>
-    /// Public property to get and set the arrow visibility
-    /// True hides right arrow 
-    /// </summary>
-    public bool IsLastPolicy
+    public GameObject Arrow
     {
-        get { return _isLastPolicy; }
-        set { _isLastPolicy = value; }
+        get { return _arrow; }
+        set { _arrow = value; }
     }
+    
     /// <summary>
     /// Sets text to description
     /// </summary>
@@ -68,46 +63,46 @@ public class Policy : MonoBehaviour
         _handbook = FindFirstObjectByType<Handbook_UI>();
     }
 
-    /// <summary>
-    /// Updates the arrows on the page based on its position and size of the list
-    /// </summary>
-    /// <param name="policiesList"></param>
-    public void UpdatePage(List<Policy> policiesList)
-    {
-        if (_isFirstPolicy && policiesList.Count == 1)
-        {
-            _leftArrow.SetActive(false);
-            _rightArrow.SetActive(false);
-        }
-        if (_isFirstPolicy && policiesList.Count > 1)
-        {
-            _rightArrow.SetActive(true);
-        }
-        if (_isLastPolicy)
-        {
-            _rightArrow.SetActive(false);
-            _leftArrow.SetActive(true);
-        }
-        if (!_isFirstPolicy && !_isLastPolicy)
-        {
-            _leftArrow.SetActive(true);
-            _rightArrow.SetActive(true);
-        }
-    }
+    ///// <summary>
+    ///// Updates the arrows on the page based on its position and size of the list
+    ///// </summary>
+    ///// <param name="policiesList"></param>
+    //public void UpdatePage(List<Policy> policiesList)
+    //{
+    //    if (_isFirstPolicy && policiesList.Count == 1)
+    //    {
+    //        _leftArrow.SetActive(false);
+    //        _rightArrow.SetActive(false);
+    //    }
+    //    if (_isFirstPolicy && policiesList.Count > 1)
+    //    {
+    //        _rightArrow.SetActive(true);
+    //    }
+    //    if (_isLastPolicy)
+    //    {
+    //        _rightArrow.SetActive(false);
+    //        _leftArrow.SetActive(true);
+    //    }
+    //    if (!_isFirstPolicy && !_isLastPolicy)
+    //    {
+    //        _leftArrow.SetActive(true);
+    //        _rightArrow.SetActive(true);
+    //    }
+    //}
 
     /// <summary>
     /// Right arrow button
     /// </summary>
-    public void RightArrow()
+    public void RightArrowClicked()
     {
-        _handbook.UpdatePolicy(1);
+        _handbook.UpdatePolicy(2);
     }
 
     /// <summary>
     /// Left arrow button method
     /// </summary>
-    public void LeftArrow()
+    public void LeftArrowClicked()
     {
-        _handbook.UpdatePolicy(-1);
+        _handbook.UpdatePolicy(-2);
     }
 }
