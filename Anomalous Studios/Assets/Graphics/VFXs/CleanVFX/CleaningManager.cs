@@ -26,11 +26,11 @@ public class CleaningManager : MonoBehaviour
     void Update()
     {
         // Toggle cleaning mode with key
-        if (Input.GetKeyDown(cleanKey))
-        {
-            isCleaning = !isCleaning;
-            Debug.Log(isCleaning ? " Cleaning mode ON" : "Cleaning mode OFF");
-        }
+        //if (Input.GetKeyDown(cleanKey))
+        //{
+        //    isCleaning = !isCleaning;
+        //    Debug.Log(isCleaning ? " Cleaning mode ON" : "Cleaning mode OFF");
+        //}
 
         // Perform cleaning when active
         if (isCleaning)
@@ -44,6 +44,14 @@ public class CleaningManager : MonoBehaviour
             lastCheckTime = Time.time;
             CheckCleaningProgress();
         }
+    }
+
+    /// <summary>
+    /// Toggles between cleaning mode (for mop item)
+    /// </summary>
+    public void ToggleCleaningMode()
+    {
+        isCleaning = !isCleaning;
     }
 
     /// <summary>
@@ -67,7 +75,7 @@ public class CleaningManager : MonoBehaviour
     /// </summary>
     void CheckCleaningProgress()
     {
-        SurfaceCleaner[] cleaners = FindObjectsOfType<SurfaceCleaner>();
+        SurfaceCleaner[] cleaners =  FindObjectsOfType<SurfaceCleaner>(); // Object.FindObjectsByType<SurfaceCleaner>(FindObjectsSortMode.None);
         if (cleaners.Length == 0) return;
 
         foreach (var cleaner in cleaners)

@@ -39,18 +39,28 @@ public class RuleManager : MonoBehaviour
         _state.Clear();
     }
 
+    /// <summary>
+    /// Registers the variable-changed listener.
+    /// </summary>
     private void BindEvents()
     {
         _varBinding = new EventBinding<VariableChangedEvent>(OnVariableChanged);
         EventBus<VariableChangedEvent>.Register(_varBinding);
     }
 
+    /// <summary>
+    /// Unregisters the variable-changed listener.
+    /// </summary>
     private void UnbindEvents()
     {
         if (_varBinding != null)
             EventBus<VariableChangedEvent>.DeRegister(_varBinding);
     }
 
+    /// <summary>
+    /// Reacts to a variable change by evaluating impacted rules or all as fallback.
+    /// </summary>
+    /// <param name="e">Change event with key and value.</param>
     private void OnVariableChanged(VariableChangedEvent e)
     {
         if (string.IsNullOrEmpty(e.Key)) return;
@@ -69,7 +79,9 @@ public class RuleManager : MonoBehaviour
         if (verbose) Debug.Log($"VarChanged key='{e.Key}' value='{e.RawValue}'");
     }
 
-
+    /// <summary>
+    /// Initializes runtime state for all rules in the set.
+    /// </summary>
     private void InitRuleState()
     {
         _state.Clear();
@@ -82,6 +94,11 @@ public class RuleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Evaluates a single rule and fires violation/resolve actions as needed.
+    /// </summary>
+    /// <param name="rule">Rule to evaluate.</param>
+    /// <param name="reason">Reason tag for logging.</param>
     private void EvaluateRule(RuleAssetSO rule, string reason)
     {
         var s = _state[rule];
@@ -127,7 +144,11 @@ public class RuleManager : MonoBehaviour
         LogRule($"{rule.ruleId}: OK to OK (no action)");
     }
 
-
+    /// <summary>
+    /// Evaluates the rule's conditions using the active query.
+    /// </summary>
+    /// <param name="rule">Rule to check.</param>
+    /// <returns>True if the rule is violated; otherwise false.</returns>
     private bool EvaluateConditions(RuleAssetSO rule)
     {
         if (_query == null) { LogRule("Query is null, skipping evaluation"); return false; }
@@ -145,7 +166,10 @@ public class RuleManager : MonoBehaviour
         return rule.conditionLogic == ConditionLogic.All ? all : any;
     }
 
-
+    /// <summary>
+    /// Evaluates all rules in the set.
+    /// </summary>
+    /// <param name="reason">Reason tag for logging.</param>
     private void EvaluateAll(string reason)
     {
         if (ruleSet == null || ruleSet.rules == null || ruleSet.rules.Length == 0) return;
@@ -154,7 +178,12 @@ public class RuleManager : MonoBehaviour
             if (r != null) EvaluateRule(r, reason);
     }
 
-
+    /// <summary>
+    /// Executes violation actions and updates runtime state timestamps amd latches.
+    /// </summary>
+    /// <param name="rule">Rule that violated.</param>
+    /// <param name="s">Runtime state to update.</param>
+    /// <param name="reason">Reason tag for logging.</param>
     private void FireViolation(RuleAssetSO rule, RuleRuntimeState s, string reason)
     {
         s.LastFiredUtc = DateTime.UtcNow;
@@ -167,6 +196,10 @@ public class RuleManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Executes resolve actions.
+    /// </summary>
+    /// <param name="rule">Rule transitioning to OK.</param>
     private void FireResolve(RuleAssetSO rule)
     {
         var acts = rule.resolveActions;
@@ -175,7 +208,9 @@ public class RuleManager : MonoBehaviour
                 acts[i]?.Execute(_query, rule);
     }
 
-    // TODO: Not working
+    /// <summary>
+    /// Builds a map from variable keys to the rules that reference them.
+    /// </summary>
     private void BuildDependencyMap()
     {
         _depMap.Clear();
@@ -207,11 +242,21 @@ public class RuleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Logs a rules message when verbose is enabled.
+    /// </summary>
+    /// <param name="msg">Message to log.</param>
     private void LogRule(string msg)
     {
         if (verbose) Debug.Log($"Rules: {msg}");
     }
 
+    /// <summary>
+    /// Returns remaining cooldown time in seconds.
+    /// </summary>
+    /// <param name="lastFiredUtc">Last time the rule fired .</param>
+    /// <param name="cooldownSeconds">Rule cooldown length in seconds.</param>
+    /// <returns>Seconds remaining (0 if ready).</returns>
     private static double CooldownRemaining(DateTime lastFiredUtc, float cooldownSeconds)
     {
         var elapsed = (DateTime.UtcNow - lastFiredUtc).TotalSeconds;

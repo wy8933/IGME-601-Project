@@ -13,8 +13,19 @@ public static class EventBus<T> where T : IEvent
     static T _stickyGlobal;
     static readonly Dictionary<object, (bool has, T val)> _stickyScoped = new Dictionary<object, (bool has, T val)>();
 
+    /// <summary>
+    /// Registers a binding to receive all global events of type T.
+    /// Preserves priority order if the binding implements IPrioritized
+    /// </summary>
+    /// <param name="binding">The binding to register.</param>
     internal static void Register(IEventBinding<T> binding) => InsertByPriority(_global, binding);
 
+    /// <summary>
+    /// Registers a binding to receive events within a specific scope.
+    /// Preserves priority order if the binding implements IPrioritized.
+    /// </summary>
+    /// <param name="binding">The binding to register.</param>
+    /// <param name="scope">Scope key that groups listeners and raised events.</param>
     internal static void Register(IEventBinding<T> binding, object scope)
     {
         if (!_scoped.TryGetValue(scope, out var list))
@@ -22,6 +33,11 @@ public static class EventBus<T> where T : IEvent
         InsertByPriority(list, binding);
     }
 
+    /// <summary>
+    /// Deregisters a binding from both global and any scoped lists where it appears.
+    /// Removes empty scope lists.
+    /// </summary>
+    /// <param name="binding">The binding to remove.</param>
     internal static void DeRegister(IEventBinding<T> binding)
     {
         _global.Remove(binding);
@@ -37,6 +53,12 @@ public static class EventBus<T> where T : IEvent
             _scoped.Remove(emptyKeys[i]);
     }
 
+    /// <summary>
+    /// Deregisters a binding from a specific scope only.
+    /// If scope is null, behaves like the global .
+    /// </summary>
+    /// <param name="binding">The binding to remove.</param>
+    /// <param name="scope">Scope list to remove from.</param>
     internal static void DeRegister(IEventBinding<T> binding, object scope)
     {
         if (scope == null) { DeRegister(binding); return; }
@@ -49,6 +71,12 @@ public static class EventBus<T> where T : IEvent
         }
     }
 
+    /// <summary>
+    /// Inserts a binding into a list based on descending IPrioritized.Priority.
+    /// Non-prioritized bindings are treated as priority 0.
+    /// </summary>
+    /// <param name="list">Target list to insert into.</param>
+    /// <param name="binding">Binding to insert.</param>
     static void InsertByPriority(List<IEventBinding<T>> list, IEventBinding<T> binding)
     {
         int p = (binding is IPrioritized pr) ? pr.Priority : 0;
@@ -71,6 +99,11 @@ public static class EventBus<T> where T : IEvent
         }
     }
 
+    /// <summary>
+    /// Raises a global event to all registered global bindings.
+    /// Invokes both the payload and no-arg callbacks on each binding.
+    /// </summary>
+    /// <param name="event">The event payload.</param>
     public static void RaiseScoped(object scope, T @event)
     {
         if (_scoped.TryGetValue(scope, out var list))
@@ -85,6 +118,12 @@ public static class EventBus<T> where T : IEvent
         }
     }
 
+    /// <summary>
+    /// Raises an event to bindings registered under the given scope only.
+    /// Invokes both the payload and no-arg callbacks on each scoped binding.
+    /// </summary>
+    /// <param name="scope">Scope key used during registration.</param>
+    /// <param name="event">The event payload.</param>
     public static void RaiseSticky(T @event)
     {
         _stickyGlobal = @event;
@@ -92,6 +131,11 @@ public static class EventBus<T> where T : IEvent
         Raise(@event);
     }
 
+    /// <summary>
+    /// Raises a global event and stores it as the current sticky value.
+    /// New listeners that register via RegisterSticky will immediately receive it.
+    /// </summary>
+    /// <param name="event">The event payload to broadcast and store.</param>
     public static void RaiseStickyScoped(object scope, T @event)
     {
         if (scope == null) { RaiseSticky(@event); return; }
@@ -99,6 +143,12 @@ public static class EventBus<T> where T : IEvent
         RaiseScoped(scope, @event);
     }
 
+    /// <summary>
+    /// Raises a scoped event and stores it as the sticky value for that scope
+    /// If scope is null, behaves like RaiseSticky(T)
+    /// </summary>
+    /// <param name="scope">Scope key to associate the sticky value with.</param>
+    /// <param name="event">The event payload to broadcast and store.</param>
     internal static void RegisterSticky(IEventBinding<T> binding, bool global = true, object scope = null)
     {
         if (global || scope == null) Register(binding);
@@ -119,6 +169,9 @@ public static class EventBus<T> where T : IEvent
         }
     }
 
+    /// <summary>
+    /// Clears all listeners, all scopes, and all sticky values.
+    /// </summary>
     static void Clear()
     {
         _global.Clear();
@@ -129,6 +182,12 @@ public static class EventBus<T> where T : IEvent
     }
 
     public static int ListenerCountGlobal => _global.Count;
+
+    /// <summary>
+    /// Returns the number of listeners registered under the specified scope
+    /// </summary>
+    /// <param name="scope">Scope key to query.</param>
+    /// <returns>Listener count within the scope; 0 if the scope is not present.</returns>
     public static int ListenerCountScoped(object scope) =>
         _scoped.TryGetValue(scope, out var l) ? l.Count : 0;
 }

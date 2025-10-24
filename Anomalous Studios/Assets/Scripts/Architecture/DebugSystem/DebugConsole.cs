@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,8 +37,16 @@ public class DebugConsole : MonoBehaviour
         Application.logMessageReceived -= OnUnityLog;
     }
 
+    /// <summary>
+    /// Input System handler to toggle the visibility of the console.
+    /// </summary>
+    /// <param name="_">Unused input value payload.</param>
     public void OnToggleDebug(InputValue _) => _showConsole = !_showConsole;
 
+    /// <summary>
+    /// Input System handler for submit and return. If console is visible, submits current input line.
+    /// </summary>
+    /// <param name="_">Unused input value payload.</param>
     public void OnReturn(InputValue _)
     {
         if (_showConsole) 
@@ -48,12 +55,18 @@ public class DebugConsole : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Polls keyboard for toggling and submitting when the console is visible.
+    /// </summary>
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T)) _showConsole = !_showConsole;
         if (_showConsole && Keyboard.current.enterKey.wasPressedThisFrame) { Submit(_input); _input = ""; }
     }
 
+    /// <summary>
+    /// Renders the console UI, including input field and scrollable log area.
+    /// </summary>
     void OnGUI()
     {
         if (!_showConsole) return;
@@ -102,6 +115,10 @@ public class DebugConsole : MonoBehaviour
         GUI.EndScrollView();
     }
 
+    /// <summary>
+    /// Parses and executes a console command line. Supports "help" or dispatches to a configured command event.
+    /// </summary>
+    /// <param name="line">The raw input line to parse and execute.</param>
     void Submit(string line)
     {
         if (string.IsNullOrWhiteSpace(line)) return;
@@ -139,14 +156,23 @@ public class DebugConsole : MonoBehaviour
         );
     }
 
-
+    /// <summary>
+    /// Splits a raw command line into whitespace-delimited tokens.
+    /// </summary>
+    /// <param name="line">The raw command line.</param>
+    /// <returns>List of tokens in order.</returns>
     static List<string> Tokenize(string line)
     {
         var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         return new List<string>(parts);
     }
 
-
+    /// <summary>
+    /// Receives Unity's log messages and forwards them to the console log event stream.
+    /// </summary>
+    /// <param name="condition">The log message text.</param>
+    /// <param name="stacktrace">Associated stack trace (if any).</param>
+    /// <param name="type">Unity log type (Log, Warning, Error, etc.).</param>
     void OnUnityLog(string condition, string stacktrace, LogType type)
     {
         EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = condition, Type = type });
