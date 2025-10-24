@@ -36,9 +36,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     public float WalkSpeed { get => _walkSpeed; }
 
-
-    private bool _canInteract = true;
-
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
