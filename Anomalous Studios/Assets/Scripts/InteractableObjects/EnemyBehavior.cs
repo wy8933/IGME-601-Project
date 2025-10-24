@@ -9,8 +9,8 @@ using System.Linq;
 /// <summary>
 /// If a rule is broken or resolved, passes the type of affected rule to the Rulekeeper
 /// </summary>
-public struct RuleBroken : IEvent
-{
+public struct RuleBroken : IEvent 
+{ 
     public bool isBroken;
     public Vector3 target;
 }
@@ -35,6 +35,9 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     private bool _canInteract = true;
 
     public float WalkSpeed { get => _walkSpeed; }
+
+
+    private bool _canInteract = true;
 
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
@@ -62,13 +65,13 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         { "action!", false }
     };
 
-    private Vector3[] _sightCone;
+    private Vector3[] _sightCone; 
 
     public void Start()
     {
         _behaviorAgent = GetComponent<BehaviorGraphAgent>();
         _navAgent = GetComponent<NavMeshAgent>();
-        _behaviorAgent.SetVariableValue("Player",
+        _behaviorAgent.SetVariableValue("Player", 
             GameObject.FindGameObjectWithTag("Player"));
     }
 
@@ -89,13 +92,13 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public void CheckLineOfSight(Transform target)
     {
         // create a direction arrow towards the player
-
+        
         // If that arrow is within the arc of enemy vision
 
         // TODO: make a bunch of rays or direction vectors before hand, raycast all of them
 
         // If target is not already seen, I-C-U SFX
-        if (Physics.Raycast(transform.position, target.position - transform.position,
+        if (Physics.Raycast(transform.position, target.position - transform.position, 
             out RaycastHit hit) && hit.collider.CompareTag("Player"))
         {
             _behaviorAgent.SetVariableValue("playerSeen", true);

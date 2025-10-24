@@ -158,4 +158,12 @@ public class PlayerController : MonoBehaviour
             IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
         }
     }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("RuleKeeper"))
+        {
+            other.transform.parent.GetComponent<EnemyBehavior>().CheckLineOfSight(transform);
+        }
+    }
 }

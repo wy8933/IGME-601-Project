@@ -52,9 +52,6 @@ public class SceneLoader : MonoBehaviour
 
     public void Start()
     {
-        //VariableConditionManager.Instance.Set("TaskComplete", "false"); // TODO: Remove, legacy
-        //VariableConditionManager.Instance.Set("IsLevelLoading", "true"); // TODO: Remove, legacy
-
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
             { Level.mainMenu, _mainMenu },
@@ -76,6 +73,8 @@ public class SceneLoader : MonoBehaviour
         _blackScreenTEMP = _mainUI.transform.Find("LoadingScreen").gameObject;
         _navMeshSurface = GetComponent<NavMeshSurface>();
 
+
+        // TODO: Need to move between cameras better, from the main menu to the player controller. Only one audio listener
         LoadLevel(new LoadLevel { newLevel = Level.mainMenu });
     }
 
