@@ -20,7 +20,7 @@ public class PlayerSound : MonoBehaviour
         {
             if (AudioManager.Instance)
             {
-                AudioManager.Instance.Play(sd);
+                AudioManager.Instance.Play(sd, this.transform.position);
             }
             lastPlayTime = Time.time;
         }

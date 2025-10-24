@@ -26,6 +26,11 @@ public class Throwable : ItemInstance
     public override SoundDataSO CancelSFX => null;
     public override SoundDataSO SuccessSFX { get => _successSFX; }
 
+    [Header("Sound Data")]
+    [SerializeField] private SoundDataSO _breakSO;
+    private float _audioCooldownTime = 0.5f;
+    private float lastPlayTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -46,6 +51,10 @@ public class Throwable : ItemInstance
         Throw(user);
     }
 
+    /// <summary>
+    /// Logic for when player throws this item
+    /// </summary>
+    /// <param name="parent"></param>
     private void Throw(GameObject parent)
     {
         // Set initital position of garbage item 
@@ -89,9 +98,31 @@ public class Throwable : ItemInstance
     {
         if(_isThrown && _enemyBehavior != null)
         {
-            _enemyBehavior.BehaviorAgent.SetVariableValue("TargetLocation", this.transform.position);
+            // when item breaks, set RuleKeeper's target location to this item's location
+            MakeNoise makeNoise = new MakeNoise();
+            makeNoise.target = this.transform.position;
             Debug.Log("Rulekeeper should go to " + this.transform.position);
+
+            // play item's break sound effect
+            PlaySound(_breakSO);
+            // destroy breakable thrown game object
             Destroy(this.gameObject); 
+        }
+    }
+
+    /// <summary>
+    /// Plays an audio sound and prevents audio clip from spamming
+    /// </summary>
+    /// <param name="sd">Sound Data Scriptable Object</param>
+    public void PlaySound(SoundDataSO sd)
+    {
+        if (Time.time - lastPlayTime >= _audioCooldownTime)
+        {
+            if (AudioManager.Instance)
+            {
+                AudioManager.Instance.Play(sd, this.transform.position);
+            }
+            lastPlayTime = Time.time;
         }
     }
 

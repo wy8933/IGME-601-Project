@@ -15,7 +15,7 @@ public struct RuleBroken : IEvent
     public Vector3 target;
 }
 
-public struct MakeNoise : IEvent { public Vector2 target; }
+public struct MakeNoise : IEvent { public Vector3 target; }
 
 
 /// <summary>
@@ -38,8 +38,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
-
-    public BehaviorGraphAgent BehaviorAgent { get => _behaviorAgent; }
 
     public float Speed
     {

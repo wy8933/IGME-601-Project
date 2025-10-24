@@ -37,6 +37,10 @@ public class Garbage : ItemInstance
         Throw(user);
     }
 
+    /// <summary>
+    /// Logic for when player throws this item
+    /// </summary>
+    /// <param name="parent"></param>
     private void Throw(GameObject parent)
     {
         // Set initital position of garbage item 
