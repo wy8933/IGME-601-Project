@@ -30,12 +30,6 @@ public class Trap : ItemInstance
         _boxCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void Interact()
     {
         if (IInteractable.Instigator != null)

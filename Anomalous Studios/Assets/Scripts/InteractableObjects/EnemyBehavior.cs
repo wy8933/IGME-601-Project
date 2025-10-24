@@ -39,6 +39,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
+    public BehaviorGraphAgent BehaviorAgent { get => _behaviorAgent; }
+
     public float Speed
     {
         get { _behaviorAgent.GetVariable("Speed", out BlackboardVariable<float> speed); return speed; }
