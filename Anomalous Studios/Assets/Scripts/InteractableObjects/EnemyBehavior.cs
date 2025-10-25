@@ -15,7 +15,7 @@ public struct RuleBroken : IEvent
     public Vector3 target;
 }
 
-public struct MakeNoise : IEvent { public Vector2 target; }
+public struct MakeNoise : IEvent { public Vector3 target; }
 
 
 /// <summary>
@@ -26,9 +26,12 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     private EventBinding<RuleBroken> _ruleBroken;
     private EventBinding<LevelLoaded> _levelLoaded;
     private EventBinding<LoadLevel> _loadLevel;
+    private EventBinding<MakeNoise> _makeNoise;
 
     private BehaviorGraphAgent _behaviorAgent;
     private NavMeshAgent _navAgent;
+
+    private int _ignoreLayers;
 
     private bool _canInteract = true;
 
@@ -66,6 +69,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         _navAgent = GetComponent<NavMeshAgent>();
         _behaviorAgent.SetVariableValue("Player",
             GameObject.FindGameObjectWithTag("Player"));
+
+        _ignoreLayers = ~LayerMask.GetMask("RuleKeeper", "Ignore Raycast");
     }
 
     public void Highlight()
@@ -92,7 +97,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
         // If target is not already seen, I-C-U SFX
         if (Physics.Raycast(transform.position, target.position - transform.position,
-            out RaycastHit hit) && hit.collider.CompareTag("Player"))
+            out RaycastHit hit, 1000, _ignoreLayers) && hit.collider.CompareTag("Player"))
         {
             _behaviorAgent.SetVariableValue("playerSeen", true);
         }
@@ -130,8 +135,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         _navAgent.enabled = false;
         _behaviorAgent.SetVariableValue("ruleBroken", false);
         _behaviorAgent.Restart();
-
-        // TODO: set up the list of rules with a new dataset
     }
 
     private void EnableRuleKeeper(LevelLoaded e)
@@ -139,6 +142,14 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         _behaviorAgent.enabled = true;
         _navAgent.enabled = true;
     }
+
+    private void UpdateTargetLocation(MakeNoise e)
+    {
+        // TODO: I forsee some issues with the target location having INSTANT priority
+        // Might need to introduce a priority queue of target positions, nodes to "check out"
+        _behaviorAgent.SetVariableValue("TargetLocation", e.target);
+    }
+
 
     public void OnEnable()
     {
@@ -148,6 +159,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LoadLevel>.Register(_loadLevel);
         _levelLoaded = new EventBinding<LevelLoaded>(EnableRuleKeeper);
         EventBus<LevelLoaded>.Register(_levelLoaded);
+        _makeNoise = new EventBinding<MakeNoise>(UpdateTargetLocation);
+        EventBus<MakeNoise>.Register(_makeNoise);
     }
 
     public void OnDisable()
@@ -155,5 +168,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
         EventBus<LoadLevel>.DeRegister(_loadLevel);
         EventBus<LevelLoaded>.DeRegister(_levelLoaded);
+        EventBus<MakeNoise>.DeRegister(_makeNoise);
+
     }
 }

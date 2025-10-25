@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,7 @@ using UnityEngine.SceneManagement;
 public struct LevelLoaded : IEvent 
 {
     public Handbook_UI _handbook;
+    public PaperDataSO[] _papers;
 }
 
 /// <summary>
@@ -30,7 +32,7 @@ public enum Level
 public class SceneLoader : MonoBehaviour
 {
     // TODO: Fade in and fade out a black screen BEFORE the loading process and AFTER the loading is fully done
-    public static Level ?CurrentLevel { get; private set; }
+    public static Level? CurrentLevel { get; private set; }
 
     [Header("Level Listings")]
     [SerializeField] private SceneField _elevator;
@@ -40,11 +42,11 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField[] _floorB3;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
+    private Dictionary<Level, PaperDataSO[]> _paperData;
 
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
     private EventBinding<LoadLevel> _levelLoading;
-
     private LevelLoaded _levelLoaded;
 
     private GameObject _blackScreenTEMP;
@@ -52,9 +54,6 @@ public class SceneLoader : MonoBehaviour
 
     public void Start()
     {
-        //VariableConditionManager.Instance.Set("TaskComplete", "false"); // TODO: Remove, legacy
-        //VariableConditionManager.Instance.Set("IsLevelLoading", "true"); // TODO: Remove, legacy
-
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
             { Level.mainMenu, _mainMenu },
