@@ -1,5 +1,7 @@
 using AudioSystem;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Slider = UnityEngine.UI.Slider;
@@ -96,7 +98,7 @@ public class Settings : MonoBehaviour
         }
         else
         {
-            print("<size=100>PLAYER CONTROLLER IS NULL</size>");
+            //print("<size=100>PLAYER CONTROLLER IS NULL</size>");
         }
     }
 
@@ -122,6 +124,56 @@ public class Settings : MonoBehaviour
     }
     #endregion
 
+    #region Button Methods
+    /// <summary>
+    /// Arrow method to increase slider by 20% of sliders max value
+    /// </summary>
+    /// <param name="slider"></param>
+    public void SliderArrowUp(Slider slider)
+    {
+        float amount = slider.maxValue / 20;
+        slider.value += amount;
+    }
+
+    /// <summary>
+    /// Arrow method to decrease slider by 20% of sliders max value
+    /// </summary>
+    /// <param name="slider"></param>
+    public void SliderArrowDown(Slider slider)
+    {
+        float amount = slider.maxValue / 20;
+        slider.value -= amount;
+    }
+
+    /// <summary>
+    /// Sets the volume slider to 0
+    /// </summary>
+    /// <param name="volumeSlider"></param>
+    public void Mute(Slider volumeSlider)
+    {
+        volumeSlider.value = 0;
+    }
+
+    /// <summary>
+    /// Loads the Main Menu scene
+    /// </summary>
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    /// <summary>
+    /// Checks if the game is playing in editor or build and then closes the game.
+    /// </summary>
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+    #endregion
     #region Helper Methods
     /// <summary>
     /// Helper method for getting player preference values

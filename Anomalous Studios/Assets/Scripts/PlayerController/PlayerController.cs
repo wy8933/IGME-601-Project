@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using System.Collections;
 using AudioSystem;
 
-//[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     // Player Input Bindings Script
@@ -21,6 +20,9 @@ public class PlayerController : MonoBehaviour
     // Follow Camera
     [Header("Follow Camera")]
     [SerializeField] private Camera PlayerCamera;
+
+    [Header("Item Container")]
+    public Transform _itemContainerTransform;
 
     // Item Hotbar Script
     private ItemHotbar _itemHotbar;
@@ -63,13 +65,6 @@ public class PlayerController : MonoBehaviour
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
 
-        // Get references to all necessary script components
-        _playerInput = GetComponent<PlayerInputBindings>();
-        _itemHotbar = GetComponent<ItemHotbar>();
-        _playerSound = GetComponent<PlayerSound>();
-        _playerJournal = GetComponent<PlayerJournal>();
-        _playerActions = GetComponent<PlayerActions>();
-
         // The player should spawn wherever they start when the game initally loads - inside the elevator
         _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
         IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
@@ -79,6 +74,13 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _capsuleCollider = GetComponent<CapsuleCollider>();
+
+        // Get references to all necessary script components
+        _playerInput = GetComponent<PlayerInputBindings>();
+        _itemHotbar = GetComponent<ItemHotbar>();
+        _playerSound = GetComponent<PlayerSound>();
+        _playerJournal = GetComponent<PlayerJournal>();
+        _playerActions = GetComponent<PlayerActions>();
     }
 
     private void OnEnable()
@@ -138,19 +140,10 @@ public class PlayerController : MonoBehaviour
     public void Interact() 
     {
         // If current item slot is empty
-        if (!_itemHotbar.SlotHasItem())
-        {
+        //if (_itemHotbar.SlotHasNoItem())
+        //{
             InteractWithItem();
-        }
-        // Else find the next available item slot
-        else
-        {
-            if (_itemHotbar.CheckAvailableItemSlots())
-            {
-                //_itemHotbar.SwitchToItem(_itemHotbar.GetSelectedItemIndex());
-                InteractWithItem();
-            }
-        }
+        //}
     }
 
     /// <summary>
@@ -163,6 +156,14 @@ public class PlayerController : MonoBehaviour
         {
             //IInteractable.isPressed = true;
             IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
+        }
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("RuleKeeper"))
+        {
+            other.transform.parent.GetComponent<EnemyBehavior>().CheckLineOfSight(transform);
         }
     }
 }

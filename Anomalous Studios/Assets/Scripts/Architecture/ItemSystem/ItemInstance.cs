@@ -9,7 +9,6 @@ namespace ItemSystem
     public abstract class ItemInstance: MonoBehaviour, IInteractable
     {
         protected Transform _cameraTransform;
-        protected Vector3 _itemCamPosOffset = new Vector3(0.3f, -0.3f, 0.3f);
         protected float _dropDistanceOffset = 1.5f;
         protected Rigidbody _rb;
 
@@ -115,13 +114,12 @@ namespace ItemSystem
 
         public virtual void AttachToParent(GameObject parent)
         {
-            //                 parent.transform.GetChild(0) = leanPivot | leanPivot.transform.GetChild(0) = Main Camera
-            _cameraTransform = parent.transform.GetChild(1).transform.GetChild(0).transform;
+            _cameraTransform = parent.GetComponent<PlayerController>()._itemContainerTransform;
 
             PickUp();
 
             this.gameObject.transform.SetParent(_cameraTransform, false);
-            transform.localPosition = _itemCamPosOffset;
+            transform.localPosition = Vector3.zero; 
             transform.localRotation = Quaternion.Euler(90, 0, 0);
         }
 
