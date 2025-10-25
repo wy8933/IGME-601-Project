@@ -6,9 +6,12 @@ using System.Collections;
 public class Trap : ItemInstance
 {
     private BoxCollider _boxCollider;
-
+    
     [Header("Trap Slow Duration")]
     [SerializeField] private float _slowDuration = 4.0f;
+
+    [Header("Trap Slow Amount")]
+    [SerializeField] private float _slowAmount = 1.0f;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -64,8 +67,7 @@ public class Trap : ItemInstance
 
     private void OnCollisionEnter(Collision collision)
     {
-        // replace player with rulekeeper
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "RuleKeeper")
         {
             GameObject gameObject = collision.gameObject;
 
@@ -77,18 +79,18 @@ public class Trap : ItemInstance
     private IEnumerator ApplySlowdown(GameObject obj)
     {
         // Access rulekeeper walk speed here and change it temporarily
-        PlayerActions pa = obj.GetComponent<PlayerActions>();
+        EnemyBehavior eb = obj.GetComponent<EnemyBehavior>();
 
-        if(pa != null)
+        if(eb != null)
         {
-            pa.SetWalkSpeed(0.5f);
-            Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
+            eb.Speed = _slowAmount;
+            Debug.Log("Walk Speed: " + eb.Speed);
 
             yield return new WaitForSeconds(_slowDuration);
 
-            pa.SetWalkSpeed(3.0f);
-            Debug.Log("Walk Speed: " + pa.GetWalkSpeed());
-
+            eb.Speed = eb.WalkSpeed;
+            Debug.Log("Walk Speed: " + eb.Speed);
+            
             Destroy(this.gameObject);
         }
     }

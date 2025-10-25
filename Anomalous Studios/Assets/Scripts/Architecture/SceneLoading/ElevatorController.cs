@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Raised when 
+/// Invoked when the player is allowed to move to the next floor
+/// TODO: Decide whether to move to a rule manager, or keep in ElevatorController
 /// </summary>
 public struct TaskComplete : IEvent { }
 
