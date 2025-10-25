@@ -8,8 +8,6 @@ public class Throwable : ItemInstance
     private float _positionOffset = 1.5f;
     private bool _isThrown = false;
 
-    private int Obstacles = 8;
-
     [Header("Rulekeeper")]
     [SerializeField] private GameObject _ruleKeeper;
     private EnemyBehavior _enemyBehavior;
@@ -101,7 +99,6 @@ public class Throwable : ItemInstance
             // when item breaks, set RuleKeeper's target location to this item's location
             MakeNoise makeNoise = new MakeNoise();
             makeNoise.target = this.transform.position;
-            Debug.Log("Rulekeeper should go to " + this.transform.position);
 
             // play item's break sound effect
             PlaySound(_breakSO);
