@@ -96,10 +96,12 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
         // TODO: make a bunch of rays or direction vectors before hand, raycast all of them
 
+        print("hit3");
         // If target is not already seen, I-C-U SFX
         if (Physics.Raycast(transform.position, target.position - transform.position,
             out RaycastHit hit, 1000, _ignoreLayers) && hit.collider.CompareTag("Player"))
         {
+            print("hit4");
             _behaviorAgent.SetVariableValue("playerSeen", true);
         }
         else
