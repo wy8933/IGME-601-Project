@@ -5,10 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class FirstFloorTempManager : MonoBehaviour
 {
-    [SerializeField]private GameObject _fistLevelDoor;
     private GameObject _player;
     public float updateCooldown;
 
+    [SerializeField] private GameObject[] _bedRoomLights;
+    [SerializeField] private GameObject[] _allLights;
+
+    public float powerOutTime;
+    public float powerResetTime;
+    public float powerOutCheckTime;
+    public bool isPowerOut;
     public void Start()
     {
         VariableConditionManager.Instance.Set("Trash","0");
@@ -20,16 +26,12 @@ public class FirstFloorTempManager : MonoBehaviour
 
     public void AllTaskCompleted() 
     {
-        Destroy(_fistLevelDoor);
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        SceneManager.LoadScene("GameOver");
     }
 
     private IEnumerator UpdateGame() 
     {
+        // TODO: add the check for the cleaning
         if (VariableConditionManager.Instance.Get("Trash") == "3")
         {
             AllTaskCompleted();
@@ -38,10 +40,55 @@ public class FirstFloorTempManager : MonoBehaviour
         //Time calculation
         float currentTime = float.Parse(VariableConditionManager.Instance.Get("watchTimer"));
 
-        if (currentTime > 15 && currentTime < 180)
+        // Set the bedroom lights
+        if (currentTime % 60 <= 1) 
         {
-            VariableConditionManager.Instance.Set("WrongTime", "true");
+            if (currentTime / 60 % 2 == 0)
+            {
+                foreach (GameObject obj in _bedRoomLights)
+                {
+                    obj.SetActive(true);
+                }
+            }
+            else 
+            {
+                foreach (GameObject obj in _bedRoomLights)
+                {
+                    obj.SetActive(false);
+                }
+            }
         }
+
+        if (!isPowerOut)
+        {
+            if (currentTime % powerOutCheckTime <= 1)
+            {
+                int num = Random.Range(0, 10);
+
+                if (num < 5) 
+                {
+                    isPowerOut = true;
+                    powerOutTime = currentTime;
+                    foreach (GameObject lights in _allLights)
+                    {
+                        lights.SetActive(false);
+                    }
+                }
+            }
+        }
+        else 
+        {
+            if (currentTime - powerOutTime >= powerResetTime) 
+            {
+                isPowerOut = false;
+
+                foreach (GameObject lights in _allLights)
+                {
+                    lights.SetActive(true);
+                }
+            }
+        }
+
 
         // Light Calculation
         float lightValue = _player.GetComponent<LightDetection>().lightTotal;

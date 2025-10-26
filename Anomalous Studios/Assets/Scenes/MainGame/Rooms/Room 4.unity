@@ -389,6 +389,8 @@ GameObject:
   - component: {fileID: 7424489703723817976}
   - component: {fileID: 5504726577134365242}
   - component: {fileID: 7424489703723817977}
+  - component: {fileID: 7424489703723817979}
+  - component: {fileID: 7424489703723817978}
   m_Layer: 0
   m_Name: Door 4
   m_TagString: Untagged
@@ -483,6 +485,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.020176096, y: 0.0049817804, z: 0.03999999}
   m_Center: {x: 0.0099119535, y: 0.000053385145, z: -0.0000710599}
+--- !u!208 &7424489703723817978
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6726038243081217948}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.010000001, y: 0.002, z: 0.020000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.010000001, y: 0, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &7424489703723817979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6726038243081217948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!4 &8871786173014702019
 Transform:
   m_ObjectHideFlags: 0
@@ -510,6 +548,8 @@ GameObject:
   - component: {fileID: 2513967844879951092}
   - component: {fileID: 1200458828622183486}
   - component: {fileID: 9165934882672492035}
+  - component: {fileID: 9165934882672492037}
+  - component: {fileID: 9165934882672492036}
   m_Layer: 0
   m_Name: Door 4-1
   m_TagString: Untagged
@@ -538,6 +578,42 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.010179937, y: 0.019623127, z: 0.03999999}
   m_Center: {x: -0.0038585253, y: -0.009319019, z: -0.0000710599}
+--- !u!208 &9165934882672492036
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9165934882672492034}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.0050000004, y: 0.010000001, z: 0.020000001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.004, y: -0.009000001, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &9165934882672492037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9165934882672492034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
