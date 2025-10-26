@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 191617482429489020}
   - component: {fileID: 6558053461169900325}
   - component: {fileID: 8226039405100605265}
+  - component: {fileID: 1610537555456171861}
   m_Layer: 6
   m_Name: Paper
   m_TagString: Interactable
@@ -505,7 +506,7 @@ MonoBehaviour:
   _failedSFX: {fileID: 11400000, guid: 303b9e98fb19e944387307913a0c9586, type: 2}
   _cancelSFX: {fileID: 11400000, guid: ec75088a96623ef48950bd5d5ab5b53e, type: 2}
   _successSFX: {fileID: 11400000, guid: 9e2a84f7cfd16644b848b9ed091d38ea, type: 2}
---- !u!114 &3894050511371284914
+--- !u!114 &1610537555456171861
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -514,14 +515,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8247500365295783521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f9b04a9ac84a5b4b8f53803ee8a104e, type: 3}
+  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _description: {fileID: 5120098635643790907}
-  _handbook: {fileID: 0}
-  _holdTime: 0
-  _canInteract: 1
-  _initialSFX: {fileID: 0}
-  _failedSFX: {fileID: 0}
-  _cancelSFX: {fileID: 0}
-  _successSFX: {fileID: 0}
+  rend: {fileID: 0}
+  originalMats: []
+  outlineMatInstance: {fileID: 0}
+  IsHighlighted: 0
