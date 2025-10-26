@@ -68,15 +68,20 @@ public class Handbook_UI : MonoBehaviour
     public void AddPolicy(string description)
     {
         GameObject policyObj;
+        Policy policy;
         if ((policiesList.Count + 1) % 2 == 0)
         {
             policyObj = Instantiate(_policyPrefabLeft, _policyPage);
+            policy = policyObj.GetComponent<Policy>();
+            policy.IsRightPage= false;
         }
         else
         {
             policyObj = Instantiate(_policyPrefabRight, _policyPage);
+            policy = policyObj.GetComponent<Policy>();
+            policy.IsRightPage = true;
         }
-        Policy policy = policyObj.GetComponent<Policy>();
+      
         policy.Description = $"{policiesList.Count+1}. {description}";
 
         // Lets user know that they picked up a new task
@@ -203,7 +208,11 @@ public class Handbook_UI : MonoBehaviour
                 _currentPolicy.Arrow.SetActive(true);
             }
         }
-
+        // First page gets the arrow if there is another task in the list
+        else if (policiesList.Count >= 2 && _currentPolicyId ==0)
+        {
+            _currentPolicy.Arrow.SetActive(true);
+        }
         // Left page turns on right page if it exists
         else if (_currentPolicyId >= 1 && _currentPolicyId + 1 < policiesList.Count)
         {
@@ -215,11 +224,7 @@ public class Handbook_UI : MonoBehaviour
             }
         }
 
-        // First page gets the arrow if there is another task in the list
-        else if (policiesList.Count >= 2)
-        {
-            _currentPolicy.Arrow.SetActive(true);
-        }
+        
     }
     /// <summary>
     /// Hides the journal and resumes play
