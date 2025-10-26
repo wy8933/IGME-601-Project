@@ -2,12 +2,15 @@ using UnityEngine;
 using ItemSystem;
 using AudioSystem;
 
-public class Garbage : ItemInstance
+public class Throwable : ItemInstance
 {
-    private BoxCollider _boxCollider;
-
-    public string Tag = "Garbage";
+    private CapsuleCollider _capsuleCollider;
     private float _positionOffset = 1.5f;
+    private bool _isThrown = false;
+
+    [Header("Rulekeeper")]
+    [SerializeField] private GameObject _ruleKeeper;
+    private EnemyBehavior _enemyBehavior;
 
     [Header("Throw Force")]
     [SerializeField] private float _throwForwardForce = 5.0f;
@@ -21,15 +24,24 @@ public class Garbage : ItemInstance
     public override SoundDataSO CancelSFX => null;
     public override SoundDataSO SuccessSFX { get => _successSFX; }
 
+    [Header("Sound Data")]
+    [SerializeField] private SoundDataSO _breakSO;
+    private float _audioCooldownTime = 0.5f;
+    private float lastPlayTime;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Initialize();
 
         _rb = GetComponent<Rigidbody>();
-        _boxCollider = GetComponent<BoxCollider>();
-    }
+        _capsuleCollider = GetComponent<CapsuleCollider>();
 
+        if(_ruleKeeper != null)
+        {
+            _enemyBehavior = _ruleKeeper.GetComponent<EnemyBehavior>();
+        }
+    }
     public override void Use(GameObject user)
     {
         TryUse(user);
@@ -56,7 +68,7 @@ public class Garbage : ItemInstance
         EnableRigidBodyCollisions();
 
         // Calculate throwing forces
-        Vector3 throwForwardDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.forward; 
+        Vector3 throwForwardDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.forward;
         Vector3 throwForwardForce = throwForwardDirection.normalized * _throwForwardForce;
 
         Vector3 throwUpDirection = parent.GetComponent<PlayerController>().GetPlayerCamera().transform.up;
@@ -65,6 +77,8 @@ public class Garbage : ItemInstance
         // Apply throwing forces
         _rb.AddForce(throwForwardForce, ForceMode.Impulse);
         _rb.AddForce(throwUpForce, ForceMode.Impulse);
+
+        _isThrown = true;
 
         // Update ItemHotbar 
         IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
@@ -75,6 +89,37 @@ public class Garbage : ItemInstance
         if (IInteractable.Instigator != null)
         {
             IInteractable.Instigator.GetComponent<PlayerController>().GetItemHotbar().AddItem(this.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(_isThrown && _enemyBehavior != null)
+        {
+            // when item breaks, set RuleKeeper's target location to this item's location
+            MakeNoise makeNoise = new MakeNoise();
+            makeNoise.target = this.transform.position;
+
+            // play item's break sound effect
+            PlaySound(_breakSO);
+            // destroy breakable thrown game object
+            Destroy(this.gameObject); 
+        }
+    }
+
+    /// <summary>
+    /// Plays an audio sound and prevents audio clip from spamming
+    /// </summary>
+    /// <param name="sd">Sound Data Scriptable Object</param>
+    public void PlaySound(SoundDataSO sd)
+    {
+        if (Time.time - lastPlayTime >= _audioCooldownTime)
+        {
+            if (AudioManager.Instance)
+            {
+                AudioManager.Instance.Play(sd, this.transform.position);
+            }
+            lastPlayTime = Time.time;
         }
     }
 
@@ -92,12 +137,12 @@ public class Garbage : ItemInstance
     public override void DisableRigidBodyCollisions()
     {
         base.DisableRigidBodyCollisions();
-        _boxCollider.enabled = false;
+        _capsuleCollider.enabled = false;
     }
 
     public override void EnableRigidBodyCollisions()
     {
         base.EnableRigidBodyCollisions();
-        _boxCollider.enabled = true;
+        _capsuleCollider.enabled = true;
     }
 }

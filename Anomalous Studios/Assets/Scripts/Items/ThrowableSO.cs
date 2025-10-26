@@ -1,12 +1,12 @@
-using ItemSystem;
 using UnityEngine;
+using ItemSystem;
 
-[CreateAssetMenu(fileName = "KeySO", menuName = "ItemSystem/KeySO")]
-public class KeySO : ItemDataSO
+[CreateAssetMenu(fileName = "ThrowableSO", menuName = "ItemSystem/ThrowableSO")]
+public class ThrowableSO : ItemDataSO
 {
     // You can add as much variable as you want
     [Header("Extra variables for this item")]
-    [TextArea] public string message = "Used the Key!";
+    [TextArea] public string message = "Used the Throwable Item!";
     public bool includeUserName = true;
 
     /// <summary>

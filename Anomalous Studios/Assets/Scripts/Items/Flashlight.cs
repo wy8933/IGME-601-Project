@@ -46,15 +46,25 @@ public class Flashlight : ItemInstance
     {
         if (_isOn)
         {
-            if (Battery > 0)
-            {
-                Battery -= _batteryDrainAmount * Time.deltaTime;
-            }
-            else
-            {
-                _lightComponent.intensity = 0;
-                _isOn = false;
-            }
+            //BatteryDrain();
+        }
+    }
+
+    /// <summary>
+    /// Drains battery life of flashlight
+    /// </summary>
+    private void BatteryDrain()
+    {
+        // drain battery life when it is turned on
+        if (Battery > 0)
+        {
+            Battery -= _batteryDrainAmount * Time.deltaTime;
+        }
+        // flashlight has no more battery life
+        else
+        {
+            _lightComponent.intensity = 0;
+            _isOn = false;
         }
     }
 

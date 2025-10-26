@@ -30,12 +30,6 @@ public class Trap : ItemInstance
         _boxCollider = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void Interact()
     {
         if (IInteractable.Instigator != null)
@@ -51,6 +45,10 @@ public class Trap : ItemInstance
         PlaceTrap(user);
     }
 
+    /// <summary>
+    /// Method called when player places this trap item in the game world 
+    /// </summary>
+    /// <param name="parent"></param>
     private void PlaceTrap(GameObject parent)
     {
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
@@ -76,6 +74,11 @@ public class Trap : ItemInstance
         }
     }
 
+    /// <summary>
+    /// Applies a temporary slowdown to the target game object
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     private IEnumerator ApplySlowdown(GameObject obj)
     {
         // Access rulekeeper walk speed here and change it temporarily
@@ -84,12 +87,12 @@ public class Trap : ItemInstance
         if(eb != null)
         {
             eb.Speed = _slowAmount;
-            Debug.Log("Walk Speed: " + eb.Speed);
+            //Debug.Log("Walk Speed: " + eb.Speed);
 
             yield return new WaitForSeconds(_slowDuration);
 
             eb.Speed = eb.WalkSpeed;
-            Debug.Log("Walk Speed: " + eb.Speed);
+            //Debug.Log("Walk Speed: " + eb.Speed);
             
             Destroy(this.gameObject);
         }
