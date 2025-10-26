@@ -10,11 +10,12 @@ public struct TaskComplete : IEvent { }
 
 public class ElevatorController : MonoBehaviour
 {
+    [SerializeField] private GameObject _paperPrefab;
     [SerializeField] private SoundDataSO _floorChime;
     [SerializeField] private SoundDataSO _doorsMoving;
 
     private Animator _animator;
-    private GameObject _corkboard;
+    private Transform _corkboard;
 
     // TODO: Temporarily assigned in inspector, should be spawned in my some the SceneLoader based on type of level
     // TODO: replace with an actual array, using id values when creating the notes
@@ -24,11 +25,12 @@ public class ElevatorController : MonoBehaviour
     private static ElevatorButton _openButton;
 
     private EventBinding<TaskComplete> _taskComplete;
+    private EventBinding<LevelLoaded> _levelLoaded;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
-        _corkboard = transform.Find("Corkboard").gameObject;
+        _corkboard = transform.Find("Corkboard");
 
         _openButton = transform.Find("Buttons/Open").GetComponent<ElevatorButton>();
         _buttons = new Dictionary<Level, ElevatorButton>
@@ -76,16 +78,24 @@ public class ElevatorController : MonoBehaviour
     }
 
     /// <summary>
-    /// TODO: Initializes the notes on the corkboard when the scene loads
+    /// Instantiates 
     /// </summary>
-    /// <param name="Notes">The Papers to spawn on the corkboard</param>
-    public void SpawnNotes(List<Paper> Notes)
+    /// <param name="PaperData"></param>
+    public void SpawnNotes(List<PaperDataSO> PaperData)
     {
-        _notes = Notes;
+        _notes.Clear();
 
-        foreach (Paper paper in Notes) 
+        float x = -1.0f;
+        foreach (PaperDataSO data in PaperData) 
         {
-            // TODO: spawn all of the notes into the scene on the _corkboard
+            GameObject paper = Instantiate(_paperPrefab, _corkboard, false);
+
+            float y = Random.Range(-0.5f, 0.5f);
+            float z = paper.transform.localPosition.z;
+
+            paper.GetComponent<Paper>().InitReferences(this, data.IsTask, data.TaskID, data.Description);
+            paper.transform.localPosition = new Vector3(x += 0.25f, y, z);
+
         }
     }
 
