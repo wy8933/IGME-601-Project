@@ -40,6 +40,9 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField[] _floorB1;
     [SerializeField] private SceneField[] _floorB2;
     [SerializeField] private SceneField[] _floorB3;
+    [SerializeField] private PaperDataSO[] _papersB1;
+    [SerializeField] private PaperDataSO[] _papersB2;
+    [SerializeField] private PaperDataSO[] _papersB3;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
     private Dictionary<Level, PaperDataSO[]> _paperData;
@@ -47,10 +50,10 @@ public class SceneLoader : MonoBehaviour
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
     private EventBinding<LoadLevel> _levelLoading;
-    private LevelLoaded _levelLoaded;
 
     private GameObject _blackScreenTEMP;
     private NavMeshSurface _navMeshSurface;
+    private Handbook_UI _handbookUI;
 
     public void Start()
     {
@@ -62,18 +65,21 @@ public class SceneLoader : MonoBehaviour
             { Level.B3, _floorB3 }
         };
 
-        GameObject _mainUI = GameObject.Find("MainUI");
+        _paperData = new Dictionary<Level, PaperDataSO[]>
+        {
+            { Level.mainMenu, null },
+            { Level.B1, _papersB1 },
+            { Level.B2, _papersB2 },
+            { Level.B3, _papersB3 }
+        };
+
 
         // Holds a reference to any managers, passes them along when the level is loaded to help initialize new scenes
         // transform.Find() is able to search for inactive objects, unlike GameObject.Find()
         // QUESTION: Should the managers all be singletons since they are persistent, rather than passing their references?
-        _levelLoaded = new LevelLoaded
-        {
-            _handbook = _mainUI.transform.Find("Handbook").GetComponent<Handbook_UI>()
-        };
-
-        _blackScreenTEMP = _mainUI.transform.Find("LoadingScreen").gameObject;
+        _blackScreenTEMP = GameObject.Find("MainUI").transform.Find("LoadingScreen").gameObject;
         _navMeshSurface = GetComponent<NavMeshSurface>();
+        _handbookUI = GameObject.Find("MainUI").transform.Find("Handbook").GetComponent<Handbook_UI>();
 
 
         // TODO: Need to move between cameras better, from the main menu to the player controller. Only one audio listener
@@ -86,6 +92,8 @@ public class SceneLoader : MonoBehaviour
 
         StartCoroutine(WaitForScenes(e));
     }
+
+    // TODO: split up WaitForScenes into a couple of coroutines because its starting to get chunky and illegible
 
     /// <summary>
     /// Displays the loading screen, and loads all the new scenes additively. The navmesh is rebaked after all scenes are loaded safely
@@ -132,7 +140,11 @@ public class SceneLoader : MonoBehaviour
 
         if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
-        EventBus<LevelLoaded>.Raise(_levelLoaded);
+        EventBus<LevelLoaded>.Raise(new LevelLoaded
+        {
+            _handbook = _handbookUI,
+            _papers = _paperData[(Level)CurrentLevel]
+        });
 
         _blackScreenTEMP.SetActive(false);
     }

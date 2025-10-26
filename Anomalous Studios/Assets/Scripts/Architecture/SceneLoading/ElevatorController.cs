@@ -19,7 +19,8 @@ public class ElevatorController : MonoBehaviour
 
     // TODO: Temporarily assigned in inspector, should be spawned in my some the SceneLoader based on type of level
     // TODO: replace with an actual array, using id values when creating the notes
-    [SerializeField] private List<Paper> _notes;
+    //[SerializeField] private List<Paper> _notes;
+    private List<Paper> _notes;
 
     private Dictionary<Level, ElevatorButton> _buttons;
     private static ElevatorButton _openButton;
@@ -27,8 +28,10 @@ public class ElevatorController : MonoBehaviour
     private EventBinding<TaskComplete> _taskComplete;
     private EventBinding<LevelLoaded> _levelLoaded;
 
-    void Start()
+    public void Start()
     {
+        _notes = new List<Paper>();
+
         _animator = GetComponent<Animator>();
         _corkboard = transform.Find("Corkboard");
 
@@ -78,24 +81,34 @@ public class ElevatorController : MonoBehaviour
     }
 
     /// <summary>
-    /// Instantiates 
+    /// Instantiates the physical papers on the corkboard per the level data
     /// </summary>
-    /// <param name="PaperData"></param>
-    public void SpawnNotes(List<PaperDataSO> PaperData)
+    /// <param name="PaperData">The paper data from each unique level</param>
+    public void SpawnNotes(LevelLoaded e)
     {
-        _notes.Clear();
+        PaperDataSO[] PaperData = e._papers;
+        _notes?.Clear();
 
         float x = -1.0f;
+        float y = 0.5f;
         foreach (PaperDataSO data in PaperData) 
         {
             GameObject paper = Instantiate(_paperPrefab, _corkboard, false);
 
-            float y = Random.Range(-0.5f, 0.5f);
             float z = paper.transform.localPosition.z;
 
             paper.GetComponent<Paper>().InitReferences(this, data.IsTask, data.TaskID, data.Description);
-            paper.transform.localPosition = new Vector3(x += 0.25f, y, z);
+            paper.transform.localPosition = new Vector3(x, y, z);
 
+            // TODO: Make position data dynamic to corkboard. This is hardcoded for its current size
+            x += 0.5f;
+            if (x >= 1.0f)
+            {
+                x = -1.0f;
+                y -= 0.5f;
+            }
+
+            _notes.Add(paper.GetComponent<Paper>());
         }
     }
 
@@ -113,10 +126,13 @@ public class ElevatorController : MonoBehaviour
     {
         _taskComplete = new EventBinding<TaskComplete>(EnableElevatorButtons);
         EventBus<TaskComplete>.Register(_taskComplete);
+        _levelLoaded = new EventBinding<LevelLoaded>(SpawnNotes);
+        EventBus<LevelLoaded>.Register(_levelLoaded);
     }
 
     public void OnDisable()
     {
         EventBus<TaskComplete>.DeRegister(_taskComplete);
+        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
     }
 }

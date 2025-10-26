@@ -1220,6 +1220,13 @@ MonoBehaviour:
     m_SceneName: Room 8.5
   - m_SceneAsset: {fileID: 102900000, guid: 28b09c1e4c6de954e9b6b079613c6109, type: 3}
     m_SceneName: Room 2.4
+  _papersB1:
+  - {fileID: 11400000, guid: f68900ff56351e148bb0ff71db5c279f, type: 2}
+  - {fileID: 11400000, guid: f284f0a844fac98438d41cf2597384a6, type: 2}
+  - {fileID: 11400000, guid: c4e056598ee3aa24f97737df265cfd34, type: 2}
+  - {fileID: 11400000, guid: d9b48335dbe6d774fb943aec0380d9fb, type: 2}
+  _papersB2: []
+  _papersB3: []
 --- !u!114 &1532180638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1296,6 +1303,56 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1661148857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1661148859}
+  - component: {fileID: 1661148858}
+  m_Layer: 0
+  m_Name: SoundEffectTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1661148858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661148857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba919882c3382ea4b890acac9513372d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footsteps:
+  - {fileID: 11400000, guid: db8aae21077c11f44b49ed85bb3413e7, type: 2}
+  - {fileID: 11400000, guid: 8b916a903460d1146beb8dbff5006ec0, type: 2}
+  - {fileID: 11400000, guid: df6c6f80c9c82b84d881236823b13f5f, type: 2}
+  - {fileID: 11400000, guid: b3ff4e82a063ca045a7468ae3470eda5, type: 2}
+  - {fileID: 11400000, guid: f3002c55b1607b14887a1111ba6dca60, type: 2}
+--- !u!4 &1661148859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661148857}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.3973365, y: -15.577529, z: 53.06926}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1775043677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,3 +1415,4 @@ SceneRoots:
   - {fileID: 1643553496}
   - {fileID: 1775043679}
   - {fileID: 488187548}
+  - {fileID: 1661148859}
