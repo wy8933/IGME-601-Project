@@ -31,6 +31,10 @@ public static class EventBusUtil
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
     }
 
+    /// <summary>
+    /// Clear the buses when exit unity play mode
+    /// </summary>
+    /// <param name="state">The current play mode state</param>
     static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
         PlayModeState = state;
@@ -55,6 +59,10 @@ public static class EventBusUtil
         EventBusTypes = InitializeAllBuses();
     }
 
+    /// <summary>
+    /// Initiallize all the event buses
+    /// </summary>
+    /// <returns>List of all the type of events</returns>
     static List<Type> InitializeAllBuses()
     {
         List<Type> eventBusTypes = new List<Type>();

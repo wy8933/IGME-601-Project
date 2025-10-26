@@ -19,6 +19,9 @@ public class LightDetection : MonoBehaviour
         StartCoroutine(CheckLightValueLoop());
     }
 
+    /// <summary>
+    /// Periodically calculates how much light hits this object and updates lightTotal.
+    /// </summary>
     private IEnumerator CheckLightValueLoop()
     {
         var wait = new WaitForSeconds(lightDetectionCooldown);
@@ -57,6 +60,11 @@ public class LightDetection : MonoBehaviour
 
     #region LightCheck
 
+    /// <summary>
+    /// Returns light contribution from a point light if in range and not blocked.
+    /// </summary>
+    /// <param name="pl">Point light to test.</param>
+    /// <returns>Light value in [0,1].</returns>
     float CheckPointLight(Light pl)
     {
         Vector3 toPlayer = transform.position - pl.transform.position;
@@ -68,6 +76,11 @@ public class LightDetection : MonoBehaviour
         return LightValueCalculation(pl.intensity, toPlayer.sqrMagnitude);
     }
 
+    /// <summary>
+    /// Returns light contribution from a spot light if in cone, range, and not blocked.
+    /// </summary>
+    /// <param name="_spotLight">Spot light to test.</param>
+    /// <returns>Light value in [0,1].</returns>
     private float CheckSpotLight(Light _spotLight)
     {
         Vector3 direction = transform.position - _spotLight.transform.position;
@@ -84,6 +97,12 @@ public class LightDetection : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// Shot and checks if a ray hits a blocker.
+    /// </summary>
+    /// <param name="from">Ray start.</param>
+    /// <param name="to">Ray end.</param>
+    /// <returns>True if blocked; otherwise false.</returns>
     bool IsBlocked(Vector3 from, Vector3 to)
     {
         Vector3 dir = to - from;
@@ -92,6 +111,12 @@ public class LightDetection : MonoBehaviour
         return Physics.Raycast(from, dir / dist, dist - 0.05f, blockerMask, QueryTriggerInteraction.Ignore);
     }
 
+    /// <summary>
+    /// Converts intensity and squared distance into a normalized light value.
+    /// </summary>
+    /// <param name="intensity">Light intensity.</param>
+    /// <param name="sqrDistance">Squared distance to light.</param>
+    /// <returns>Light value in [0,1].</returns>
     float LightValueCalculation(float intensity, float sqrDistance)
     {
         return Mathf.Clamp01(intensity / Mathf.Max(1f, sqrDistance));
