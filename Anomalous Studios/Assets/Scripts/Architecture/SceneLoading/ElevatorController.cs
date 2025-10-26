@@ -38,9 +38,9 @@ public class ElevatorController : MonoBehaviour
         _openButton = transform.Find("Buttons/Open").GetComponent<ElevatorButton>();
         _buttons = new Dictionary<Level, ElevatorButton>
         {
-            { Level.B1, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
-            { Level.B2, transform.Find("Buttons/B2").GetComponent<ElevatorButton>() },
-            { Level.B3, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
+            { Level.onboarding, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
+            { Level.firstLevel, transform.Find("Buttons/B2").GetComponent<ElevatorButton>() },
+            { Level.mainMenu, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
         };
     }
 
@@ -77,7 +77,8 @@ public class ElevatorController : MonoBehaviour
     /// </summary>
     public void EnableElevatorButtons()
     {
-        _buttons[(Level)SceneLoader.CurrentLevel+1].Enable();
+        // TODO: We need to go to some final scene rather than the main menu
+        _buttons[(Level)(((int)SceneLoader.CurrentLevel+1)%(int)(Level.firstLevel+1))].Enable();
     }
 
     /// <summary>

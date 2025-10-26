@@ -23,7 +23,7 @@ public partial class AttackAction : Action
 
     protected override Status OnUpdate()
     {
-        //EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = Level.mainMenu });
         return Status.Success;
     }
 }

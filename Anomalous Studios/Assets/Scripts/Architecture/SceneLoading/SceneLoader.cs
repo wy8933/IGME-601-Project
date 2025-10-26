@@ -24,9 +24,8 @@ public struct LoadLevel : IEvent { public Level newLevel; }
 public enum Level
 {
     mainMenu,
-    B1,
-    B2,
-    B3
+    onboarding,
+    firstLevel
 }
 
 public class SceneLoader : MonoBehaviour
@@ -37,12 +36,10 @@ public class SceneLoader : MonoBehaviour
     [Header("Level Listings")]
     [SerializeField] private SceneField _elevator;
     [SerializeField] private SceneField[] _mainMenu;
-    [SerializeField] private SceneField[] _floorB1;
-    [SerializeField] private SceneField[] _floorB2;
-    [SerializeField] private SceneField[] _floorB3;
-    [SerializeField] private PaperDataSO[] _papersB1;
-    [SerializeField] private PaperDataSO[] _papersB2;
-    [SerializeField] private PaperDataSO[] _papersB3;
+    [SerializeField] private SceneField[] _onboarding;
+    [SerializeField] private SceneField[] _firstLevel;
+    [SerializeField] private PaperDataSO[] _papers_1;
+    [SerializeField] private PaperDataSO[] _papers_2;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
     private Dictionary<Level, PaperDataSO[]> _paperData;
@@ -60,17 +57,15 @@ public class SceneLoader : MonoBehaviour
         _floorLibrary = new Dictionary<Level, SceneField[]>
         {
             { Level.mainMenu, _mainMenu },
-            { Level.B1, _floorB1 },
-            { Level.B2, _floorB2 },
-            { Level.B3, _floorB3 }
+            { Level.onboarding, _onboarding },
+            { Level.firstLevel, _firstLevel }
         };
 
         _paperData = new Dictionary<Level, PaperDataSO[]>
         {
             { Level.mainMenu, null },
-            { Level.B1, _papersB1 },
-            { Level.B2, _papersB2 },
-            { Level.B3, _papersB3 }
+            { Level.onboarding, _papers_1 },
+            { Level.firstLevel, _papers_2 }
         };
 
 

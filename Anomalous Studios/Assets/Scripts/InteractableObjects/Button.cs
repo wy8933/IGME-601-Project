@@ -14,6 +14,8 @@ public enum ButtonType
 public class ElevatorButton : MonoBehaviour, IInteractable
 {
     [SerializeField] private ButtonType _buttonType = ButtonType.Level;
+
+    [Tooltip("The level this button will send you to")]
     [SerializeField] private Level _level;
     [SerializeField] private float _holdTime = 0.0f;
 
