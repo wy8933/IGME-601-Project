@@ -9,8 +9,8 @@ using System.Linq;
 /// <summary>
 /// If a rule is broken or resolved, passes the type of affected rule to the Rulekeeper
 /// </summary>
-public struct RuleBroken : IEvent 
-{ 
+public struct RuleBroken : IEvent
+{
     public bool isBroken;
     public Vector3 target;
 }
@@ -26,16 +26,16 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     private EventBinding<RuleBroken> _ruleBroken;
     private EventBinding<LevelLoaded> _levelLoaded;
     private EventBinding<LoadLevel> _loadLevel;
+    private EventBinding<MakeNoise> _makeNoise;
 
     private BehaviorGraphAgent _behaviorAgent;
     private NavMeshAgent _navAgent;
 
-    private float _walkSpeed = 5.0f;
+    private int _ignoreLayers;
 
     private bool _canInteract = true;
 
-    public float WalkSpeed { get => _walkSpeed; }
-
+    public float WalkSpeed => Speed;
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
@@ -62,14 +62,16 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         { "action!", false }
     };
 
-    private Vector3[] _sightCone; 
+    private Vector3[] _sightCone;
 
     public void Start()
     {
         _behaviorAgent = GetComponent<BehaviorGraphAgent>();
         _navAgent = GetComponent<NavMeshAgent>();
-        _behaviorAgent.SetVariableValue("Player", 
+        _behaviorAgent.SetVariableValue("Player",
             GameObject.FindGameObjectWithTag("Player"));
+
+        _ignoreLayers = ~LayerMask.GetMask("RuleKeeper", "Ignore Raycast");
     }
 
     public void Highlight()
@@ -89,15 +91,17 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public void CheckLineOfSight(Transform target)
     {
         // create a direction arrow towards the player
-        
+
         // If that arrow is within the arc of enemy vision
 
         // TODO: make a bunch of rays or direction vectors before hand, raycast all of them
 
+        print("hit3");
         // If target is not already seen, I-C-U SFX
-        if (Physics.Raycast(transform.position, target.position - transform.position, 
-            out RaycastHit hit) && hit.collider.CompareTag("Player"))
+        if (Physics.Raycast(transform.position, target.position - transform.position,
+            out RaycastHit hit, 1000, _ignoreLayers) && hit.collider.CompareTag("Player"))
         {
+            print("hit4");
             _behaviorAgent.SetVariableValue("playerSeen", true);
         }
         else
@@ -134,8 +138,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         _navAgent.enabled = false;
         _behaviorAgent.SetVariableValue("ruleBroken", false);
         _behaviorAgent.Restart();
-
-        // TODO: set up the list of rules with a new dataset
     }
 
     private void EnableRuleKeeper(LevelLoaded e)
@@ -143,6 +145,14 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         _behaviorAgent.enabled = true;
         _navAgent.enabled = true;
     }
+
+    private void UpdateTargetLocation(MakeNoise e)
+    {
+        // TODO: I forsee some issues with the target location having INSTANT priority
+        // Might need to introduce a priority queue of target positions, nodes to "check out"
+        _behaviorAgent.SetVariableValue("TargetLocation", e.target);
+    }
+
 
     public void OnEnable()
     {
@@ -152,6 +162,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LoadLevel>.Register(_loadLevel);
         _levelLoaded = new EventBinding<LevelLoaded>(EnableRuleKeeper);
         EventBus<LevelLoaded>.Register(_levelLoaded);
+        _makeNoise = new EventBinding<MakeNoise>(UpdateTargetLocation);
+        EventBus<MakeNoise>.Register(_makeNoise);
     }
 
     public void OnDisable()
@@ -159,5 +171,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
         EventBus<LoadLevel>.DeRegister(_loadLevel);
         EventBus<LevelLoaded>.DeRegister(_levelLoaded);
+        EventBus<MakeNoise>.DeRegister(_makeNoise);
+
     }
 }

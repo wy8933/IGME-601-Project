@@ -40,6 +40,7 @@ public class RageTotem : MonoBehaviour, IInteractable
         //_ruleKeeper.SetVariableValue("ruleBroken", true);
         EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true, target = transform.position });
         EventBus<TaskComplete>.Raise(new TaskComplete { });
+        EventBus<MakeNoise>.Raise(new MakeNoise { target = transform.position });
     }
 
     public void RemoveHighlight()

@@ -9,9 +9,9 @@ public class Paper : MonoBehaviour, IInteractable
     [SerializeField] private float _holdTime = 0.0f;
 
     private ElevatorController _elevator;
-
+    private string _taskID;
     private Renderer _renderer;
-    public bool isTask;
+    private bool _isTask;
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
     // The level system is going to change pretty soon to accomadate new level box anyway
@@ -65,7 +65,7 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void AddToHandbook()
     {
-        if (isTask)
+        if (_isTask)
         {
             _handbook.AddTask(_description.text);
         }
@@ -85,6 +85,15 @@ public class Paper : MonoBehaviour, IInteractable
     private void InitReferences(LevelLoaded e)
     {
         _handbook = e._handbook;
+    }
+
+    public void InitReferences(ElevatorController elevator, bool isTask, string taskID, string desc)
+    {
+        _elevator = elevator;
+        _isTask = isTask;
+        _taskID = taskID;
+
+        _description.text = desc;
     }
 
     public void OnEnable()
