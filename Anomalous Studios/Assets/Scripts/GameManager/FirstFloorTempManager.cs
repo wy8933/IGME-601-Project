@@ -18,21 +18,25 @@ public class FirstFloorTempManager : MonoBehaviour
     public void Start()
     {
         VariableConditionManager.Instance.Set("Trash","0");
+        GameVariables.Set("floor-cleaned", "false");
         _player = GameObject.FindGameObjectWithTag("Player");
 
         GameVariables.Verbose = false;
         StartCoroutine(UpdateGame());
+
+        _bedRoomLights = GameObject.FindGameObjectsWithTag("Room1Light");
+        _allLights = GameObject.FindGameObjectsWithTag("Light");
     }
 
     public void AllTaskCompleted() 
     {
-
+        Debug.Log("You Win!");
     }
 
     private IEnumerator UpdateGame() 
     {
         // TODO: add the check for the cleaning
-        if (VariableConditionManager.Instance.Get("Trash") == "3")
+        if (VariableConditionManager.Instance.Get("Trash") == "3" && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
         {
             AllTaskCompleted();
         }
@@ -65,7 +69,7 @@ public class FirstFloorTempManager : MonoBehaviour
             {
                 int num = Random.Range(0, 10);
 
-                if (num < 5) 
+                if (num < 3) 
                 {
                     isPowerOut = true;
                     powerOutTime = currentTime;
