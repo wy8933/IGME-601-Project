@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.IO;
-using System.Linq;
+#if UNITY_EDITOR
 
 public class AutoAssignURPBakedTextures : EditorWindow
 {
@@ -62,3 +62,4 @@ public class AutoAssignURPBakedTextures : EditorWindow
         Debug.Log("✅ Smart URP Baked Textures assigned successfully!");
     }
 }
+#endif

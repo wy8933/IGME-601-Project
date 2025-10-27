@@ -31,6 +31,7 @@ public class FirstFloorTempManager : MonoBehaviour
     public void AllTaskCompleted() 
     {
         Debug.Log("You Win!");
+        SceneManager.LoadScene("GameOver");
     }
 
     private IEnumerator UpdateGame() 
