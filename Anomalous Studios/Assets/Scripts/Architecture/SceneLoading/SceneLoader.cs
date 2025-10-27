@@ -128,7 +128,7 @@ public class SceneLoader : MonoBehaviour
         // An artifical amount of loading time to prevent the NavMesh from trying to rebuild too quickly
         yield return new WaitForSeconds(0.5f);
 
-        _scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));
+        //_scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));
 
         if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 

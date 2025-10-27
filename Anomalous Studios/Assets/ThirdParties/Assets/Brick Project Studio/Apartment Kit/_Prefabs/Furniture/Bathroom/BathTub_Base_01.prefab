@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 3745576625610789257}
   - component: {fileID: 2742047375368240822}
   - component: {fileID: 2805616125457797557}
+  - component: {fileID: 9018327781806044750}
   m_Layer: 0
   m_Name: BathTub_Base_01
   m_TagString: Untagged
@@ -330,6 +331,23 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1198459610376458595, guid: 651d77a525480c84e9327ec0894c0da1, type: 3}
+--- !u!114 &9018327781806044750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2805616125457797558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_Size: {x: 1.8, y: 3, z: 3.6}
+  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
 --- !u!1 &3776548339571156591
 GameObject:
   m_ObjectHideFlags: 0

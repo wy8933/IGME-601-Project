@@ -96,6 +96,7 @@ public class CleaningManager : MonoBehaviour
     void OnSurfaceCleaned(SurfaceCleaner cleaner)
     {
         Debug.Log($"{cleaner.name} is clean enough! (> {cleanThreshold * 100f:F0}%)");
+        GameVariables.Set("floor-cleaned", "true");
         // Place your own function calls or game events here.
     }
 }
