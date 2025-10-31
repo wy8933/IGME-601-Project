@@ -13,6 +13,8 @@ public class Trap : ItemInstance
     [Header("Trap Slow Amount")]
     [SerializeField] private float _slowAmount = 1.0f;
 
+    private bool _isSet;
+
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
     [SerializeField] private SoundDataSO _successSFX;
@@ -28,6 +30,8 @@ public class Trap : ItemInstance
 
         _rb = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
+
+        _isSet = false;
     }
 
     public override void Interact()
@@ -51,21 +55,23 @@ public class Trap : ItemInstance
     /// <param name="parent"></param>
     private void PlaceTrap(GameObject parent)
     {
-        Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
-        transform.position = newPos;
-        this.gameObject.transform.parent = null;
-
         PlayerController pc = parent.GetComponent<PlayerController>();
 
         if (pc != null)
         {
+            Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
+            transform.position = newPos;
+            this.gameObject.transform.parent = null;
+
             pc.GetItemHotbar().DropItem();
+
+            _isSet = true;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "RuleKeeper")
+        if(collision.gameObject.tag == "RuleKeeper" && _isSet)
         {
             GameObject gameObject = collision.gameObject;
 
@@ -87,12 +93,12 @@ public class Trap : ItemInstance
         if(eb != null)
         {
             eb.Speed = _slowAmount;
-            //Debug.Log("Walk Speed: " + eb.Speed);
+            Debug.Log("Walk Speed: " + eb.Speed);
 
             yield return new WaitForSeconds(_slowDuration);
 
             eb.Speed = eb.WalkSpeed;
-            //Debug.Log("Walk Speed: " + eb.Speed);
+            Debug.Log("Walk Speed: " + eb.Speed);
             
             Destroy(this.gameObject);
         }

@@ -76,11 +76,13 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     public void Highlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = true;
+        if (GetComponent<HighlightTarget>() != null)
+            GetComponent<HighlightTarget>().IsHighlighted = true;
     }
     public void RemoveHighlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = false;
+        if(GetComponent<HighlightTarget>() != null)
+            GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 
     public void Interact()
