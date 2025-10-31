@@ -100,6 +100,8 @@ public class Throwable : ItemInstance
             MakeNoise makeNoise = new MakeNoise();
             makeNoise.target = this.transform.position;
 
+            Debug.Log("distract rulekeeper");
+
             // play item's break sound effect
             PlaySound(_breakSO);
             // destroy breakable thrown game object
