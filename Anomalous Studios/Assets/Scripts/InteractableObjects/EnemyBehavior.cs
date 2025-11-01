@@ -35,7 +35,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     private bool _canInteract = true;
 
-    public float WalkSpeed => Speed;
+    public float BaseWalkSpeed;
+
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
@@ -72,6 +73,11 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
             GameObject.FindGameObjectWithTag("Player"));
 
         _ignoreLayers = ~LayerMask.GetMask("RuleKeeper", "Ignore Raycast");
+
+        if (_navAgent)
+        {
+            BaseWalkSpeed = _navAgent.speed;
+        }
     }
 
     public void Highlight()

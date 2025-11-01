@@ -81,7 +81,7 @@ public class Throwable : ItemInstance
         _isThrown = true;
 
         // Update ItemHotbar 
-        IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
+        IInteractable.Instigator.GetComponent<ItemHotbar>().OnUsed();
     }
 
     public override void Interact()

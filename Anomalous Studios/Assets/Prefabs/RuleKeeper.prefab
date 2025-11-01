@@ -273,11 +273,20 @@ MonoBehaviour:
   - rid: 4217738984822932268
   - rid: 2259437719881253048
   - rid: 2259437720247468900
+  - rid: 2184814306337226822
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
     RefIds:
+    - rid: 2184814306337226822
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5760125209203510530
+          m_Value1: 15723051506597537499
+        Name: Speed
+        m_Value: 6
     - rid: 2259437719881253048
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -326,7 +335,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

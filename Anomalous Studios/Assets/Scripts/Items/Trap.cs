@@ -11,7 +11,7 @@ public class Trap : ItemInstance
     [SerializeField] private float _slowDuration = 4.0f;
 
     [Header("Trap Slow Amount")]
-    [SerializeField] private float _slowAmount = 1.0f;
+    [SerializeField] private float _slowAmount = 2.0f;
 
     private bool _isSet = false;
 
@@ -44,7 +44,7 @@ public class Trap : ItemInstance
     {
         TryUse(user);
 
-        PlaceTrap(user);
+       PlaceTrap(user);
     }
 
     /// <summary>
@@ -53,23 +53,25 @@ public class Trap : ItemInstance
     /// <param name="parent"></param>
     private void PlaceTrap(GameObject parent)
     {
-        Debug.Log("place trap");
         Vector3 newPos = parent.transform.position + parent.transform.forward * _dropDistanceOffset;
         transform.position = newPos;
         this.gameObject.transform.parent = null;
+
         _isSet = true;
 
         PlayerController pc = parent.GetComponent<PlayerController>();
 
         if (pc != null)
         {
-            pc.GetItemHotbar().DropItem();
+            EnableRigidBodyCollisions();
+
+            pc.GetItemHotbar().OnUsed();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Player" && _isSet)
+        if(collision.gameObject.tag == "RuleKeeper" && _isSet)
         {
             GameObject gameObject = collision.gameObject;
 
@@ -86,22 +88,56 @@ public class Trap : ItemInstance
     private IEnumerator ApplySlowdown(GameObject obj)
     {
         // Access rulekeeper walk speed here and change it temporarily
-        //EnemyBehavior eb = obj.GetComponent<EnemyBehavior>();
-        PlayerActions eb = obj.GetComponent<PlayerActions>();
+        EnemyBehavior eb = obj.GetComponent<EnemyBehavior>();
+        //PlayerActions eb = obj.GetComponent<PlayerActions>();
+
         if(eb != null)
         {
-            /*
+            // RuleKeeper logic
             eb.Speed = _slowAmount;
             Debug.Log("Walk Speed: " + eb.Speed);
 
             yield return new WaitForSeconds(_slowDuration);
 
-            eb.Speed = eb.WalkSpeed;
+            eb.Speed = eb.BaseWalkSpeed;
             Debug.Log("Walk Speed: " + eb.Speed);
-            */
+            
+            /*
+            // Testing purposes: Player logic
+            eb.SetWalkSpeed(_slowAmount);
+            Debug.Log("Walk Speed: " + eb.GetWalkSpeed());
 
             yield return new WaitForSeconds(_slowDuration);
+
+            eb.SetWalkSpeed(6.0f);
+            Debug.Log("Walk Speed: " + eb.GetWalkSpeed());
+            //
+            */
+
             Destroy(this.gameObject);
         }
+    }
+
+    public override void AttachToParent(GameObject parent)
+    {
+        base.AttachToParent(parent);
+        DisableRigidBodyCollisions();
+    }
+
+    public override void DetachFromParent(GameObject parent)
+    {
+        base.DetachFromParent(parent);
+    }
+
+    public override void DisableRigidBodyCollisions()
+    {
+        base.DisableRigidBodyCollisions();
+        _boxCollider.enabled = false;
+    }
+
+    public override void EnableRigidBodyCollisions()
+    {
+        base.EnableRigidBodyCollisions();
+        _boxCollider.enabled = true;
     }
 }
