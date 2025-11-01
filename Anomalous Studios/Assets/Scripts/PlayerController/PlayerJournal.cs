@@ -32,21 +32,4 @@ public class PlayerJournal : MonoBehaviour
             UnityEngine.Cursor.visible = false;
         }
     }
-
-    // TODO: can we deregister the event after the handbook has been initialized? No need to reset it every time
-    private void InitReferences(LevelLoaded e)
-    {
-        handbook = e._handbook;
-    }
-
-    public void OnEnable()
-    {
-        _levelLoaded = new EventBinding<LevelLoaded>(InitReferences);
-        EventBus<LevelLoaded>.Register(_levelLoaded);
-    }
-
-    public void OnDisable()
-    {
-        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
-    }
 }

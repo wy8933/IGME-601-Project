@@ -8,13 +8,8 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Raised when a level has been fully loaded, shoud alert managers to start referencing objects in the scene.
-/// Passes references of managers 
 /// </summary>
-public struct LevelLoaded : IEvent 
-{
-    public Handbook_UI _handbook;
-    public PaperDataSO[] _papers;
-}
+public struct LevelLoaded : IEvent { }
 
 /// <summary>
 /// Raised when a script wants to load a new level. Called by the elevator and menus.
@@ -42,7 +37,6 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField[] _floorB3;
 
     private Dictionary<Level, SceneField[]> _floorLibrary;
-    private Dictionary<Level, PaperDataSO[]> _paperData;
 
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
@@ -62,17 +56,7 @@ public class SceneLoader : MonoBehaviour
             { Level.B3, _floorB3 }
         };
 
-        GameObject _mainUI = GameObject.Find("MainUI");
-
-        // Holds a reference to any managers, passes them along when the level is loaded to help initialize new scenes
-        // transform.Find() is able to search for inactive objects, unlike GameObject.Find()
-        // QUESTION: Should the managers all be singletons since they are persistent, rather than passing their references?
-        _levelLoaded = new LevelLoaded
-        {
-            _handbook = _mainUI.transform.Find("Handbook").GetComponent<Handbook_UI>()
-        };
-
-        _blackScreenTEMP = _mainUI.transform.Find("LoadingScreen").gameObject;
+        _blackScreenTEMP = GameObject.Find("MainUI").transform.Find("LoadingScreen").gameObject;
         _navMeshSurface = GetComponent<NavMeshSurface>();
 
 
@@ -132,7 +116,7 @@ public class SceneLoader : MonoBehaviour
 
         if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
-        EventBus<LevelLoaded>.Raise(_levelLoaded);
+        EventBus<LevelLoaded>.Raise(new LevelLoaded { });
 
         _blackScreenTEMP.SetActive(false);
     }
