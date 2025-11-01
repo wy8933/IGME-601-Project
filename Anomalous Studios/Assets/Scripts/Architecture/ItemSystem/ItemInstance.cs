@@ -80,7 +80,11 @@ namespace ItemSystem
 
         public void Highlight()
         {
-            GetComponent<HighlightTarget>().IsHighlighted = true;
+            if (_canInteract)
+            {
+                GetComponent<HighlightTarget>().IsHighlighted = true;
+            }
+            
         }
         public void RemoveHighlight()
         {
@@ -117,10 +121,9 @@ namespace ItemSystem
             _cameraTransform = parent.GetComponent<PlayerController>()._itemContainerTransform;
 
             PickUp();
-
-            this.gameObject.transform.SetParent(_cameraTransform, false);
-            transform.localPosition = Vector3.zero; 
+            transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.Euler(90, 0, 0);
+            this.gameObject.transform.SetParent(_cameraTransform, false);
         }
 
         public virtual void DetachFromParent(GameObject parent)

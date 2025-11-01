@@ -81,7 +81,7 @@ public class Throwable : ItemInstance
         _isThrown = true;
 
         // Update ItemHotbar 
-        IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
+        IInteractable.Instigator.GetComponent<ItemHotbar>().OnUsed();
     }
 
     public override void Interact()
@@ -99,6 +99,8 @@ public class Throwable : ItemInstance
             // when item breaks, set RuleKeeper's target location to this item's location
             MakeNoise makeNoise = new MakeNoise();
             makeNoise.target = this.transform.position;
+
+            Debug.Log("distract rulekeeper");
 
             // play item's break sound effect
             PlaySound(_breakSO);

@@ -67,7 +67,7 @@ public class Garbage : ItemInstance
         _rb.AddForce(throwUpForce, ForceMode.Impulse);
 
         // Update ItemHotbar 
-        IInteractable.Instigator.GetComponent<ItemHotbar>().OnThrown();
+        IInteractable.Instigator.GetComponent<ItemHotbar>().OnUsed();
     }
 
     public override void Interact()

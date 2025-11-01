@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8090538759118479726}
   - component: {fileID: 214478332321416748}
   - component: {fileID: 6986696013691380832}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8718811632184179554}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.64, y: 1.28, z: 0.41}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -136,7 +136,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &214478332321416748
 MonoBehaviour:
@@ -157,6 +157,7 @@ MonoBehaviour:
   lastUseTime: 0
   isUseable: 0
   _slowDuration: 4
+  _slowAmount: 1
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
 --- !u!114 &6986696013691380832
