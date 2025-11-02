@@ -16,12 +16,17 @@ public class ElevatorController : MonoBehaviour
 
     private Animator _animator;
     private Transform _corkboard;
+    private Handbook_UI _handbook;
 
-    // TODO: Temporarily assigned in inspector, should be spawned in my some the SceneLoader based on type of level
     // TODO: replace with an actual array, using id values when creating the notes
-    [SerializeField] private List<Paper> _notes;
+    private List<Paper> _notes;
+
+    [SerializeField] private PaperDataSO[] _papersB1;
+    [SerializeField] private PaperDataSO[] _papersB2;
+    [SerializeField] private PaperDataSO[] _papersB3;
 
     private Dictionary<Level, ElevatorButton> _buttons;
+    private Dictionary<Level, PaperDataSO[]> _paperData;
     private static ElevatorButton _openButton;
 
     private EventBinding<TaskComplete> _taskComplete;
@@ -31,6 +36,7 @@ public class ElevatorController : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _corkboard = transform.Find("Corkboard");
+        _handbook = GameObject.Find("MainUI").transform.Find("Handbook").GetComponent<Handbook_UI>();
 
         _openButton = transform.Find("Buttons/Open").GetComponent<ElevatorButton>();
         _buttons = new Dictionary<Level, ElevatorButton>
@@ -38,6 +44,11 @@ public class ElevatorController : MonoBehaviour
             { Level.B1, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
             { Level.B2, transform.Find("Buttons/B2").GetComponent<ElevatorButton>() },
             { Level.B3, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
+        };
+
+        _paperData = new Dictionary<Level, PaperDataSO[]>
+        {
+            { Level.B1, _papersB1 }
         };
     }
 
@@ -70,6 +81,40 @@ public class ElevatorController : MonoBehaviour
     }
 
     /// <summary>
+    /// Instantiates the papers on the corkboard per each level
+    /// </summary>
+    public void SpawnNotes(LevelLoaded e)
+    {
+        // TODO: Paper positions are hardcoded, make this dynamic to corkboard dimensions, random spawn pattern
+
+        PaperDataSO[] PaperData = _paperData[(Level)SceneLoader.CurrentLevel];
+
+        // Creates a new list of notes if empty, and clears it if not
+        _notes?.Clear();
+        _notes ??= new List<Paper>();
+
+        float x = -1.25f;
+        float y = 0.6f;
+
+        foreach (PaperDataSO data in PaperData) 
+        {
+            GameObject paper = Instantiate(_paperPrefab, _corkboard, false);
+            float z = paper.transform.localPosition.z;
+
+            paper.GetComponent<Paper>().InitReferences(this, _handbook, data.IsTask, data.TaskID, data.Description);
+            paper.transform.localPosition = new Vector3(x, y, z);
+            _notes.Add(paper.GetComponent<Paper>());
+
+            x += 0.75f;
+            if (x >= 1.25f)
+            {
+                x = -1.5f;
+                y = -0.6f;
+            }
+        }
+    }
+
+    /// <summary>
     /// Called when the task of the level is complete, enabling the next floor's button
     /// </summary>
     public void EnableElevatorButtons()
@@ -77,27 +122,6 @@ public class ElevatorController : MonoBehaviour
         _buttons[(Level)SceneLoader.CurrentLevel+1].Enable();
     }
 
-    /// <summary>
-    /// Instantiates 
-    /// </summary>
-    /// <param name="PaperData"></param>
-    public void SpawnNotes(List<PaperDataSO> PaperData)
-    {
-        _notes.Clear();
-
-        float x = -1.0f;
-        foreach (PaperDataSO data in PaperData) 
-        {
-            GameObject paper = Instantiate(_paperPrefab, _corkboard, false);
-
-            float y = Random.Range(-0.5f, 0.5f);
-            float z = paper.transform.localPosition.z;
-
-            paper.GetComponent<Paper>().InitReferences(this, data.IsTask, data.TaskID, data.Description);
-            paper.transform.localPosition = new Vector3(x += 0.25f, y, z);
-
-        }
-    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -113,10 +137,13 @@ public class ElevatorController : MonoBehaviour
     {
         _taskComplete = new EventBinding<TaskComplete>(EnableElevatorButtons);
         EventBus<TaskComplete>.Register(_taskComplete);
+        _levelLoaded = new EventBinding<LevelLoaded>(SpawnNotes);
+        EventBus<LevelLoaded>.Register(_levelLoaded);
     }
 
     public void OnDisable()
     {
         EventBus<TaskComplete>.DeRegister(_taskComplete);
+        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
     }
 }

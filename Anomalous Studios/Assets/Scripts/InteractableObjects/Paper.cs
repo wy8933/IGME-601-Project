@@ -80,31 +80,12 @@ public class Paper : MonoBehaviour, IInteractable
         //Gizmos.DrawWireSphere(_center, 1);
     }
 
-    // TODO: can we deregister the event after the handbook has been initialized? No need to reset it every time
-    // Alternatively, have the elevator pass in a reference to the handbook when the notes are created
-    private void InitReferences(LevelLoaded e)
-    {
-        _handbook = e._handbook;
-    }
-
-    public void InitReferences(ElevatorController elevator, bool isTask, string taskID, string desc)
+    public void InitReferences(ElevatorController elevator, Handbook_UI handbook, bool isTask, string taskID, string desc)
     {
         _elevator = elevator;
+        _handbook = handbook;
         _isTask = isTask;
         _taskID = taskID;
-
         _description.text = desc;
     }
-
-    public void OnEnable()
-    {
-        _levelLoaded = new EventBinding<LevelLoaded>(InitReferences);
-        EventBus<LevelLoaded>.Register(_levelLoaded);
-    }
-
-    public void OnDisable()
-    {
-        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
-    }
-
 }
