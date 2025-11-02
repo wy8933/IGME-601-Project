@@ -8,7 +8,7 @@ public class Trap : ItemInstance
     private BoxCollider _boxCollider;
     
     [Header("Trap Slow Duration")]
-    [SerializeField] private float _slowDuration = 4.0f;
+    [SerializeField] private float _slowDuration = 2.0f;
 
     [Header("Trap Slow Amount")]
     [SerializeField] private float _slowAmount = 2.0f;
@@ -96,7 +96,7 @@ public class Trap : ItemInstance
             // RuleKeeper logic
             eb.Speed = _slowAmount;
             Debug.Log("Walk Speed: " + eb.Speed);
-
+            Debug.Log("BaseWalkSpeed: " + eb.BaseWalkSpeed);
             yield return new WaitForSeconds(_slowDuration);
 
             eb.Speed = eb.BaseWalkSpeed;
