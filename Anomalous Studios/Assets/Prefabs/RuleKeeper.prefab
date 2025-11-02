@@ -273,11 +273,20 @@ MonoBehaviour:
   - rid: 4217738984822932268
   - rid: 2259437719881253048
   - rid: 2259437720247468900
+  - rid: 2184814306337226822
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
     RefIds:
+    - rid: 2184814306337226822
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 5760125209203510530
+          m_Value1: 15723051506597537499
+        Name: Speed
+        m_Value: 6
     - rid: 2259437719881253048
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -285,7 +294,7 @@ MonoBehaviour:
           m_Value0: 15194861905493159946
           m_Value1: 16659593726036351507
         Name: Player
-        m_Value: {fileID: 0}
+        m_Value: {fileID: 5855800098677799839, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
     - rid: 2259437720247468900
       type: {class: 'BlackboardVariable`1[[System.Boolean, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -314,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0134577619308c847a99fba4adc43f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BaseWalkSpeed: 0
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
 --- !u!195 &8695711156104654587
@@ -326,7 +336,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
