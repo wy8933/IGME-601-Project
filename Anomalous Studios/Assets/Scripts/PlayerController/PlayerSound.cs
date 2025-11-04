@@ -4,9 +4,10 @@ using UnityEngine;
 public class PlayerSound : MonoBehaviour
 {
     [Header("Sound Data")]
-    [SerializeField] private SoundDataSO SprintSlowSO;
-    [SerializeField] private SoundDataSO SprintMedSO;
-    [SerializeField] private SoundDataSO SprintFastSO;
+    [SerializeField] private SoundDataSO BreathingShort;
+    [SerializeField] private SoundDataSO BreathingMedium;
+    [SerializeField] private SoundDataSO BreathingLong;
+    [SerializeField] private SoundDataSO Running;
     private float _audioCooldownTime = 0.5f;
     private float lastPlayTime;
     
@@ -30,22 +31,12 @@ public class PlayerSound : MonoBehaviour
     /// Plays the appropriate audio file depending on player's current stamina when running
     /// </summary>
     /// <param name="InStamina">Input Stamina Value</param>
-    public void SprintPantingDepletionSFX(float InStamina)
+    public void SprintPantingDepletionSFX()
     {
-        if (InStamina > 66.0f)
-        {
-            PlaySound(SprintSlowSO);
-        }
-        else if (InStamina > 33.0f)
-        {
-            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
-            PlaySound(SprintMedSO);
-        }
-        else if (InStamina > 0)
-        {
-            AudioManager.Instance.Stop(gameObject, SprintMedSO);
-            PlaySound(SprintFastSO);
-        }
+        AudioManager.Instance.Stop(gameObject, BreathingShort);
+        AudioManager.Instance.Stop(gameObject, BreathingMedium);
+        AudioManager.Instance.Stop(gameObject, BreathingLong);
+        PlaySound(Running);
     }
 
     /// <summary>
@@ -54,23 +45,18 @@ public class PlayerSound : MonoBehaviour
     /// <param name="InStamina">Input Stamina Value</param>
     public void SprintPantingRegenSFX(float InStamina)
     {
+        AudioManager.Instance.Stop(gameObject, Running);
         if (InStamina <= 33.0f)
         {
-            PlaySound(SprintFastSO);
+            PlaySound(BreathingLong);
         }
         else if (InStamina <= 66.0f)
         {
-            AudioManager.Instance.Stop(gameObject, SprintFastSO);
-            PlaySound(SprintMedSO);
+            PlaySound(BreathingMedium);
         }
         else if (InStamina < 100)
         {
-            AudioManager.Instance.Stop(gameObject, SprintMedSO);
-            PlaySound(SprintSlowSO);
-        }
-        else
-        {
-            AudioManager.Instance.Stop(gameObject, SprintSlowSO);
+            PlaySound(BreathingShort);
         }
     }
 }

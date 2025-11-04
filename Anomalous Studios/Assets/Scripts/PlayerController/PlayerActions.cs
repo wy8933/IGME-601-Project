@@ -44,6 +44,7 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] private float Stamina = 100.0f;
     private float _staminaDepletionFactor = 10.0f;
     private float _staminaRegenFactor = 5.0f;
+    private bool _wasSprinting = false;
 
     // Jump Variables
     [Header("Jump")]
@@ -181,7 +182,7 @@ public class PlayerActions : MonoBehaviour
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
-            _playerController.GetPlayerSound().SprintPantingDepletionSFX(Stamina);
+            _playerController.GetPlayerSound().SprintPantingDepletionSFX();
 
             if (Stamina <= 0)
             {
@@ -194,7 +195,10 @@ public class PlayerActions : MonoBehaviour
             _canLean = true;
             Stamina += _staminaRegenFactor * dt;
 
-            _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
+            if(_wasSprinting && !_isSprinting)
+            {
+                _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
+            }
 
             if (Stamina > 10.0f)
             {
@@ -204,6 +208,8 @@ public class PlayerActions : MonoBehaviour
 
         // Clamp Stamina between [0, 100]
         Stamina = Mathf.Clamp(Stamina, 0, 100);
+
+        _wasSprinting = _isSprinting;
     }
 
     /// <summary>
