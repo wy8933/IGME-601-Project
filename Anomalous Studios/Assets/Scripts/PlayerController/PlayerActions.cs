@@ -131,13 +131,13 @@ public class PlayerActions : MonoBehaviour
                 Vector3 movement = _isSprinting ? transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _runSpeed * dt
                                                 : transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _walkSpeed * dt;
                 _playerController.GetRB().MovePosition(movement + _playerController.GetRB().position);
-                if (movement != Vector3.zero && _playerController.IsGrounded())
+                if (movement == Vector3.zero || !_playerController.IsGrounded())
                 {
-                    SoundEffectTrigger.Instance.PlayFootsteps();
+                    SoundEffectTrigger.Instance.StopFootsteps();
                 }
                 else
                 {
-                    SoundEffectTrigger.Instance.StopFootsteps();
+                    SoundEffectTrigger.Instance.PlayFootsteps(0.5f);
                 }
             }
         }
@@ -182,12 +182,18 @@ public class PlayerActions : MonoBehaviour
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
+            if (!_wasSprinting)
+            {
+                SoundEffectTrigger.Instance.StopFootsteps();
+            }
+            SoundEffectTrigger.Instance.PlayFootsteps(0.35f);
             _playerController.GetPlayerSound().SprintPantingDepletionSFX();
 
             if (Stamina <= 0)
             {
                 _canSprint = false;
                 _isSprinting = false;
+                _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
             }
         }
         else
@@ -195,12 +201,16 @@ public class PlayerActions : MonoBehaviour
             _canLean = true;
             Stamina += _staminaRegenFactor * dt;
 
-            if(_wasSprinting && !_isSprinting)
+            if (_wasSprinting && !_isSprinting)
             {
                 _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
+                SoundEffectTrigger.Instance.StopFootsteps();
+                SoundEffectTrigger.Instance.PlayFootsteps(0.5f);
             }
 
-            if (Stamina > 10.0f)
+            
+
+            if (Stamina > 50.0f)
             {
                 _canSprint = true;
             }

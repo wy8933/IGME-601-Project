@@ -17,14 +17,15 @@ public class PlayerSound : MonoBehaviour
     /// <param name="sd">Sound Data Scriptable Object</param>
     public void PlaySound(SoundDataSO sd)
     {
-        if (Time.time - lastPlayTime >= _audioCooldownTime)
-        {
-            if (AudioManager.Instance)
-            {
-                AudioManager.Instance.Play(sd, this.transform.position);
-            }
-            lastPlayTime = Time.time;
-        }
+        AudioManager.Instance.Play(sd, this.transform.position);
+        //if (Time.time - lastPlayTime >= _audioCooldownTime)
+        //{
+        //    if (AudioManager.Instance)
+        //    {
+        //        AudioManager.Instance.Play(sd, this.transform.position);
+        //    }
+        //    lastPlayTime = Time.time;
+        //}
     }
 
     /// <summary>
@@ -45,18 +46,23 @@ public class PlayerSound : MonoBehaviour
     /// <param name="InStamina">Input Stamina Value</param>
     public void SprintPantingRegenSFX(float InStamina)
     {
-        AudioManager.Instance.Stop(gameObject, Running);
+        //AudioManager.Instance.Stop(gameObject, Running);
         if (InStamina <= 33.0f)
         {
             PlaySound(BreathingLong);
+            print("breathing long");
         }
         else if (InStamina <= 66.0f)
         {
             PlaySound(BreathingMedium);
+            print("breathing medium");
+
         }
         else if (InStamina < 100)
         {
             PlaySound(BreathingShort);
+            print("breathing short");
+
         }
     }
 }

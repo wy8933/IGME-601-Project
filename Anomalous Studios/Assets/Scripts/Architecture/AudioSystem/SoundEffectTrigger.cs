@@ -22,22 +22,22 @@ public class SoundEffectTrigger : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private IEnumerator FootstepsCoroutine()
+    private IEnumerator FootstepsCoroutine(float _delay)
     {
         isPlayingFootsteps = true;
 
         while (true)
         {
-            AudioManager.Instance.Play(footsteps[Random.Range(0,footsteps.Length)]);
-            yield return new WaitForSeconds(0.5f); // Adjust timing for speed
+            AudioManager.Instance.Play(footsteps[0]); 
+            yield return new WaitForSeconds(_delay); // Adjust timing for speed
         }
     }
 
-    public void PlayFootsteps()
+    public void PlayFootsteps(float _delay)
     {
         if (!isPlayingFootsteps)
         {
-            footstepsCoroutine = StartCoroutine(FootstepsCoroutine());
+            footstepsCoroutine = StartCoroutine(FootstepsCoroutine(_delay));
         }
     }
 
