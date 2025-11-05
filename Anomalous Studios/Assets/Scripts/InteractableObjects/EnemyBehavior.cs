@@ -180,6 +180,5 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LoadLevel>.DeRegister(_loadLevel);
         EventBus<LevelLoaded>.DeRegister(_levelLoaded);
         EventBus<MakeNoise>.DeRegister(_makeNoise);
-
     }
 }

@@ -96,8 +96,6 @@ public class Throwable : ItemInstance
     {
         if(_isThrown && _enemyBehavior != null)
         {
-            Debug.Log("distract rulekeeper");
-
             // when item breaks, set RuleKeeper's target location to this item's location
             EventBus<MakeNoise>.Raise(new MakeNoise { target = this.transform.position });
             // play item's break sound effect
