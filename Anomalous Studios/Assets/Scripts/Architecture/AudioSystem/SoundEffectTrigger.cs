@@ -5,10 +5,20 @@ using UnityEngine;
 public class SoundEffectTrigger : MonoBehaviour
 {
     public static SoundEffectTrigger Instance { get; private set; }
-
+    AudioManager _audioManager;
+    [Header("Footstep SFX")]
     [SerializeField] private SoundDataSO[] footsteps;
     private Coroutine footstepsCoroutine;
     private bool isPlayingFootsteps;
+    [Header("Door SFX")]
+    [SerializeField] private SoundDataSO doorOpen;
+    [SerializeField] private SoundDataSO doorClose;
+    [Header("Elevator SFX")]
+    [SerializeField] private SoundDataSO elevatorDoorOpen;
+    [SerializeField] private SoundDataSO elevatorDoorClose;
+    [SerializeField] private SoundDataSO elevatorChime;
+    [SerializeField] private SoundDataSO elevatorMusic;
+    
 
     private void Awake()
     {
@@ -17,9 +27,14 @@ public class SoundEffectTrigger : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
+        
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        _audioManager = AudioManager.Instance;
     }
 
     private IEnumerator FootstepsCoroutine(float _delay)
@@ -28,7 +43,7 @@ public class SoundEffectTrigger : MonoBehaviour
 
         while (true)
         {
-            AudioManager.Instance.Play(footsteps[0]); 
+            _audioManager.Play(footsteps[0]); 
             yield return new WaitForSeconds(_delay); // Adjust timing for speed
         }
     }
@@ -49,5 +64,15 @@ public class SoundEffectTrigger : MonoBehaviour
             footstepsCoroutine = null;
             isPlayingFootsteps = false;
         }
+    }
+
+    public void PlayDoorOpen(Transform _door)
+    {
+        _audioManager.Play(doorOpen, _door.position);
+    }
+
+    public void PlayDoorClose(Transform _door)
+    {
+        _audioManager.Play(doorOpen, _door.position);
     }
 }
