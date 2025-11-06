@@ -34,15 +34,22 @@ public class Key : ItemInstance
     public override void Use(GameObject user)
     {
         TryUse(user);
+        // Get a reference to the player controller script
         PlayerController pc = user.GetComponent<PlayerController>();
 
+        // interaction range for the key
         float interactRange = 10.0f;
 
+        // Raycast from the player's camera position straight ahead and see if we hit something
         if (Physics.Raycast(user.GetComponent<PlayerController>().GetPlayerCamera().transform.position, 
             user.GetComponent<PlayerController>().GetPlayerCamera().transform.forward,
             out RaycastHit hit, interactRange, user.GetComponent<PlayerController>().IgnorePlayerMask))
         {
+            // On successful raycast, see if the object hit has the DoorController script attached
             DoorController dc = hit.collider.gameObject.GetComponent<DoorController>();
+
+            // If so, check if the key's ID is equal to the door's ID
+            // Set the door's canInteract to true, effectively unlocking the door for the player to open/close
             if (dc != null)
             {
                 if (this.item.itemID == dc.DoorID && !dc.CanInteract)

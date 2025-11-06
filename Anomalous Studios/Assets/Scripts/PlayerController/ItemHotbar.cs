@@ -114,7 +114,10 @@ public class ItemHotbar : MonoBehaviour
         }
     }
 
-    public void OnThrown()
+    /// <summary>
+    /// Removes one-time item from hotbar and plays fade in/out effect when item is used
+    /// </summary>
+    public void OnUsed()
     {
         _itemHotbar[_selectedItemIndex] = null;
 

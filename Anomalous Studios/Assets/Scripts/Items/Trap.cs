@@ -8,10 +8,12 @@ public class Trap : ItemInstance
     private BoxCollider _boxCollider;
     
     [Header("Trap Slow Duration")]
-    [SerializeField] private float _slowDuration = 4.0f;
+    [SerializeField] private float _slowDuration = 2.0f;
 
     [Header("Trap Slow Amount")]
-    [SerializeField] private float _slowAmount = 1.0f;
+    [SerializeField] private float _slowAmount = 2.0f;
+
+    private bool _isSet = false;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -42,7 +44,7 @@ public class Trap : ItemInstance
     {
         TryUse(user);
 
-        PlaceTrap(user);
+       PlaceTrap(user);
     }
 
     /// <summary>
@@ -55,17 +57,21 @@ public class Trap : ItemInstance
         transform.position = newPos;
         this.gameObject.transform.parent = null;
 
+        _isSet = true;
+
         PlayerController pc = parent.GetComponent<PlayerController>();
 
         if (pc != null)
         {
-            pc.GetItemHotbar().DropItem();
+            EnableRigidBodyCollisions();
+
+            pc.GetItemHotbar().OnUsed();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "RuleKeeper")
+        if(collision.gameObject.tag == "RuleKeeper" && _isSet)
         {
             GameObject gameObject = collision.gameObject;
 
@@ -86,15 +92,36 @@ public class Trap : ItemInstance
 
         if(eb != null)
         {
+            // RuleKeeper logic
             eb.Speed = _slowAmount;
-            //Debug.Log("Walk Speed: " + eb.Speed);
-
             yield return new WaitForSeconds(_slowDuration);
 
-            eb.Speed = eb.WalkSpeed;
-            //Debug.Log("Walk Speed: " + eb.Speed);
-            
+            eb.Speed = eb.BaseWalkSpeed;
+
             Destroy(this.gameObject);
         }
+    }
+
+    public override void AttachToParent(GameObject parent)
+    {
+        base.AttachToParent(parent);
+        DisableRigidBodyCollisions();
+    }
+
+    public override void DetachFromParent(GameObject parent)
+    {
+        base.DetachFromParent(parent);
+    }
+
+    public override void DisableRigidBodyCollisions()
+    {
+        base.DisableRigidBodyCollisions();
+        _boxCollider.enabled = false;
+    }
+
+    public override void EnableRigidBodyCollisions()
+    {
+        base.EnableRigidBodyCollisions();
+        _boxCollider.enabled = true;
     }
 }

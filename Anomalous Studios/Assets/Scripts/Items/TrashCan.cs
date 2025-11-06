@@ -19,7 +19,6 @@ public class TrashCan : MonoBehaviour
         {
             if (collision.gameObject.CompareTag(garbageScript.Tag))
             {
-                //Debug.Log("Garbage Collected!");
                 int count;
                 int.TryParse(VariableConditionManager.Instance.Get("Trash"), out count);
                 string value = (count+1).ToString();
