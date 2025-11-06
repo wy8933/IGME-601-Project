@@ -15,6 +15,7 @@ public class Main_Menu : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        SoundEffectTrigger.Instance.StopAllCoroutines();
     }
 
     /// <summary>
