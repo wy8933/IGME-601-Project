@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Raised when a level has been fully loaded, shoud alert managers to start referencing objects in the scene.
 /// </summary>
-public struct LevelLoaded : IEvent { }
+public struct LevelLoaded : IEvent { public Level? prevLevel; }
 
 /// <summary>
 /// Raised when a script wants to load a new level. Called by the elevator and menus.
@@ -41,7 +41,6 @@ public class SceneLoader : MonoBehaviour
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
     private EventBinding<LoadLevel> _levelLoading;
-    private LevelLoaded _levelLoaded;
 
     private GameObject _blackScreenTEMP;
     private NavMeshSurface _navMeshSurface;
@@ -77,6 +76,8 @@ public class SceneLoader : MonoBehaviour
     /// <param name="e"></param>
     private IEnumerator WaitForScenes(LoadLevel e)
     {
+        _scenesToLoad.Clear();
+
         // If we are in the main menu going to a level, load the elevator
 
         if (CurrentLevel == Level.mainMenu && e.newLevel != Level.mainMenu)
@@ -105,18 +106,23 @@ public class SceneLoader : MonoBehaviour
             _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_elevator));
         }
 
+        Level? prevLevel = CurrentLevel;
         CurrentLevel = e.newLevel;
 
-        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+        while (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) 
+        {
+            
+            yield return null; 
+        }
 
         // An artifical amount of loading time to prevent the NavMesh from trying to rebuild too quickly
         yield return new WaitForSeconds(0.5f);
 
         //_scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));
 
-        if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
+        //if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
-        EventBus<LevelLoaded>.Raise(new LevelLoaded { });
+        EventBus<LevelLoaded>.Raise(new LevelLoaded { prevLevel = prevLevel });
 
         _blackScreenTEMP.SetActive(false);
     }

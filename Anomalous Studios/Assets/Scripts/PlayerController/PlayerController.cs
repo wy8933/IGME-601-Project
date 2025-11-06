@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private EventBinding<LoadLevel> _levelLoading;
 
-    private Vector3 _spawnPoint = Vector3.zero;
+    [SerializeField] private Transform _spawnPoint;
 
     // Getter Methods
     public ItemHotbar GetItemHotbar() { return _itemHotbar; }
@@ -65,8 +65,6 @@ public class PlayerController : MonoBehaviour
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
 
-        // The player should spawn wherever they start when the game initally loads - inside the elevator
-        _spawnPoint = new Vector3(-27f, 1.2f, 0.0f);
         IgnorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
     }
 
@@ -125,13 +123,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ResetPlayer(LoadLevel e)
     {
-        // Remove items from inventory?
-        // Fade in fade out black screen of death?
-        // Disable journal?
         // What other edge cases when the level is reset..?
+        _rb.isKinematic = false;
+        if (e.newLevel == SceneLoader.CurrentLevel) { transform.position = _spawnPoint.position; }
+        _rb.isKinematic = true;
 
-        // If this level is the last level, reset the player spawn
-        if (e.newLevel == SceneLoader.CurrentLevel) { transform.position = _spawnPoint; }
+        // Remove items from inventory?
+        // Disable journal?
     }
 
     /// <summary>
