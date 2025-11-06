@@ -8,6 +8,4 @@ public sealed class PaperDataSO : ScriptableObject
     [Tooltip("If isTask is enabled, references the associated task in the handbook. ")]
     public string TaskID;
     public bool IsTask;
-
-
 }
