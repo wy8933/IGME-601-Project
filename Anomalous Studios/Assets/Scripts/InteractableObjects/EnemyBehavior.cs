@@ -35,7 +35,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     private bool _canInteract = true;
 
-    public float WalkSpeed => Speed;
+    public float BaseWalkSpeed;
+
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
@@ -72,15 +73,22 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
             GameObject.FindGameObjectWithTag("Player"));
 
         _ignoreLayers = ~LayerMask.GetMask("RuleKeeper", "Ignore Raycast");
+
+        if (_navAgent)
+        {
+            BaseWalkSpeed = _navAgent.speed;
+        }
     }
 
     public void Highlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = true;
+        if (GetComponent<HighlightTarget>() != null)
+            GetComponent<HighlightTarget>().IsHighlighted = true;
     }
     public void RemoveHighlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = false;
+        if(GetComponent<HighlightTarget>() != null)
+            GetComponent<HighlightTarget>().IsHighlighted = false;
     }
 
     public void Interact()
@@ -170,6 +178,5 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LoadLevel>.DeRegister(_loadLevel);
         EventBus<LevelLoaded>.DeRegister(_levelLoaded);
         EventBus<MakeNoise>.DeRegister(_makeNoise);
-
     }
 }

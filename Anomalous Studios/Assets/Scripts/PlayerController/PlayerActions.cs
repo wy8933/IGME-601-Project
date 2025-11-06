@@ -31,8 +31,8 @@ public class PlayerActions : MonoBehaviour
     // Movement Variables
     private bool _canMove = true;
     [Header("Movement")]
-    static public float WalkSpeed = 3.0f;
-    static public float RunSpeed = 6.0f;
+    static public float WalkSpeed = 6.0f;
+    static public float RunSpeed = 9.0f;
     private float _walkSpeed = WalkSpeed;
     private float _runSpeed = RunSpeed;
     private Vector2 _moveInput;
@@ -292,8 +292,8 @@ public class PlayerActions : MonoBehaviour
                         _playerController.GetPlayerCamera().transform.localPosition = new Vector3(_playerController.GetPlayerCamera().transform.localPosition.x, DefaultCameraY, _playerController.GetPlayerCamera().transform.localPosition.z);
                     }
 
-                    _walkSpeed = WalkSpeed;
-                    _runSpeed = RunSpeed;
+                    //_walkSpeed = WalkSpeed;
+                    //_runSpeed = RunSpeed;
                 }
             }
         }
