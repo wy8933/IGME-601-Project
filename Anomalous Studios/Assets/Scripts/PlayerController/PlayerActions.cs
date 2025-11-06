@@ -131,7 +131,7 @@ public class PlayerActions : MonoBehaviour
                 Vector3 movement = _isSprinting ? transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _runSpeed * dt
                                                 : transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _walkSpeed * dt;
                 _playerController.GetRB().MovePosition(movement + _playerController.GetRB().position);
-                if (movement == Vector3.zero || !_playerController.IsGrounded() && !_isSprinting)
+                if (movement == Vector3.zero || !_playerController.IsGrounded())
                 {
                     SoundEffectTrigger.Instance.StopFootsteps();
                 }
@@ -140,6 +140,10 @@ public class PlayerActions : MonoBehaviour
                     SoundEffectTrigger.Instance.PlayFootsteps(0.5f);
                 }
             }
+        }
+        else
+        {
+            SoundEffectTrigger.Instance.StopFootsteps();
         }
     }
 
@@ -186,7 +190,10 @@ public class PlayerActions : MonoBehaviour
             {
                 SoundEffectTrigger.Instance.StopFootsteps();
             }
-            SoundEffectTrigger.Instance.PlayFootsteps(0.35f);
+            if (_playerController.IsGrounded()) 
+            {
+                SoundEffectTrigger.Instance.PlayFootsteps(0.35f);
+            }
             _playerController.GetPlayerSound().SprintPantingDepletionSFX();
 
             if (Stamina <= 0)

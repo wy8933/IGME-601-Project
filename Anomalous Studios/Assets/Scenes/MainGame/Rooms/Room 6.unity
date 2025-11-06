@@ -2407,6 +2407,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: garbage2
       objectReference: {fileID: 0}
+    - target: {fileID: 5773822676803645220, guid: dd5b4899309d356428c67a14da0d6d37, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 941bea98007d2064bb6ca69d05d74a49, type: 2}
     - target: {fileID: 8990666562200194589, guid: dd5b4899309d356428c67a14da0d6d37, type: 3}
       propertyPath: m_LocalPosition.x
       value: 30.54
@@ -3198,6 +3202,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4883354870110009673, guid: b476c00e3c3d4a24281b5ff1511c2cd4, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 941bea98007d2064bb6ca69d05d74a49, type: 2}
     - target: {fileID: 8566867258114843380, guid: b476c00e3c3d4a24281b5ff1511c2cd4, type: 3}
       propertyPath: m_Name
       value: garbage3
@@ -3629,6 +3637,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: garbage1
       objectReference: {fileID: 0}
+    - target: {fileID: 4780474481523629959, guid: 7df86c47d109b434eac34892ad6eb43d, type: 3}
+      propertyPath: _successSFX
+      value: 
+      objectReference: {fileID: 11400000, guid: 941bea98007d2064bb6ca69d05d74a49, type: 2}
     - target: {fileID: 7581458878876412325, guid: 7df86c47d109b434eac34892ad6eb43d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 47.83
@@ -4146,8 +4158,8 @@ MonoBehaviour:
   playerTag: Player
   DoorID: 101
   _holdTime: 0
-  _failedSFX: {fileID: 0}
-  _successSFX: {fileID: 0}
+  _failedSFX: {fileID: 11400000, guid: 5a2dce1c9432ade429dbcf54874e3ecc, type: 2}
+  _successSFX: {fileID: 11400000, guid: 9f7345737e6892a408db64289c24deab, type: 2}
 --- !u!4 &6857122640059389850
 Transform:
   m_ObjectHideFlags: 0
