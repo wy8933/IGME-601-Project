@@ -11,6 +11,12 @@ public class Main_Menu : MonoBehaviour
     
     bool isVisible = false;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     /// <summary>
     /// Start game by loading first scene
     /// </summary>
@@ -18,6 +24,8 @@ public class Main_Menu : MonoBehaviour
     {
         //SceneManager.LoadScene(1);
         EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _startLevel });
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     public void QuitGame()
     {
