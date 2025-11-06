@@ -89,30 +89,14 @@ public class Trap : ItemInstance
     {
         // Access rulekeeper walk speed here and change it temporarily
         EnemyBehavior eb = obj.GetComponent<EnemyBehavior>();
-        //PlayerActions eb = obj.GetComponent<PlayerActions>();
 
         if(eb != null)
         {
             // RuleKeeper logic
             eb.Speed = _slowAmount;
-            Debug.Log("Walk Speed: " + eb.Speed);
-            Debug.Log("BaseWalkSpeed: " + eb.BaseWalkSpeed);
             yield return new WaitForSeconds(_slowDuration);
 
             eb.Speed = eb.BaseWalkSpeed;
-            Debug.Log("Walk Speed: " + eb.Speed);
-            
-            /*
-            // Testing purposes: Player logic
-            eb.SetWalkSpeed(_slowAmount);
-            Debug.Log("Walk Speed: " + eb.GetWalkSpeed());
-
-            yield return new WaitForSeconds(_slowDuration);
-
-            eb.SetWalkSpeed(6.0f);
-            Debug.Log("Walk Speed: " + eb.GetWalkSpeed());
-            //
-            */
 
             Destroy(this.gameObject);
         }
