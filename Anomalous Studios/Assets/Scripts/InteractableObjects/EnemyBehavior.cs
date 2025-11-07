@@ -78,6 +78,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         {
             BaseWalkSpeed = _navAgent.speed;
         }
+
+        SoundEffectTrigger.Instance.PlayAmbience(transform);
     }
 
     public void Highlight()
@@ -133,6 +135,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
         // One giant OR statement of dictionary values
         _behaviorAgent.SetVariableValue("ruleBroken", _rulesLibrary.Values.Any(value => value));
+
+        SoundEffectTrigger.Instance.PlayScream(transform);
     }
 
     /// <summary>
@@ -157,6 +161,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         // TODO: I forsee some issues with the target location having INSTANT priority
         // Might need to introduce a priority queue of target positions, nodes to "check out"
         _behaviorAgent.SetVariableValue("TargetLocation", e.target);
+        SoundEffectTrigger.Instance.StopAmbience();
     }
 
 
