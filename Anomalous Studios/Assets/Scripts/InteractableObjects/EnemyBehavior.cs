@@ -78,6 +78,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         {
             BaseWalkSpeed = _navAgent.speed;
         }
+
+        SoundEffectTrigger.Instance.PlayAmbience(transform);
     }
 
     public void Highlight()
@@ -152,7 +154,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     {
         _behaviorAgent.enabled = true;
         _navAgent.enabled = true;
-        SoundEffectTrigger.Instance.PlayAmbience(transform);
     }
 
     private void UpdateTargetLocation(MakeNoise e)
