@@ -151,10 +151,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53bc2d943b0292247af6bfe47291f702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _paperPrefab: {fileID: 0}
   _floorChime: {fileID: 11400000, guid: 34d4ed5c835c4e94ea7c30bd334d0e50, type: 2}
   _doorsMoving: {fileID: 11400000, guid: 16d6f11de6c89dc4c99fb81b16d12b81, type: 2}
-  _papersB1: []
+  _paperPrefab: {fileID: 8247500365295783521, guid: 4c227ac5665bb824dbe9e13b38d8677e, type: 3}
+  _papersB1:
+  - {fileID: 11400000, guid: f68900ff56351e148bb0ff71db5c279f, type: 2}
+  - {fileID: 11400000, guid: f284f0a844fac98438d41cf2597384a6, type: 2}
+  - {fileID: 11400000, guid: c4e056598ee3aa24f97737df265cfd34, type: 2}
+  - {fileID: 11400000, guid: d9b48335dbe6d774fb943aec0380d9fb, type: 2}
   _papersB2: []
   _papersB3: []
 --- !u!1 &2684304204808228215
@@ -940,95 +944,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
---- !u!1 &894701039213974972 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5019321792273834693, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
-  m_PrefabInstance: {fileID: 5314998841603159929}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5403032492736496843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 894701039213974972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
 --- !u!4 &2771195100733590185 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8050157995874139600, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
   m_PrefabInstance: {fileID: 5314998841603159929}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5624948576939186794 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 562245875121974547, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
-  m_PrefabInstance: {fileID: 5314998841603159929}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7112487910815427481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5624948576939186794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
---- !u!1 &5836797270215646842 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1784220914782710019, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
-  m_PrefabInstance: {fileID: 5314998841603159929}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6144477848066028054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5836797270215646842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
---- !u!1 &6681054930878098985 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1546224813650090320, guid: 171131c105c3fc9439ef1dd49ee75a28, type: 3}
-  m_PrefabInstance: {fileID: 5314998841603159929}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1763244515427396977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6681054930878098985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
 --- !u!1001 &6987261351189533401
 PrefabInstance:
   m_ObjectHideFlags: 0
