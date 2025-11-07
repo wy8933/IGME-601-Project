@@ -52,11 +52,17 @@ public interface IInteractable
     /// <param name="obj">The new IInteractable object under the player's crosshair</param>
     public static void SetPriorityTarget(IInteractable obj)
     {
-        Target?.RemoveHighlight();
+        try
+        {
+            Target?.RemoveHighlight();
 
-        obj?.Highlight();
+            obj?.Highlight();
 
-        Target = obj;
+            Target = obj;
+        }
+
+        // Resets the Target, especially when reloading the scene
+        catch (MissingReferenceException) { Target = null; }
     }
 
     /// <summary>

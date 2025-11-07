@@ -14,7 +14,8 @@ public class PlayerJournal : MonoBehaviour
 
     private void Start()
     {
-        handbook = GameObject.FindGameObjectWithTag("UI").GetComponent<Handbook_UI>();
+        // Transform.Find() searches for the handbook_UI even if its disabled
+        handbook = GameObject.Find("MainUI").transform.Find("Handbook").GetComponent<Handbook_UI>();
     }
 
     public void ToggleHandbook()
