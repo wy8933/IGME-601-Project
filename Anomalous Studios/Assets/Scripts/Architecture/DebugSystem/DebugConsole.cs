@@ -136,8 +136,13 @@ public class DebugConsole : MonoBehaviour
             }
             return;
         }
+        else if (id == "clear") 
+        {
+            _logSource.Reset();
+            return;
+        }
 
-        var cmd = _commands.Find(c => string.Equals(c.Id, id, StringComparison.OrdinalIgnoreCase));
+            var cmd = _commands.Find(c => string.Equals(c.Id, id, StringComparison.OrdinalIgnoreCase));
         if (cmd == null)
         {
             EventBus<ConsoleLog>.Raise(new ConsoleLog { Message = $"Unknown command: '{id}'. Type 'help' to list commands.", Type = LogType.Warning });
