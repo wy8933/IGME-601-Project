@@ -1,13 +1,16 @@
 using RuleViolationSystem;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class RuleManager : MonoBehaviour
 {
+    public static RuleManager Instance;
+
     public bool verbose = false;
 
-    [SerializeField] private RuleSetSO ruleSet;
+    public RuleSetSO ruleSet;
 
     private RuleQueryAdapter _query;
 
@@ -16,6 +19,18 @@ public class RuleManager : MonoBehaviour
     private readonly Dictionary<RuleAssetSO, RuleRuntimeState> _state = new();
 
     private EventBinding<VariableChangedEvent> _varBinding;
+
+    private void Awake()
+    {
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void OnEnable()
     {

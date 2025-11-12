@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3953425590323937494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8392809812060396061}
+  - component: {fileID: 5068918710642501275}
+  m_Layer: 0
+  m_Name: DebugSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8392809812060396061
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3953425590323937494}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -47.61639, y: 5.281188, z: 2.4148836}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5068918710642501275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3953425590323937494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a93c4a6a821b234a808dcf30ad07780, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showConsole: 1
+  _commands:
+  - Id: help
+    Description: List commands
+    Format: help
+    commandEvent: {fileID: 0}
+  - Id: clear
+    Description: Clear all the message
+    Format: clear
+    commandEvent: {fileID: 0}
+  - Id: test_command
+    Description: Run test
+    Format: test_command
+    commandEvent: {fileID: 11400000, guid: ef22eca07abf81f4a8c02d648d95e826, type: 2}
+  - Id: message
+    Description: Print a message
+    Format: message <text...>
+    commandEvent: {fileID: 11400000, guid: 4e61840e4e73e8841a062a098c40d250, type: 2}
+  - Id: give
+    Description: Give the player an item
+    Format: item <item_id.>
+    commandEvent: {fileID: 11400000, guid: 3bd96be0beb8b8747a4949c8ef1358a7, type: 2}
+  - Id: load_scene
+    Description: Load an other scene
+    Format: load_scene <name of the scene...>
+    commandEvent: {fileID: 11400000, guid: 3e5f004da9b5f224581f896e986f6de4, type: 2}
+  - Id: rules
+    Description: Print out a list of rules in the current level
+    Format: rules
+    commandEvent: {fileID: 11400000, guid: 8fe7c421ad64b8842b6ac085aa7809b1, type: 2}
+  - Id: pause
+    Description: Set the time scale to 0
+    Format: pause
+    commandEvent: {fileID: 11400000, guid: f321a2e470515a54bb6b3da5e8b3d09b, type: 2}
+  - Id: quit
+    Description: Quit the game
+    Format: quit
+    commandEvent: {fileID: 11400000, guid: 3db5892fc1edbcd41bde73a409326b29, type: 2}
+  - Id: resume
+    Description: Set the time scale back to 1
+    Format: resume
+    commandEvent: {fileID: 11400000, guid: 856e59d96828af1499ba6a89dd326082, type: 2}
+  - Id: set_rule_broken
+    Description: Set the rule broken to true or false
+    Format: set_rule_broken <bool>
+    commandEvent: {fileID: 11400000, guid: ade56b504a03416458f31fa307a88a2a, type: 2}
+  - Id: set_time
+    Description: Set the current game time
+    Format: set_time <0-1440>
+    commandEvent: {fileID: 11400000, guid: ade56b504a03416458f31fa307a88a2a, type: 2}
+  _logSource: {fileID: 11400000, guid: 3adfe4d431616da4e99d15ff18763a92, type: 2}
