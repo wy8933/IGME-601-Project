@@ -498,7 +498,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba919882c3382ea4b890acac9513372d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstep: {fileID: 11400000, guid: db8aae21077c11f44b49ed85bb3413e7, type: 2}
+  _footstep: {fileID: 0}
+  _ruleKeeperScream: {fileID: 0}
+  _ruleKeeperAmbience: {fileID: 0}
+  _doorOpen: {fileID: 0}
+  _doorClose: {fileID: 0}
+  _elevatorMusic: {fileID: 0}
+  _uiClick: {fileID: 0}
+  _uiHover: {fileID: 0}
+  _uiPageFlip: {fileID: 0}
 --- !u!224 &637546471 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 989305533784505148, guid: 41f16636d66c750489631f662fb0dce7, type: 3}
@@ -1281,7 +1289,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.083333336
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 5bb0d71588037ec42a7a1e5e622cc14f, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: b7d6e5c89676c88409097474682a8904, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1643553494
 GameObject:

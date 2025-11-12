@@ -78,6 +78,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         {
             BaseWalkSpeed = _navAgent.speed;
         }
+
+        SoundEffectTrigger.Instance.PlayAmbience(transform);
     }
 
     public void Highlight()
@@ -104,12 +106,10 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
         // TODO: make a bunch of rays or direction vectors before hand, raycast all of them
 
-        print("hit3");
         // If target is not already seen, I-C-U SFX
         if (Physics.Raycast(transform.position, target.position - transform.position,
             out RaycastHit hit, 1000, _ignoreLayers) && hit.collider.CompareTag("Player"))
         {
-            print("hit4");
             _behaviorAgent.SetVariableValue("playerSeen", true);
         }
         else
@@ -135,6 +135,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
         // One giant OR statement of dictionary values
         _behaviorAgent.SetVariableValue("ruleBroken", _rulesLibrary.Values.Any(value => value));
+
+        SoundEffectTrigger.Instance.PlayScream(transform);
     }
 
     /// <summary>
@@ -159,6 +161,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         // TODO: I forsee some issues with the target location having INSTANT priority
         // Might need to introduce a priority queue of target positions, nodes to "check out"
         _behaviorAgent.SetVariableValue("TargetLocation", e.target);
+        SoundEffectTrigger.Instance.StopAmbience();
     }
 
 

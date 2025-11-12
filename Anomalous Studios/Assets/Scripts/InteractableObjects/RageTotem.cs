@@ -27,7 +27,7 @@ public class RageTotem : MonoBehaviour, IInteractable
 
     public void Start()
     {
-        _ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
+        //_ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
     }
 
     public void Highlight()
@@ -41,6 +41,8 @@ public class RageTotem : MonoBehaviour, IInteractable
         EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true, target = transform.position });
         EventBus<TaskComplete>.Raise(new TaskComplete { });
         EventBus<MakeNoise>.Raise(new MakeNoise { target = transform.position });
+
+        //EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
     }
 
     public void RemoveHighlight()

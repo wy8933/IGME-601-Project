@@ -44,6 +44,7 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] private float Stamina = 100.0f;
     private float _staminaDepletionFactor = 10.0f;
     private float _staminaRegenFactor = 5.0f;
+    private bool _wasSprinting = false;
 
     // Jump Variables
     [Header("Jump")]
@@ -130,15 +131,19 @@ public class PlayerActions : MonoBehaviour
                 Vector3 movement = _isSprinting ? transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _runSpeed * dt
                                                 : transform.rotation * new Vector3(_moveInput.x, 0, _moveInput.y) * _walkSpeed * dt;
                 _playerController.GetRB().MovePosition(movement + _playerController.GetRB().position);
-                if (movement != Vector3.zero && _playerController.IsGrounded())
-                {
-                    SoundEffectTrigger.Instance.PlayFootsteps();
-                }
-                else
+                if (movement == Vector3.zero || !_playerController.IsGrounded())
                 {
                     SoundEffectTrigger.Instance.StopFootsteps();
                 }
+                else
+                {
+                    SoundEffectTrigger.Instance.PlayFootsteps(0.5f);
+                }
             }
+        }
+        else
+        {
+            SoundEffectTrigger.Instance.StopFootsteps();
         }
     }
 
@@ -181,12 +186,21 @@ public class PlayerActions : MonoBehaviour
             _canLean = false;
             Stamina -= _staminaDepletionFactor * dt;
 
-            _playerController.GetPlayerSound().SprintPantingDepletionSFX(Stamina);
+            if (!_wasSprinting)
+            {
+                SoundEffectTrigger.Instance.StopFootsteps();
+            }
+            if (_playerController.IsGrounded()) 
+            {
+                SoundEffectTrigger.Instance.PlayFootsteps(0.35f);
+            }
+            _playerController.GetPlayerSound().SprintPantingDepletionSFX();
 
             if (Stamina <= 0)
             {
                 _canSprint = false;
                 _isSprinting = false;
+                _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
             }
         }
         else
@@ -194,9 +208,16 @@ public class PlayerActions : MonoBehaviour
             _canLean = true;
             Stamina += _staminaRegenFactor * dt;
 
-            _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
+            if (_wasSprinting && !_isSprinting)
+            {
+                _playerController.GetPlayerSound().SprintPantingRegenSFX(Stamina);
+                SoundEffectTrigger.Instance.StopFootsteps();
+                SoundEffectTrigger.Instance.PlayFootsteps(0.5f);
+            }
 
-            if (Stamina > 10.0f)
+            
+
+            if (Stamina > 50.0f)
             {
                 _canSprint = true;
             }
@@ -204,6 +225,8 @@ public class PlayerActions : MonoBehaviour
 
         // Clamp Stamina between [0, 100]
         Stamina = Mathf.Clamp(Stamina, 0, 100);
+
+        _wasSprinting = _isSprinting;
     }
 
     /// <summary>

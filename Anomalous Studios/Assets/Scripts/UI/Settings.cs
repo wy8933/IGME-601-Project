@@ -159,7 +159,8 @@ public class Settings : MonoBehaviour
     /// </summary>
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = Level.mainMenu });
     }
 
     /// <summary>

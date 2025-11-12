@@ -18,4 +18,9 @@ public sealed class ConsoleLogEventSO : BaseEventSO<ConsoleLog>
         _lines.Add(line);
         if (_lines.Count > maxLines) _lines.RemoveAt(0);
     }
+
+    public void Reset()
+    {
+        _lines = new List<string>();
+    }
 }

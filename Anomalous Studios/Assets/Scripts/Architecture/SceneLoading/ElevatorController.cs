@@ -10,7 +10,7 @@ public struct TaskComplete : IEvent { }
 
 public class ElevatorController : MonoBehaviour
 {
-    [SerializeField] private GameObject _paperPrefab;
+    [Header("Sound Effects")]
     [SerializeField] private SoundDataSO _floorChime;
     [SerializeField] private SoundDataSO _doorsMoving;
 
@@ -18,16 +18,20 @@ public class ElevatorController : MonoBehaviour
     private Transform _corkboard;
     private Handbook_UI _handbook;
 
-    // TODO: replace with an actual array, using id values when creating the notes
     private List<Paper> _notes;
 
+    [Header("Paper Data")]
+    [SerializeField] private GameObject _paperPrefab;
     [SerializeField] private PaperDataSO[] _papersB1;
     [SerializeField] private PaperDataSO[] _papersB2;
     [SerializeField] private PaperDataSO[] _papersB3;
 
+    private static ElevatorButton _openButton;
+    /// <summary>
+    /// Stores all the buttons on the elevator, 
+    /// </summary>
     private Dictionary<Level, ElevatorButton> _buttons;
     private Dictionary<Level, PaperDataSO[]> _paperData;
-    private static ElevatorButton _openButton;
 
     private EventBinding<TaskComplete> _taskComplete;
     private EventBinding<LevelLoaded> _levelLoaded;
@@ -39,6 +43,8 @@ public class ElevatorController : MonoBehaviour
         _handbook = GameObject.Find("MainUI").transform.Find("Handbook").GetComponent<Handbook_UI>();
 
         _openButton = transform.Find("Buttons/Open").GetComponent<ElevatorButton>();
+
+        // Keeps references to each of the Elevator floor buttons to enable / disable them
         _buttons = new Dictionary<Level, ElevatorButton>
         {
             { Level.B1, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
@@ -85,6 +91,9 @@ public class ElevatorController : MonoBehaviour
     /// </summary>
     public void SpawnNotes(LevelLoaded e)
     {
+        // The player will continue to hold onto handbook info, no need to spawn it again
+        if (e.prevLevel == SceneLoader.CurrentLevel) { return; }
+
         // TODO: Paper positions are hardcoded, make this dynamic to corkboard dimensions, random spawn pattern
 
         PaperDataSO[] PaperData = _paperData[(Level)SceneLoader.CurrentLevel];
@@ -96,6 +105,7 @@ public class ElevatorController : MonoBehaviour
         float x = -1.25f;
         float y = 0.6f;
 
+        // Spawns in each of the notes on the corkboard
         foreach (PaperDataSO data in PaperData) 
         {
             GameObject paper = Instantiate(_paperPrefab, _corkboard, false);
