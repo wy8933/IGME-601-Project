@@ -24,7 +24,6 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private GameObject _paperPrefab;
     [SerializeField] private PaperDataSO[] _papersB1;
     [SerializeField] private PaperDataSO[] _papersB2;
-    [SerializeField] private PaperDataSO[] _papersB3;
 
     private static ElevatorButton _openButton;
     /// <summary>
@@ -49,12 +48,13 @@ public class ElevatorController : MonoBehaviour
         {
             { Level.B1, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
             { Level.B2, transform.Find("Buttons/B2").GetComponent<ElevatorButton>() },
-            { Level.B3, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
+            { Level.endGame, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
         };
 
         _paperData = new Dictionary<Level, PaperDataSO[]>
         {
-            { Level.B1, _papersB1 }
+            { Level.B1, _papersB1 },
+            { Level.B2, _papersB2 }
         };
     }
 
@@ -122,6 +122,8 @@ public class ElevatorController : MonoBehaviour
                 y = -0.6f;
             }
         }
+
+        if (_notes.Count <= 0) { _openButton.Enable(); }
     }
 
     /// <summary>

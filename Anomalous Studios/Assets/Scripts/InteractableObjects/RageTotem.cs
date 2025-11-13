@@ -2,13 +2,21 @@ using AudioSystem;
 using Unity.Behavior;
 using UnityEngine;
 
+enum TestValues
+{
+    RuleBreak,
+    TaskComplete,
+    MakeNoise,
+    LoadLevel
+}
+
 /// <summary>
 /// Test class to break the Rulekeeper's rules
 /// </summary>
 public class RageTotem : MonoBehaviour, IInteractable
 {
-
     [SerializeField] private float _holdTime = 0.0f;
+    [SerializeField] private TestValues _value;
 
     private bool _canInteract = true;
 
@@ -23,30 +31,32 @@ public class RageTotem : MonoBehaviour, IInteractable
     public SoundDataSO CancelSFX => null;
     public SoundDataSO SuccessSFX { get => _successSFX; }
 
-    private BehaviorGraphAgent _ruleKeeper;
-
-    public void Start()
-    {
-        //_ruleKeeper = GameObject.FindGameObjectWithTag("RuleKeeper").GetComponent<BehaviorGraphAgent>();
-    }
-
     public void Highlight()
     {
         GetComponent<HighlightTarget>().IsHighlighted = true;
     }
-
-    public void Interact()
-    {
-        //_ruleKeeper.SetVariableValue("ruleBroken", true);
-        EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true, target = transform.position });
-        EventBus<TaskComplete>.Raise(new TaskComplete { });
-        EventBus<MakeNoise>.Raise(new MakeNoise { target = transform.position });
-
-        //EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
-    }
-
     public void RemoveHighlight()
     {
         GetComponent<HighlightTarget>().IsHighlighted = false;
     }
+
+    public void Interact()
+    {
+        switch(_value)
+        {
+            case TestValues.RuleBreak:
+                EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true, target = transform.position });
+                break;
+            case TestValues.TaskComplete:
+                EventBus<TaskComplete>.Raise(new TaskComplete { });
+                break;
+            case TestValues.LoadLevel:
+                EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
+                break;
+            case TestValues.MakeNoise:
+                EventBus<MakeNoise>.Raise(new MakeNoise { target = transform.position });
+                break;
+        }
+    }
+
 }
