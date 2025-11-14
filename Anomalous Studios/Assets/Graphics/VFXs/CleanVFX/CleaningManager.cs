@@ -81,7 +81,7 @@ public class CleaningManager : MonoBehaviour
         foreach (var cleaner in cleaners)
         {
             float progress = cleaner.GetCleanProgress();
-            Debug.Log($"{cleaner.name} clean progress: {progress * 100f:F1}%");
+
 
             if (progress >= cleanThreshold)
             {

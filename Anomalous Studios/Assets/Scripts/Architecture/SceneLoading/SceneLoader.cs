@@ -21,7 +21,7 @@ public enum Level
     mainMenu,
     B1,
     B2,
-    B3
+    endGame
 }
 
 public class SceneLoader : MonoBehaviour
@@ -31,12 +31,11 @@ public class SceneLoader : MonoBehaviour
 
     [Header("Level Listings")]
     [SerializeField] private SceneField _elevator;
-    [SerializeField] private SceneField[] _mainMenu;
-    [SerializeField] private SceneField[] _floorB1;
-    [SerializeField] private SceneField[] _floorB2;
-    [SerializeField] private SceneField[] _floorB3;
+    [SerializeField] private SceneField _mainMenu;
+    [SerializeField] private SceneField _floorB1;
+    [SerializeField] private SceneField _floorB2;
 
-    private Dictionary<Level, SceneField[]> _floorLibrary;
+    private Dictionary<Level, SceneField> _floorLibrary;
 
     private List<AsyncOperation> _scenesToLoad = new List<AsyncOperation>();
 
@@ -47,12 +46,11 @@ public class SceneLoader : MonoBehaviour
 
     public void Start()
     {
-        _floorLibrary = new Dictionary<Level, SceneField[]>
+        _floorLibrary = new Dictionary<Level, SceneField>
         {
             { Level.mainMenu, _mainMenu },
             { Level.B1, _floorB1 },
-            { Level.B2, _floorB2 },
-            { Level.B3, _floorB3 }
+            { Level.B2, _floorB2 }
         };
 
         _blackScreenTEMP = GameObject.Find("MainUI").transform.Find("LoadingScreen").gameObject;
@@ -85,19 +83,12 @@ public class SceneLoader : MonoBehaviour
             _scenesToLoad.Add(SceneManager.LoadSceneAsync(_elevator, LoadSceneMode.Additive));
         }
 
-        // Load all of the new level scenes
-        foreach (SceneField scene in _floorLibrary[e.newLevel])
-        {
-            _scenesToLoad.Add(SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive));
-        }
+        // Unload the old scenes, load in the new
+        _scenesToLoad.Add(SceneManager.LoadSceneAsync(_floorLibrary[e.newLevel], LoadSceneMode.Additive));
 
-        // unload all of the old level scenes
         if (CurrentLevel != null)
         {
-            foreach (SceneField scene in _floorLibrary[(Level)CurrentLevel])
-            {
-                _scenesToLoad.Add(SceneManager.UnloadSceneAsync(scene));
-            }
+            _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_floorLibrary[(Level)CurrentLevel]));
         }
 
         // If we are not in the main menu going to the main menu, unload the elevator
@@ -109,26 +100,15 @@ public class SceneLoader : MonoBehaviour
         Level? prevLevel = CurrentLevel;
         CurrentLevel = e.newLevel;
 
-        while (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) 
-        {
-            
-            yield return null; 
-        }
+        while (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
-        // An artifical amount of loading time to prevent the NavMesh from trying to rebuild too quickly
+        // Add an artifical amount of loading time to smooth everything over
         yield return new WaitForSeconds(0.5f);
-
-        //_scenesToLoad.Add(_navMeshSurface.UpdateNavMesh(_navMeshSurface.navMeshData));
-
-        //if (!_scenesToLoad[_scenesToLoad.Count - 1].isDone) { yield return null; }
 
         EventBus<LevelLoaded>.Raise(new LevelLoaded { prevLevel = prevLevel });
 
         _blackScreenTEMP.SetActive(false);
     }
-
-    // TODO: add a method that only resets the current scene, doesn't worry about resetting the whole thing
-
 
     public void OnEnable()
     {
