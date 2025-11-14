@@ -5,6 +5,8 @@ using AudioSystem;
 public class Key : ItemInstance
 {
     private BoxCollider _boxCollider;
+    [Header("Key ID")]
+    [SerializeField] string _keyID;
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -21,6 +23,8 @@ public class Key : ItemInstance
 
         _rb = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
+
+        this.item.itemID = _keyID; 
     }
 
     public override void Interact()

@@ -315,8 +315,8 @@ public class PlayerActions : MonoBehaviour
                         _playerController.GetPlayerCamera().transform.localPosition = new Vector3(_playerController.GetPlayerCamera().transform.localPosition.x, DefaultCameraY, _playerController.GetPlayerCamera().transform.localPosition.z);
                     }
 
-                    //_walkSpeed = WalkSpeed;
-                    //_runSpeed = RunSpeed;
+                    _walkSpeed = WalkSpeed;
+                    _runSpeed = RunSpeed;
                 }
             }
         }
