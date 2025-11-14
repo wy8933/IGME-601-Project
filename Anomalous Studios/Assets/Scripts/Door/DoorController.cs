@@ -1,6 +1,7 @@
 using UnityEngine;
 using ItemSystem;
 using AudioSystem;
+using UnityEngine.AI;
 
 public class DoorController : MonoBehaviour, IInteractable
 {
@@ -25,10 +26,19 @@ public class DoorController : MonoBehaviour, IInteractable
     private bool unlocked;          // Whether the door is locked/unlocked
 
     [SerializeField] private float _holdTime = 0.0f;
-
+    private NavMeshObstacle _obstacle;
     private bool _canInteract = true;
     public float HoldTime { get => _holdTime; }
-    public bool CanInteract { get => _canInteract; set => _canInteract = value; }
+    public bool CanInteract 
+    { 
+        get => _canInteract;
+        set
+        {
+            _canInteract = value;
+            // Removes doors as obstacles to the Rulekeeper when unlocked
+            _obstacle.enabled = !value;
+        }
+    }
 
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
@@ -52,7 +62,12 @@ public class DoorController : MonoBehaviour, IInteractable
         if (playerObj != null)
             player = playerObj.transform;
 
-        _canInteract = false;
+        // Doors without an ID should be useable by default
+        _canInteract = int.Parse(DoorID) == 0;
+
+        // Unlocked doors should not be treated as obstacles by the Rulekeeper
+        _obstacle = GetComponent<NavMeshObstacle>();
+        _obstacle.enabled = !_canInteract;
     }
 
     void Update()
@@ -108,5 +123,11 @@ public class DoorController : MonoBehaviour, IInteractable
     public void RemoveHighlight()
     {
         // Remove Highlight!
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        // Doors will open for he Rulekeeper as it approaches if it is unlocked.
+        if (other.CompareTag("RuleKeeper") && !isOpen && _canInteract) { ToggleDoor(); }
     }
 }
