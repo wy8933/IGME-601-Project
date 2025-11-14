@@ -4,6 +4,7 @@ using ItemSystem;
 using UnityEngine.UI;
 using System.Collections;
 using AudioSystem;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -124,9 +125,11 @@ public class PlayerController : MonoBehaviour
     private void ResetPlayer(LoadLevel e)
     {
         // What other edge cases when the level is reset..?
-        _rb.isKinematic = false;
-        if (e.newLevel == SceneLoader.CurrentLevel) { transform.position = _spawnPoint.position; }
-        _rb.isKinematic = true;
+
+        // NOTE: Teleportation requires both the transform and the rb positions to be updated, otherwise it remains in place
+        // NOTE: If you have trouble teleporting, other sources reccommend enabling isKinematic, then disabling. Atm this has no effect on the teleportation
+        transform.position = _spawnPoint.position;
+        _rb.position = _spawnPoint.position;
 
         // Remove items from inventory?
         // Disable journal?

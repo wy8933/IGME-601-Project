@@ -1,6 +1,9 @@
 using AudioSystem;
 using UnityEngine;
 
+/// <summary>
+/// The purpose of this button. There should only ever be one close and one open button, the rest move the player between Levels
+/// </summary>
 public enum ButtonType
 {
     Level,
@@ -13,7 +16,10 @@ public enum ButtonType
 /// </summary>
 public class ElevatorButton : MonoBehaviour, IInteractable
 {
+    [Tooltip("The purpose of this button.")]
     [SerializeField] private ButtonType _buttonType = ButtonType.Level;
+
+    [Tooltip("This button will send the player to this level")]
     [SerializeField] private Level _level;
     [SerializeField] private float _holdTime = 0.0f;
 
