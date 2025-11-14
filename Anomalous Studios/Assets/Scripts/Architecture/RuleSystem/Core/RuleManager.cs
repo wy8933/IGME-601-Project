@@ -143,7 +143,7 @@ public class RuleManager : MonoBehaviour
             }
 
             LogRule($"{rule.ruleId}: violated to violated");
-            FireViolation(rule, s, reason);
+            //FireViolation(rule, s, reason);
             return;
         }
 
