@@ -22,6 +22,6 @@ public class Speaker : MonoBehaviour
     public void PlayMusic()
     {
         Debug.Log("<color=red>Speaker Playing " + this + "</color>");
-        AudioManager.Instance.Play(elevatorMusicSO, transform.position);
+        AudioManager.Instance.Play(elevatorMusicSO, gameObject, transform.position);
     }
 }

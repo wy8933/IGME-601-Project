@@ -87,11 +87,10 @@ namespace AudioSystem
             if (soundData == null || soundData.Clip == null) return;
 
             var key = new SoundCreator(creator, soundData.Clip);
+
             if (_playingPairs.Contains(key))
             {
-                Debug.Log(key);
                 return;
-
             }
 
             var source = GetPooledAudioSource();
@@ -123,10 +122,10 @@ namespace AudioSystem
             _categoryVolumes[category] = Mathf.Clamp01(volume);
         }
 
-        public void Stop(GameObject emitter, SoundDataSO soundData)
+        public void Stop(GameObject creator, SoundDataSO soundData)
         {
             if (soundData == null || soundData.Clip == null) return;
-            var key = new SoundCreator(emitter, soundData.Clip);
+            var key = new SoundCreator(creator, soundData.Clip);
 
             for (int i = 0; i < _allSources.Count; i++)
             {
