@@ -7,6 +7,8 @@ public class FakeRuletriggerBox : MonoBehaviour
         if (other.CompareTag("Player")) 
         {
             // Play the sound
+            SoundEffectTrigger.Instance.PlayScream(transform);
+            SpeakerManager.Instance.StartStatic();
         }
     }
 }

@@ -88,7 +88,11 @@ namespace AudioSystem
 
             var key = new SoundCreator(creator, soundData.Clip);
             if (_playingPairs.Contains(key))
-                return; 
+            {
+                Debug.Log(key);
+                return;
+
+            }
 
             var source = GetPooledAudioSource();
             if (source == null) return;
