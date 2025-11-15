@@ -273,8 +273,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.032000005, y: -0.015999973}
-  m_SizeDelta: {x: 0.2144, y: 0.1344}
+  m_AnchoredPosition: {x: 0.029, y: 0.187}
+  m_SizeDelta: {x: 0.45, y: 0.1344}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &6895249629874760691
 CanvasRenderer:
@@ -331,8 +331,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.05
-  m_fontSizeBase: 0.05
+  m_fontSize: 0.1
+  m_fontSizeBase: 0.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -619,9 +619,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8f2ff80d600f17744b809afb1951dbc6, type: 2}
     - target: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
       propertyPath: m_Name
       value: Paper
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
