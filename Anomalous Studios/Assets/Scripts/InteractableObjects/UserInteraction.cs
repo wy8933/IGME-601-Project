@@ -15,15 +15,12 @@ public class UserInteraction : MonoBehaviour
 
     private IEnumerator _co;
 
-    private Transform _playerCam;
-
     private int _ignorePlayerMask;
 
     public void Awake()
     {
         _playerInputActions = new PlayerInputActions();
         _ignorePlayerMask = ~LayerMask.GetMask("Player", "Ignore Raycast");
-        _playerCam = transform.Find("LeanPivot/Main Camera");
     }
 
     private void OnEnable()
@@ -42,7 +39,7 @@ public class UserInteraction : MonoBehaviour
     public void Update()
     {
         // Ignores the player's collider when looking for interactions, allowing walls to occlude items
-        if (Physics.Raycast(_playerCam.position, _playerCam.forward,
+        if (Physics.Raycast(transform.position, transform.forward,
             out RaycastHit hit, _interactRange, _ignorePlayerMask))
         {
             // Looks for only IInteractable obj, still sending null to Target if looking at nothing
@@ -111,5 +108,15 @@ public class UserInteraction : MonoBehaviour
         yield return new WaitForSeconds(holdTime);
         AudioManager.Instance.Play(IInteractable.Target.SuccessSFX, transform.position);
         IInteractable.Target.Interact();
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out AutoOutline outline)) { outline.ShouldRender = true; }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out AutoOutline outline)) { outline.ShouldRender = false; }
     }
 }
