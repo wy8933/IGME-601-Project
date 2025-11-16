@@ -24,6 +24,7 @@ public class OnboardingManager : MonoBehaviour
 
     public void AllTaskCompleted()
     {
+        // TODO: enable next button
         SceneManager.LoadScene("GameOver");
     }
 
