@@ -42,11 +42,11 @@ public class Paper : MonoBehaviour, IInteractable
 
     public void Highlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = true;
+        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
     }
     public void RemoveHighlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = false;
+        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = false; }
     }
 
     /// <summary>

@@ -102,8 +102,8 @@ public class ElevatorController : MonoBehaviour
         _notes?.Clear();
         _notes ??= new List<Paper>();
 
-        float x = -1.25f;
-        float y = 0.6f;
+        float x = -1.6f;
+        float y = 0.0f;
 
         // Spawns in each of the notes on the corkboard
         foreach (PaperDataSO data in PaperData) 
@@ -115,12 +115,7 @@ public class ElevatorController : MonoBehaviour
             paper.transform.localPosition = new Vector3(x, y, z);
             _notes.Add(paper.GetComponent<Paper>());
 
-            x += 0.75f;
-            if (x >= 1.25f)
-            {
-                x = -1.5f;
-                y = -0.6f;
-            }
+            x += 0.6f;
         }
 
         if (_notes.Count <= 0) { _openButton.Enable(); }

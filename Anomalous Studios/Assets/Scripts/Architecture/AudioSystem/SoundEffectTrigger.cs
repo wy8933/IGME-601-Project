@@ -19,8 +19,6 @@ public class SoundEffectTrigger : MonoBehaviour
     [Header("Door SFX")]
     [SerializeField] private SoundDataSO _doorOpen;
     [SerializeField] private SoundDataSO _doorClose;
-    [Header("Elevator SFX")]             
-    [SerializeField] private SoundDataSO _elevatorMusic;
     [Header("UI SFX")]
     [SerializeField] private SoundDataSO _uiClick;
     [SerializeField] private SoundDataSO _uiHover;
@@ -112,15 +110,6 @@ public class SoundEffectTrigger : MonoBehaviour
     public void PlayDoorOpen(Transform _door)
     {
         _audioManager.Play(_doorOpen, _door.position);
-    }
-
-    /// <summary>
-    /// Plays music from all speakers in scene
-    /// </summary>
-    /// <param name="_speaker"></param>
-    public void PlayElevatorMusic(Transform _speaker)
-    {
-        _audioManager.Play(_elevatorMusic, _speaker.position);
     }
 
     /// <summary>
