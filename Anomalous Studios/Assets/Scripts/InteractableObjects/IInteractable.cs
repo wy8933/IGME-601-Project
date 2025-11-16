@@ -53,7 +53,7 @@ public interface IInteractable
     public static void SetPriorityTarget(IInteractable obj)
     {
         try
-        {
+        {   
             Target?.RemoveHighlight();
 
             obj?.Highlight();

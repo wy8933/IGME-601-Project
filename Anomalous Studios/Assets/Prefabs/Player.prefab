@@ -280,6 +280,8 @@ GameObject:
   - component: {fileID: 6300263328508027291}
   - component: {fileID: 1627797926530608137}
   - component: {fileID: 122087428849805735}
+  - component: {fileID: 7451806642488428133}
+  - component: {fileID: 1571086505701667583}
   m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -426,6 +428,40 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7451806642488428133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978791704366293241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01dff4c5c5dd0c04a80a12842a570ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactRange: 3
+--- !u!135 &1571086505701667583
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978791704366293241}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 439
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1378065435020427820
 GameObject:
@@ -764,7 +800,6 @@ GameObject:
   - component: {fileID: 6179009668698685987}
   - component: {fileID: 570140003062454331}
   - component: {fileID: 2695695359238799536}
-  - component: {fileID: 1897403494945056623}
   - component: {fileID: 6389734336447928713}
   m_Layer: 7
   m_Name: Player
@@ -805,6 +840,7 @@ MonoBehaviour:
   PlayerCamera: {fileID: 8156612788814952234}
   _itemContainerTransform: {fileID: 6863880588458436207}
   IgnorePlayerMask: 0
+  _spawnPoint: {fileID: 0}
 --- !u!54 &7168459518286499936
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -982,19 +1018,6 @@ MonoBehaviour:
   DefaultHeight: 2
   CrouchHeight: 1
   CrouchSpeed: 2
---- !u!114 &1897403494945056623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5855800098677799839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01dff4c5c5dd0c04a80a12842a570ff7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactRange: 3
 --- !u!114 &6389734336447928713
 MonoBehaviour:
   m_ObjectHideFlags: 0

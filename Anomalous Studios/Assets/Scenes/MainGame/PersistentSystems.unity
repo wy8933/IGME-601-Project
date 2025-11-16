@@ -213,6 +213,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &438173600
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8332566049334025044, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_Name
+      value: SpeakerManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780710855917421049, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b5ba221cac18ddb4ca9acfc8ac6fbfa5, type: 3}
 --- !u!1 &488187546
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +480,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1532180636}
   - component: {fileID: 1532180637}
-  - component: {fileID: 1532180638}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -459,70 +515,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _elevator:
-    m_SceneAsset: {fileID: 102900000, guid: 80905ef86a0eb6141be1bf7d1cc491d6, type: 3}
-    m_SceneName: ElevatorHallway
+    m_SceneAsset: {fileID: 102900000, guid: 6ca7a12666e02594fa68e9f57b5bd5d5, type: 3}
+    m_SceneName: Elevator
   _mainMenu:
-  - m_SceneAsset: {fileID: 102900000, guid: 0f3b27bd3059c8d48a3f9d30554139f9, type: 3}
+    m_SceneAsset: {fileID: 102900000, guid: 0f3b27bd3059c8d48a3f9d30554139f9, type: 3}
     m_SceneName: MainMenu
   _floorB1:
-  - m_SceneAsset: {fileID: 102900000, guid: a004a2b030e439548a43c6d34071d24f, type: 3}
-    m_SceneName: Room 1
-  - m_SceneAsset: {fileID: 102900000, guid: 702018f87f0f53a4d8e8bb9836c863bf, type: 3}
-    m_SceneName: Room 2
-  - m_SceneAsset: {fileID: 102900000, guid: 3bf5d5cef2df1b840a5b83e20d64bf6a, type: 3}
-    m_SceneName: Room 3
-  - m_SceneAsset: {fileID: 102900000, guid: df491ff9f2816ca479e6c267476d0b39, type: 3}
-    m_SceneName: Room 4
-  - m_SceneAsset: {fileID: 102900000, guid: 19c8580ed43b84a4284bfbac23739647, type: 3}
-    m_SceneName: Room 5
-  - m_SceneAsset: {fileID: 102900000, guid: 2e37dffffc3c0b046b094047c9cd257a, type: 3}
-    m_SceneName: Room 6
-  - m_SceneAsset: {fileID: 102900000, guid: 6a8d8ed536c16d54b9e84fdd5a3eeb81, type: 3}
-    m_SceneName: Room 7
-  - m_SceneAsset: {fileID: 102900000, guid: 2ef94e7178a675a469b5082f88025377, type: 3}
-    m_SceneName: Room 8
-  - m_SceneAsset: {fileID: 102900000, guid: b79284b0089f2f044a4d9a67b62d95a6, type: 3}
-    m_SceneName: Room 9
+    m_SceneAsset: {fileID: 102900000, guid: 55ce90a79a7face4dbe18cb34561af46, type: 3}
+    m_SceneName: OnboardingLevel_Modular
   _floorB2:
-  - m_SceneAsset: {fileID: 102900000, guid: a004a2b030e439548a43c6d34071d24f, type: 3}
-    m_SceneName: Room 1
-  - m_SceneAsset: {fileID: 102900000, guid: 702018f87f0f53a4d8e8bb9836c863bf, type: 3}
-    m_SceneName: Room 2
-  _floorB3:
-  - m_SceneAsset: {fileID: 102900000, guid: a004a2b030e439548a43c6d34071d24f, type: 3}
-    m_SceneName: Room 1
---- !u!114 &1532180638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532180634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SerializedVersion: 0
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_GenerateLinks: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.083333336
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: f6df6c45257f713419bd2ce9eb0979c6, type: 2}
-  m_BuildHeightMesh: 0
+    m_SceneAsset: {fileID: 102900000, guid: 80905ef86a0eb6141be1bf7d1cc491d6, type: 3}
+    m_SceneName: ElevatorHallway
+  _gameOverScreen:
+    m_SceneAsset: {fileID: 102900000, guid: e1e1ebb817e03b74699eae6a3c641286, type: 3}
+    m_SceneName: GameOver
 --- !u!1 &1643553494
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,3 +694,4 @@ SceneRoots:
   - {fileID: 1775043679}
   - {fileID: 488187548}
   - {fileID: 62979649}
+  - {fileID: 438173600}

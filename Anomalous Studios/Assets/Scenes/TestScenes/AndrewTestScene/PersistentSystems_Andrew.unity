@@ -453,12 +453,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba919882c3382ea4b890acac9513372d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footsteps:
-  - {fileID: 11400000, guid: db8aae21077c11f44b49ed85bb3413e7, type: 2}
-  - {fileID: 11400000, guid: 8b916a903460d1146beb8dbff5006ec0, type: 2}
-  - {fileID: 11400000, guid: df6c6f80c9c82b84d881236823b13f5f, type: 2}
-  - {fileID: 11400000, guid: b3ff4e82a063ca045a7468ae3470eda5, type: 2}
-  - {fileID: 11400000, guid: f3002c55b1607b14887a1111ba6dca60, type: 2}
+  _footstep: {fileID: 0}
+  _ruleKeeperScream: {fileID: 0}
+  _ruleKeeperAmbience: {fileID: 0}
+  _doorOpen: {fileID: 0}
+  _doorClose: {fileID: 0}
+  _elevatorMusic: {fileID: 0}
+  _uiClick: {fileID: 0}
+  _uiHover: {fileID: 0}
+  _uiPageFlip: {fileID: 0}
 --- !u!4 &427165719
 Transform:
   m_ObjectHideFlags: 0
@@ -1270,7 +1273,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1532180636}
   - component: {fileID: 1532180637}
-  - component: {fileID: 1532180638}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -1306,48 +1308,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _elevator:
-    m_SceneAsset: {fileID: 102900000, guid: 16fd8d0ada12c55499502efea894ce1f, type: 3}
+    m_SceneAsset: {fileID: 102900000, guid: ba35731bd0418d64c9312c5d2d6298ea, type: 3}
     m_SceneName: Elevator
   _mainMenu:
-  - m_SceneAsset: {fileID: 102900000, guid: 9bc6397376a630b4698e8198fc6d2dfe, type: 3}
+    m_SceneAsset: {fileID: 102900000, guid: f8aab9bc3dae0c7428e577df63554b64, type: 3}
     m_SceneName: MainMenu_Andrew
   _floorB1:
-  - m_SceneAsset: {fileID: 102900000, guid: 739ec5119c9e9754d9303c3f3da6da9e, type: 3}
+    m_SceneAsset: {fileID: 102900000, guid: 37e0d10b5c9bfaf4aab00e3add29e27d, type: 3}
+    m_SceneName: SampleOnboardingLevel
+  _floorB2:
+    m_SceneAsset: {fileID: 102900000, guid: 7dd235b6d34c4f14cbc26cd5ff80ac75, type: 3}
     m_SceneName: ElevatorHallway_Andrew
-  _floorB2: []
-  _floorB3: []
---- !u!114 &1532180638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1532180634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SerializedVersion: 0
-  m_AgentTypeID: 0
-  m_CollectObjects: 0
-  m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 2, z: 0}
-  m_LayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_UseGeometry: 0
-  m_DefaultArea: 0
-  m_GenerateLinks: 0
-  m_IgnoreNavMeshAgent: 1
-  m_IgnoreNavMeshObstacle: 1
-  m_OverrideTileSize: 0
-  m_TileSize: 256
-  m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.083333336
-  m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: f6df6c45257f713419bd2ce9eb0979c6, type: 2}
-  m_BuildHeightMesh: 0
 --- !u!1 &1643553494
 GameObject:
   m_ObjectHideFlags: 0

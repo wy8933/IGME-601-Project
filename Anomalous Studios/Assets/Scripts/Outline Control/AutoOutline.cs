@@ -9,17 +9,32 @@ public class AutoOutline: MonoBehaviour
 
     [Header("Outline Appearance")]
     public Color outlineColor = Color.yellow;
+    public Color highlightColor = Color.green;
+
     public float thickness = 0.03f;
     public float glowIntensity = 4f;
 
-    private Transform player;
+    //private Transform player;
     private MeshFilter[] meshFilters;
     private Material outlineMat;
+
     private bool shouldRender = false;
+    private bool isHighlighted = false;
+
+    /// <summary>
+    /// Applies a proximity highlight to the item when true
+    /// </summary>
+    public bool ShouldRender { get => shouldRender; set => shouldRender = value; }
+
+    /// <summary>
+    /// Applies a looking-at highlight to the item when true
+    /// </summary>
+    public bool IsHighlighted { get => isHighlighted; set => isHighlighted = value; }
+
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        //player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         Shader s = Shader.Find("Custom/OutlineExtrudeGlow");
         if (s == null)
@@ -32,20 +47,26 @@ public class AutoOutline: MonoBehaviour
 
         meshFilters = GetComponentsInChildren<MeshFilter>();
 
+        // Moved the auto outline variables into start, no need to reset them every frame
+        outlineMat.SetColor("_OutlineColor", outlineColor);
+        outlineMat.SetFloat("_Thickness", thickness);
+        outlineMat.SetFloat("_GlowIntensity", glowIntensity);
+
         RenderPipelineManager.beginCameraRendering += OnBeginCameraRendering;
     }
 
     void Update()
     {
-        if (!player)
-        {
-            Debug.LogWarning("Player not found. Add tag Player.");
-            return;
-        }
+        //if (!player)
+        //{
+        //    Debug.LogWarning("Player not found. Add tag Player.");
+        //    return;
+        //}
 
-        float dist = Vector3.Distance(player.position, transform.position);
-        shouldRender = dist <= triggerDistance;
+        //float dist = Vector3.Distance(player.position, transform.position);
+        //shouldRender = dist <= triggerDistance;
 
+        // Keep updating the variables for testing purposes, able ot change while playing the game
         outlineMat.SetColor("_OutlineColor", outlineColor);
         outlineMat.SetFloat("_Thickness", thickness);
         outlineMat.SetFloat("_GlowIntensity", glowIntensity);
@@ -55,6 +76,9 @@ public class AutoOutline: MonoBehaviour
     {
         if (!shouldRender) return;
         if (!outlineMat) return;
+
+        outlineMat.SetColor("_OutlineColor", isHighlighted ? highlightColor : outlineColor);
+
 
         foreach (var mf in meshFilters)
         {

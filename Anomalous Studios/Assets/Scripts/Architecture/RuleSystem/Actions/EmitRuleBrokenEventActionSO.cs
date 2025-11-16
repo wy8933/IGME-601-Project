@@ -9,9 +9,10 @@ namespace RuleViolationSystem
         [SerializeField]private bool _isBroken;
         public override void Execute(IRuleQuery query, RuleAssetSO rule) 
         {
-            Debug.Log($"Rule broken is set to {_isBroken}");
             EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = _isBroken }) ;
-            EventBus<OpenPopup>.Raise(new OpenPopup { RuleName = rule.name });
+
+            //Debug.Log((int.Parse(VariableConditionManager.Instance.Get("rule_broken_count:int")) + 1).ToString()); // keep this comment, it fix the problem somehow
+            VariableConditionManager.Instance.Set("rule_broken_count:int", (int.Parse(VariableConditionManager.Instance.Get("rule_broken_count:int")) + 1).ToString());
         }
     }
 }

@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 495775395}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.11, z: 0}
+  m_LocalPosition: {x: 0, y: 2.221, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -160,15 +160,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 716110821771259866, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 716110821771259866, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 716110821771259866, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.2
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 716110821771259866, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_LocalRotation.w
@@ -210,6 +210,10 @@ PrefabInstance:
       propertyPath: m_InnerSpotAngle
       value: 14.555126
       objectReference: {fileID: 0}
+    - target: {fileID: 3701988338185898409, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: _level
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6321541816895414264, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -221,6 +225,58 @@ PrefabInstance:
     - target: {fileID: 6321541816895414264, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.04437
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: _papersB1.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: _papersB2.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB1.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: ea14e4e8148740f43b2c18ffe9ffe0df, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB1.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 321aab421cfff8e4a9b16914680a102a, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB1.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e2871a032a7620f418d3c95d77750607, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB1.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6e426be36e5596e488d240775ffca681, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB1.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4d7bb449defcc0b47ae7f7ff49838a58, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB1.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 321aab421cfff8e4a9b16914680a102a, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB2.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: f68900ff56351e148bb0ff71db5c279f, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB2.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: f284f0a844fac98438d41cf2597384a6, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB2.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: c4e056598ee3aa24f97737df265cfd34, type: 2}
+    - target: {fileID: 7131098210843021424, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: '_papersB2.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d9b48335dbe6d774fb943aec0380d9fb, type: 2}
+    - target: {fileID: 7495424877553832352, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+      propertyPath: _level
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7834714561415572912, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
       propertyPath: m_IsActive
@@ -264,7 +320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 144653115301452222, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 2.221
       objectReference: {fileID: 0}
     - target: {fileID: 144653115301452222, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_LocalPosition.z
