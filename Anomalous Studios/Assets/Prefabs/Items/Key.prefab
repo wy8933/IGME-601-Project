@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 498282879550055359}
   - component: {fileID: 5985687368893123888}
   - component: {fileID: 1970723029315211880}
-  - component: {fileID: 6868175425084985164}
+  - component: {fileID: 1164480865143074417}
   m_Layer: 6
   m_Name: Key
   m_TagString: Untagged
@@ -148,9 +148,10 @@ MonoBehaviour:
   durabilityLeft: 0
   lastUseTime: 0
   isUseable: 1
+  _keyID: 
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 11400000, guid: 7013cee988f67e64a84c4e30cb8fc5be, type: 2}
---- !u!114 &6868175425084985164
+--- !u!114 &1164480865143074417
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,13 +160,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3415862674739262255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
+  triggerDistance: 5
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  thickness: 0.03
+  glowIntensity: 4
 --- !u!1001 &4034335312536398206
 PrefabInstance:
   m_ObjectHideFlags: 0

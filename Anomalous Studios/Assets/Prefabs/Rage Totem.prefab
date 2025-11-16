@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2614663213531274484}
   - component: {fileID: 8198363422453937581}
   - component: {fileID: 7204292314145775239}
-  - component: {fileID: 5780575149503196303}
   - component: {fileID: 3869826610951346209}
   - component: {fileID: 8318985922207717893}
+  - component: {fileID: 233296143966342561}
   m_Layer: 0
   m_Name: Rage Totem
   m_TagString: Untagged
@@ -125,24 +125,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _holdTime: 0
+  _value: 0
   _failedSFX: {fileID: 11400000, guid: 303b9e98fb19e944387307913a0c9586, type: 2}
   _successSFX: {fileID: 11400000, guid: b4a7264861aa8f04cb368da4ff3270b5, type: 2}
---- !u!114 &5780575149503196303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2401500661924899724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
 --- !u!114 &3869826610951346209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,3 +164,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &233296143966342561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2401500661924899724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerDistance: 5
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  thickness: 0.03
+  glowIntensity: 4
