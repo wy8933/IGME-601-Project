@@ -227,6 +227,17 @@ public class Handbook_UI : MonoBehaviour
         
     }
     /// <summary>
+    /// Clears all tasks from handbook when the next level is loaded
+    /// </summary>
+    public void ResetHandbook()
+    {
+        foreach (var task in taskList)
+        {
+            Destroy(task.gameObject);
+        }
+        taskList.Clear();
+    }
+    /// <summary>
     /// Hides the journal and resumes play
     /// </summary>
     public void Resume()

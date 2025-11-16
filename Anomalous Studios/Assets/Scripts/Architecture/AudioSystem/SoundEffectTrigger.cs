@@ -117,7 +117,7 @@ public class SoundEffectTrigger : MonoBehaviour
     /// </summary>
     public void PlayUIClick()
     {
-        _audioManager.Play(_uiClick);
+        AudioManager.Instance.Play(_uiClick);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ public class SoundEffectTrigger : MonoBehaviour
     /// </summary>
     public void PlayUIHover()
     {
-        _audioManager.Play(_uiHover);
+       AudioManager.Instance.Play(_uiHover);
     }
 
     /// <summary>
