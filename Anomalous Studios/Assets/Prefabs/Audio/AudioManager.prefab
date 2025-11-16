@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _audioSourcePrefab: {fileID: 4101516262127956087, guid: 20e543762301f184aac43dc5b5109776, type: 3}
   _initialPoolSize: 10
-  musicAudioMixerGroup: {fileID: 24300002, guid: 6e85729dc25c7f349902df653d3a77b8, type: 2}
-  sfxAudioMixerGroup: {fileID: 24300002, guid: a296151c2b97e3b41a07c3d9096c5946, type: 2}
-  uiAudioMixerGroup: {fileID: 24300002, guid: 69af0e0e9b5be0d45bb78f229e0b2226, type: 2}
+  _maxPoolSize: 64
+  masterMixer: {fileID: 24100000, guid: e5175386ce3cf73428a32675727a55f2, type: 2}
+  musicAudioMixerGroup: {fileID: -6135619245484013243, guid: e5175386ce3cf73428a32675727a55f2, type: 2}
+  sfxAudioMixerGroup: {fileID: -1755734402345594608, guid: e5175386ce3cf73428a32675727a55f2, type: 2}
+  uiAudioMixerGroup: {fileID: -1755734402345594608, guid: e5175386ce3cf73428a32675727a55f2, type: 2}
