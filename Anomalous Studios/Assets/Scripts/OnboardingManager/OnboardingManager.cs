@@ -25,7 +25,8 @@ public class OnboardingManager : MonoBehaviour
     public void AllTaskCompleted()
     {
         // TODO: enable next button
-        SceneManager.LoadScene("GameOver");
+        //SceneManager.LoadScene("GameOver");
+        EventBus<TasksComplete>.Raise(new TasksComplete { });
     }
 
     private IEnumerator UpdateGame()

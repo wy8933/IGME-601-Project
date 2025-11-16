@@ -41,7 +41,7 @@ public class SceneLoaderLEGACY : MonoBehaviour
     public void Start()
     {
         // TODO: should these var be init here? Is there a better place to init all the var?
-        VariableConditionManager.Instance.Set("TaskComplete", "true");
+        VariableConditionManager.Instance.Set("TasksComplete", "true");
         VariableConditionManager.Instance.Set("IsLevelLoading", "true");
 
         _animator = GetComponent<Animator>();
