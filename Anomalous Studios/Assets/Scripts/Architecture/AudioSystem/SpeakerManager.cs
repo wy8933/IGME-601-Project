@@ -47,7 +47,7 @@ public class SpeakerManager : MonoBehaviour
             _speakers.Add(obj.GetComponent<Speaker>());
         }
         
-        Debug.Log("<color=red>Speaker Count " + _speakers.Count + "</color>");
+        //Debug.Log("<color=red>Speaker Count " + _speakers.Count + "</color>");
         
         StartMusic();
     }
