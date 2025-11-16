@@ -64,6 +64,17 @@ public class SpeakerManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Stops static noise when rule is no longer broken
+    /// </summary>
+    public void StopStatic()
+    {
+        foreach (Speaker speaker in _speakers)
+        {
+            speaker.StopStatic();
+        }
+    }
+
+    /// <summary>
     /// Plays music when level is loaded 
     /// </summary>
     public void StartMusic()
@@ -71,6 +82,17 @@ public class SpeakerManager : MonoBehaviour
         foreach (Speaker speaker in _speakers)
         {
             speaker.PlayMusic();
+        }
+    }
+
+    /// <summary>
+    /// Stops music when rule is no longer broken
+    /// </summary>
+    public void StopMusic()
+    {
+        foreach (Speaker speaker in _speakers)
+        {
+            speaker.StopMusic();
         }
     }
 }
