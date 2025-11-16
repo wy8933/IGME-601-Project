@@ -6,7 +6,7 @@ Shader "Custom/URP_Lit_WithOutline_Fixed"
         _BaseColor("Base Color", Color) = (1,1,1,1)
 
         _OutlineColor("Outline Color", Color) = (0,0,0,1)
-        _OutlineThickness("Outline Thickness", Range(0, 0.03)) = 0.005
+        _OutlineThickness("Outline Thickness", Range(0, 0.1)) = 0.005
     }
 
     SubShader
@@ -89,6 +89,7 @@ Shader "Custom/URP_Lit_WithOutline_Fixed"
             Name "Outline"
             Tags{ "LightMode"="SRPDefaultUnlit" }
             Cull Front
+            ZTest LEqual
 
             HLSLPROGRAM
             #pragma vertex vert
