@@ -112,11 +112,15 @@ public class UserInteraction : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out AutoOutline outline)) { outline.ShouldRender = true; }
+        if (other.gameObject.TryGetComponent(out AutoOutline outline) && 
+            other.gameObject.TryGetComponent(out IInteractable interaction) &&
+            interaction.CanInteract) { outline.ShouldRender = true; }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out AutoOutline outline)) { outline.ShouldRender = false; }
+        if (other.gameObject.TryGetComponent(out AutoOutline outline) &&
+            other.gameObject.TryGetComponent(out IInteractable interaction) &&
+            interaction.CanInteract) { outline.ShouldRender = false; }
     }
 }

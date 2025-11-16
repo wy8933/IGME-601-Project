@@ -5,7 +5,7 @@ using UnityEngine;
 enum TestValues
 {
     RuleBreak,
-    TaskComplete,
+    TasksComplete,
     MakeNoise,
     LoadLevel
 }
@@ -47,8 +47,8 @@ public class RageTotem : MonoBehaviour, IInteractable
             case TestValues.RuleBreak:
                 EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = true, target = transform.position });
                 break;
-            case TestValues.TaskComplete:
-                EventBus<TaskComplete>.Raise(new TaskComplete { });
+            case TestValues.TasksComplete:
+                EventBus<TasksComplete>.Raise(new TasksComplete { });
                 break;
             case TestValues.LoadLevel:
                 EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });

@@ -4,9 +4,8 @@ using UnityEngine;
 
 /// <summary>
 /// Invoked when the player is allowed to move to the next floor
-/// TODO: Decide whether to move to a rule manager, or keep in ElevatorController
 /// </summary>
-public struct TaskComplete : IEvent { }
+public struct TasksComplete : IEvent { }
 
 public class ElevatorController : MonoBehaviour
 {
@@ -32,7 +31,7 @@ public class ElevatorController : MonoBehaviour
     private Dictionary<Level, ElevatorButton> _buttons;
     private Dictionary<Level, PaperDataSO[]> _paperData;
 
-    private EventBinding<TaskComplete> _taskComplete;
+    private EventBinding<TasksComplete> _tasksComplete;
     private EventBinding<LevelLoaded> _levelLoaded;
 
     void Start()
@@ -142,15 +141,15 @@ public class ElevatorController : MonoBehaviour
 
     public void OnEnable()
     {
-        _taskComplete = new EventBinding<TaskComplete>(EnableElevatorButtons);
-        EventBus<TaskComplete>.Register(_taskComplete);
+        _tasksComplete = new EventBinding<TasksComplete>(EnableElevatorButtons);
+        EventBus<TasksComplete>.Register(_tasksComplete);
         _levelLoaded = new EventBinding<LevelLoaded>(SpawnNotes);
         EventBus<LevelLoaded>.Register(_levelLoaded);
     }
 
     public void OnDisable()
     {
-        EventBus<TaskComplete>.DeRegister(_taskComplete);
+        EventBus<TasksComplete>.DeRegister(_tasksComplete);
         EventBus<LevelLoaded>.DeRegister(_levelLoaded);
     }
 }
