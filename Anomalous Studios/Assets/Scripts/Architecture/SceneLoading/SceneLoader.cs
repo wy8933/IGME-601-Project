@@ -34,6 +34,8 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneField _mainMenu;
     [SerializeField] private SceneField _floorB1;
     [SerializeField] private SceneField _floorB2;
+    [SerializeField] private SceneField _gameOverScreen;
+
 
     private Dictionary<Level, SceneField> _floorLibrary;
 
@@ -50,7 +52,8 @@ public class SceneLoader : MonoBehaviour
         {
             { Level.mainMenu, _mainMenu },
             { Level.B1, _floorB1 },
-            { Level.B2, _floorB2 }
+            { Level.B2, _floorB2 },
+            { Level.endGame, _gameOverScreen }
         };
 
         _blackScreenTEMP = GameObject.Find("MainUI").transform.Find("LoadingScreen").gameObject;
@@ -91,8 +94,9 @@ public class SceneLoader : MonoBehaviour
             _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_floorLibrary[(Level)CurrentLevel]));
         }
 
-        // If we are not in the main menu going to the main menu, unload the elevator
-        if (e.newLevel == Level.mainMenu && CurrentLevel != Level.mainMenu && CurrentLevel != null)
+        // If we are not in the main menu going to the main menu or the endgame, unload the elevator
+        if ((e.newLevel == Level.mainMenu && CurrentLevel != Level.mainMenu && CurrentLevel != null) || 
+            e.newLevel == Level.endGame) 
         {
             _scenesToLoad.Add(SceneManager.UnloadSceneAsync(_elevator));
         }

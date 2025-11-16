@@ -51,12 +51,12 @@ public class ElevatorButton : MonoBehaviour, IInteractable
 
     public void Highlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = true;
+        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
     }
 
     public void RemoveHighlight()
     {
-        GetComponent<HighlightTarget>().IsHighlighted = false;
+        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = false; }
     }
 
     public void Interact()
@@ -89,8 +89,6 @@ public class ElevatorButton : MonoBehaviour, IInteractable
     /// </summary>
     public void Enable()
     {
-        // A temporary "glow" effect to prompt the player to press this button, should probably pulse yellow eventually
-        _renderer.material.color = Color.yellow;
         _canInteract = true;
     }
 
@@ -99,7 +97,6 @@ public class ElevatorButton : MonoBehaviour, IInteractable
     /// </summary>
     public void Disable()
     {
-        _renderer.material.color = Color.black;
         _canInteract = false;
     }
 }

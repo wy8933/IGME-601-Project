@@ -1,28 +1,76 @@
 using AudioSystem;
+using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class SpeakerManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] Speakers;
+    public static SpeakerManager Instance { get; private set; }
+    [SerializeField] List<Speaker> _speakers = new List<Speaker>();
+    
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        // Begins music on all speakers
-        foreach (var speaker in Speakers)
+        if (Instance != null && Instance != this)
         {
-            SoundEffectTrigger.Instance.PlayElevatorMusic(speaker.transform);
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    void OnEnable()
+    {
+        // Subscribe to the sceneLoaded event
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // Unsubscribe from the sceneLoaded event
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    /// <summary>
+    /// This method will be called whenever a scene loads
+    /// </summary>
+    /// <param name="scene"></param>
+    /// <param name="mode"></param>
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _speakers.Clear();
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Speaker"))
+        {
+            _speakers.Add(obj.GetComponent<Speaker>());
+        }
+        
+        Debug.Log("<color=red>Speaker Count " + _speakers.Count + "</color>");
+        
+        StartMusic();
+    }
+
+    /// <summary>
+    /// Plays static noise when rule is broken
+    /// </summary>
+    public void StartStatic()
+    {
+        foreach (Speaker speaker in _speakers)
+        {
+            speaker.PlayStatic();
         }
     }
 
     /// <summary>
-    /// Cuts music in level changing it to static noise
+    /// Plays music when level is loaded 
     /// </summary>
-    public void StartStatic()
+    public void StartMusic()
     {
-        foreach (var speaker in Speakers)
+        foreach (Speaker speaker in _speakers)
         {
-            SoundEffectTrigger.Instance.PlayElevatorMusic(speaker.transform);
+            speaker.PlayMusic();
         }
     }
 }

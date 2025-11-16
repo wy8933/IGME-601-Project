@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7780824438492011964}
   - component: {fileID: 1087089528489112061}
   - component: {fileID: 1386986267068328975}
-  - component: {fileID: 5945434875283342601}
+  - component: {fileID: -3219516616219694126}
   m_Layer: 6
   m_Name: Button
   m_TagString: Untagged
@@ -128,7 +128,7 @@ MonoBehaviour:
   _holdTime: 0
   _failedSFX: {fileID: 11400000, guid: 303b9e98fb19e944387307913a0c9586, type: 2}
   _successSFX: {fileID: 11400000, guid: 9e2a84f7cfd16644b848b9ed091d38ea, type: 2}
---- !u!114 &5945434875283342601
+--- !u!114 &-3219516616219694126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,13 +137,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4472062746556594201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
+  triggerDistance: 5
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  thickness: 0.03
+  glowIntensity: 4
 --- !u!1 &4895199364867321146
 GameObject:
   m_ObjectHideFlags: 0

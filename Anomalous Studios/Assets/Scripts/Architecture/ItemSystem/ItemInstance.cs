@@ -80,15 +80,13 @@ namespace ItemSystem
 
         public void Highlight()
         {
-            if (_canInteract)
-            {
-                GetComponent<HighlightTarget>().IsHighlighted = true;
-            }
-            
+            if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
+
+
         }
         public void RemoveHighlight()
         {
-            GetComponent<HighlightTarget>().IsHighlighted = false;
+            if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = false; }
         }
 
         public abstract void Interact();
