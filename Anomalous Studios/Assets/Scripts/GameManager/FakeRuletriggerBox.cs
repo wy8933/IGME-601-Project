@@ -9,7 +9,6 @@ public class FakeRuletriggerBox : MonoBehaviour
         {
             // Play the sound
             SoundEffectTrigger.Instance.PlayScream(transform);
-            SpeakerManager.Instance.StartStatic();
             Destroy(gameObject);
         }
     }
