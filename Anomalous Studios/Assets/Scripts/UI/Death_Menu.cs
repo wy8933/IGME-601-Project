@@ -18,7 +18,7 @@ public class DeathMenu : MonoBehaviour
     /// </summary>
     public void Restart()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
     /// <summary>
     /// Exit to desktop or back to editor if in unity

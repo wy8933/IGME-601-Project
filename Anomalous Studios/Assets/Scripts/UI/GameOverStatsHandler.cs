@@ -11,6 +11,9 @@ public class GameOverStatsHandler : MonoBehaviour
     {
         totalRuleBroken.text = $"Total Number Of Policies Broken: {VariableConditionManager.Instance.Get("rule_broken_count:int")}" ;
         totalTaskComplete.text = $"Total Number Of Tasks Completed: {VariableConditionManager.Instance.Get("task_completed:int")}";
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
 }

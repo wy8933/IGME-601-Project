@@ -16,8 +16,8 @@ public class FirstFloorTempManager : MonoBehaviour
     public float powerOutCheckTime;
     public bool isPowerOut;
 
-    private bool _isTrashCompleted;
-    private bool _isCleanCompleted;
+    private bool _isTrashCompleted = false;
+    private bool _isCleanCompleted = false;
     public void Start()
     {
         VariableConditionManager.Instance.Set("Trash","0");
@@ -39,13 +39,13 @@ public class FirstFloorTempManager : MonoBehaviour
 
     private IEnumerator UpdateGame() 
     {
-        if (!_isTrashCompleted) 
+        if (!_isTrashCompleted && VariableConditionManager.Instance.Get("Trash") == "3") 
         {
             _isTrashCompleted = true;
             VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
         }
 
-        if (!_isCleanCompleted)
+        if (!_isCleanCompleted && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
         {
             _isCleanCompleted = true;
             VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
