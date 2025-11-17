@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("RuleKeeper"))
+        if (other.name == "LineOfSight" && other.CompareTag("RuleKeeper"))
         {
             other.transform.parent.GetComponent<EnemyBehavior>().CheckLineOfSight(transform);
         }

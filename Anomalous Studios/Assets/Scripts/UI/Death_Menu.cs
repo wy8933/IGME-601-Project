@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +10,7 @@ public class DeathMenu : MonoBehaviour
     /// </summary>
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = Level.mainMenu });
     }
 
     /// <summary>
@@ -18,7 +19,7 @@ public class DeathMenu : MonoBehaviour
     /// </summary>
     public void Restart()
     {
-        SceneManager.LoadScene(0);
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = Level.B1 });
     }
     /// <summary>
     /// Exit to desktop or back to editor if in unity
