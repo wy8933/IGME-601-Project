@@ -8,6 +8,8 @@ public class Key : ItemInstance
     [Header("Key ID")]
     [SerializeField] string _keyID;
 
+    private Quaternion equipRotOffset = Quaternion.Euler(-30, 80, 0);
+
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
     [SerializeField] private SoundDataSO _successSFX;
@@ -67,6 +69,7 @@ public class Key : ItemInstance
     public override void AttachToParent(GameObject parent)
     {
         base.AttachToParent(parent);
+        this.transform.localRotation = equipRotOffset;
         DisableRigidBodyCollisions();
     }
 

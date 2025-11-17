@@ -16,6 +16,8 @@ public class Flashlight : ItemInstance
     
     private CapsuleCollider _capsuleCollider;
 
+    private Vector3 equipPosOffset = new Vector3(0, 0.2f, 0);
+
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
     [SerializeField] private SoundDataSO _successSFX;
@@ -86,6 +88,7 @@ public class Flashlight : ItemInstance
     public override void AttachToParent(GameObject parent)
     {
         base.AttachToParent(parent);
+        this.transform.localPosition = equipPosOffset;
         DisableRigidBodyCollisions();
     }
 
