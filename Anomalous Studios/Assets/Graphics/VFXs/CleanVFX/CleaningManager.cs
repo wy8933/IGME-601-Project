@@ -38,6 +38,8 @@ public class CleaningManager : MonoBehaviour
             TryClean();
         }
 
+      
+
         // Periodically check progress
         if (Time.time - lastCheckTime > progressCheckInterval)
         {
@@ -82,7 +84,7 @@ public class CleaningManager : MonoBehaviour
         {
             float progress = cleaner.GetCleanProgress();
 
-
+            Debug.Log(progress);
             if (progress >= cleanThreshold)
             {
                 OnSurfaceCleaned(cleaner);
