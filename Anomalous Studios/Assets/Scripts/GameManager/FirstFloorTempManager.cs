@@ -15,6 +15,9 @@ public class FirstFloorTempManager : MonoBehaviour
     public float powerResetTime;
     public float powerOutCheckTime;
     public bool isPowerOut;
+
+    private bool _isTrashCompleted;
+    private bool _isCleanCompleted;
     public void Start()
     {
         VariableConditionManager.Instance.Set("Trash","0");
@@ -36,6 +39,18 @@ public class FirstFloorTempManager : MonoBehaviour
 
     private IEnumerator UpdateGame() 
     {
+        if (!_isTrashCompleted) 
+        {
+            _isTrashCompleted = true;
+            VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
+        }
+
+        if (!_isCleanCompleted)
+        {
+            _isCleanCompleted = true;
+            VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
+        }
+
         // TODO: add the check for the cleaning
         if (VariableConditionManager.Instance.Get("Trash") == "3" && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
         {

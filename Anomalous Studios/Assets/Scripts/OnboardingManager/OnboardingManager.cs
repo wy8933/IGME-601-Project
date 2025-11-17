@@ -26,6 +26,7 @@ public class OnboardingManager : MonoBehaviour
     {
         // TODO: enable next button
         //SceneManager.LoadScene("GameOver");
+        VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
         EventBus<TasksComplete>.Raise(new TasksComplete { });
     }
 
