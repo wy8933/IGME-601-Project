@@ -12,7 +12,6 @@ public class Settings : MonoBehaviour
     [SerializeField] Slider[] sliders;
     [SerializeField] Toggle[] toggles;
     private PlayerActions playerController;
-    private AudioManager audioManager;
 
     #region Startup Methods
     /// <summary>
@@ -20,7 +19,6 @@ public class Settings : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        audioManager = GetComponent<AudioManager>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerActions>();
         GetPrefs();
         SetSliders();
@@ -103,14 +101,14 @@ public class Settings : MonoBehaviour
     }
 
     /// <summary>
-    /// Adjust the slider for sound effects
+    /// Adjust the slider for sound effects volume
     /// </summary>
     /// <param name="value"></param>
     public void AdjustSFXSlider(float value)
     {
-        if (audioManager != null)
+        if (AudioManager.Instance != null)
         {
-            audioManager.sfxAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Log10(value) * 20);
+            AudioManager.Instance.masterMixer.SetFloat("SFXVolume", Mathf.Log10(value) * 20);
             if (value == 0)
             {
                 toggles[0].isOn = true;
@@ -120,7 +118,27 @@ public class Settings : MonoBehaviour
                 toggles[0].isOn = false;
             }
         }
-        
+    }
+
+    /// <summary>
+    /// Adjust the slider for music volume
+    /// </summary>
+    /// <param name="value"></param>
+    public void AdjustMusicSlider(float value)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.masterMixer.SetFloat("MusicVolume", Mathf.Log10(value) * 20);
+            if (value == 0)
+            {
+                toggles[0].isOn = true;
+            }
+            else
+            {
+                toggles[0].isOn = false;
+            }
+        }
+
     }
     #endregion
 

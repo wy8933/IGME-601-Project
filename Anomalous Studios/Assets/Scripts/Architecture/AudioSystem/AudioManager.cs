@@ -26,9 +26,11 @@ namespace AudioSystem
         [SerializeField] private int _maxPoolSize = 64;
 
         [Header("Audio Mixers")]
+        public AudioMixer masterMixer;
         public AudioMixerGroup musicAudioMixerGroup;
         public AudioMixerGroup sfxAudioMixerGroup;
         public AudioMixerGroup uiAudioMixerGroup;
+
 
         /// <summary>
         /// Pool of available AudioSource objects.

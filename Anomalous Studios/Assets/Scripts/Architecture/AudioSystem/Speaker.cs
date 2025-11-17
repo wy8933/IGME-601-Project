@@ -29,7 +29,7 @@ public class Speaker : MonoBehaviour
     /// </summary>
     public void PlayMusic()
     {
-        Debug.Log("<color=red>Speaker Playing " + this + "</color>");
+        //Debug.Log("<color=red>Speaker Playing " + this + "</color>");
         AudioManager.Instance.Play(elevatorMusicSO, gameObject, transform.position);
     }
 
