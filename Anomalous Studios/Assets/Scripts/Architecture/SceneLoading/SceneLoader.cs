@@ -44,7 +44,6 @@ public class SceneLoader : MonoBehaviour
     private EventBinding<LoadLevel> _levelLoading;
 
     private GameObject _blackScreenTEMP;
-    private NavMeshSurface _navMeshSurface;
 
     public void Start()
     {
@@ -57,8 +56,6 @@ public class SceneLoader : MonoBehaviour
         };
 
         _blackScreenTEMP = GameObject.Find("MainUI").transform.Find("LoadingScreen").gameObject;
-        _navMeshSurface = GetComponent<NavMeshSurface>();
-
 
         // TODO: Need to move between cameras better, from the main menu to the player controller. Only one audio listener
         LoadLevel(new LoadLevel { newLevel = Level.mainMenu });

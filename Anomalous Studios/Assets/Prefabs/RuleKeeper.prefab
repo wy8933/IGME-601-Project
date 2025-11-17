@@ -456,7 +456,6 @@ GameObject:
   - component: {fileID: 5957915162050682171}
   - component: {fileID: 3282701377439288970}
   - component: {fileID: 8695711156104654587}
-  - component: {fileID: 8794792106418413275}
   - component: {fileID: 7857318635967428489}
   m_Layer: 6
   m_Name: RuleKeeper
@@ -653,22 +652,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8794792106418413275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9205146073855690417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
 --- !u!54 &7857318635967428489
 Rigidbody:
   m_ObjectHideFlags: 0
