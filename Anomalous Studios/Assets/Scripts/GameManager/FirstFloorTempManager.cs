@@ -51,7 +51,8 @@ public class FirstFloorTempManager : MonoBehaviour
             VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
         }
 
-        // TODO: add the check for the cleaning
+        Debug.Log("hi");
+
         if (VariableConditionManager.Instance.Get("Trash") == "3" && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
         {
             AllTaskCompleted();
