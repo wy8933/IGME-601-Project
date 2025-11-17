@@ -7,6 +7,9 @@ public class Mop : ItemInstance
     private CapsuleCollider _capsuleCollider;
     private CleaningManager _cleaningManager;
 
+    private Vector3 equipPosOffset = new Vector3(0, 0, -0.5f);
+    private Quaternion equipRotOffset = Quaternion.Euler(90, 270, 90);
+
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
     [SerializeField] private SoundDataSO _successSFX;
@@ -51,6 +54,8 @@ public class Mop : ItemInstance
     public override void AttachToParent(GameObject parent)
     {
         base.AttachToParent(parent);
+        this.transform.localPosition = equipPosOffset;
+        this.transform.localRotation = equipRotOffset;
         DisableRigidBodyCollisions();
     }
 
