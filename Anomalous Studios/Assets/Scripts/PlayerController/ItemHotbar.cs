@@ -1,4 +1,5 @@
 using ItemSystem;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -375,5 +376,19 @@ public class ItemHotbar : MonoBehaviour
         }
 
         return _selectedItemIndex;
+    }
+
+
+    /// <summary>
+    /// Resets the entire item hotbar. Call this when loading into new level
+    /// </summary>
+    public void ResetItemHotbar()
+    {
+        /*for (int i = 0; i < 4; i++)
+        {
+            _itemHotbar[i] = null;
+        }*/
+
+        Array.Clear(_itemHotbar, 0, 4);
     }
 }
