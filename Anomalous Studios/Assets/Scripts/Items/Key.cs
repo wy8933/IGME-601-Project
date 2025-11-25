@@ -18,6 +18,11 @@ public class Key : ItemInstance
     public override SoundDataSO CancelSFX => null;
     public override SoundDataSO SuccessSFX { get => _successSFX; }
 
+    public string GetKeyID()
+    {
+        return _keyID;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -61,6 +66,7 @@ public class Key : ItemInstance
                 if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
                     dc.CanInteract = true;
+                    Destroy(this.gameObject);
                 }
             }
         }

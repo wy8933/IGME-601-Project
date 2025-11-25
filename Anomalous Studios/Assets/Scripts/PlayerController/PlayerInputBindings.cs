@@ -47,10 +47,12 @@ public class PlayerInputBindings : MonoBehaviour
         _playerInputActions.Player.Crouch.performed += OnCrouchPerformed;
         _playerInputActions.Player.Crouch.canceled += OnCrouchCanceled;
 
+        /*
         _playerInputActions.Player.LeanLeft.performed += OnLeanLeftPerformed;
         _playerInputActions.Player.LeanLeft.canceled += OnLeanLeftCanceled;
         _playerInputActions.Player.LeanRight.performed += OnLeanRightPerformed;
         _playerInputActions.Player.LeanRight.canceled += OnLeanRightCanceled;
+        */
     }
 
     private void OnDisable()
@@ -77,6 +79,7 @@ public class PlayerInputBindings : MonoBehaviour
         _playerController.GetPlayerActions().SetIsSprinting(false);
     }
 
+    /*
     private void OnLeanLeftPerformed(InputAction.CallbackContext ctx)
     {
         _playerController.GetPlayerActions().SetIsLeanLeft(true);
@@ -98,6 +101,7 @@ public class PlayerInputBindings : MonoBehaviour
     {
         _playerController.GetPlayerActions().SetIsLeanRight(false);
     }
+    */
 
     private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
@@ -168,6 +172,5 @@ public class PlayerInputBindings : MonoBehaviour
             _playerController.GetItemHotbar().ScrollDown();
             _scrollAmount = 0;
         }
-        
     }
 }

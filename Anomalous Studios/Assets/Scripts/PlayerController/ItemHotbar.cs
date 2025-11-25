@@ -19,6 +19,11 @@ public class ItemHotbar : MonoBehaviour
     [SerializeField] private GameObject Item3Icon;
     [SerializeField] private GameObject Item4Icon;
 
+    [SerializeField] private GameObject Item1Text;
+    [SerializeField] private GameObject Item2Text;
+    [SerializeField] private GameObject Item3Text;
+    [SerializeField] private GameObject Item4Text;
+
     private float _fadeDuration = 1.0f;
     private Coroutine _fadeCoroutine;
 
@@ -142,18 +147,33 @@ public class ItemHotbar : MonoBehaviour
             case 1:
                 Item2Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item2Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
+                {
+                    Item2Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item3Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>()){
+                    Item3Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item4Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
+                {
+                    Item4Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item1Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
+                {
+                    Item1Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
         }
     }
@@ -171,15 +191,19 @@ public class ItemHotbar : MonoBehaviour
             {
                 case 1:
                     Item2Icon.GetComponent<RawImage>().color = resetColor;
+                    Item2Text.GetComponent<Text>().text = "";
                     break;
                 case 2:
                     Item3Icon.GetComponent<RawImage>().color = resetColor;
+                    Item3Text.GetComponent<Text>().text = "";
                     break;
                 case 3:
                     Item4Icon.GetComponent<RawImage>().color = resetColor;
+                    Item4Text.GetComponent<Text>().text = "";
                     break;
                 default:
                     Item1Icon.GetComponent<RawImage>().color = resetColor;
+                    Item1Text.GetComponent<Text>().text = "";
                     break;
             }
         }
@@ -197,18 +221,22 @@ public class ItemHotbar : MonoBehaviour
             case 1:
                 Item2Icon.GetComponent<RawImage>().texture = null;
                 Item2Icon.GetComponent<RawImage>().color = resetColor;
+                Item2Text.GetComponent<Text>().text = "";
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = null;
                 Item3Icon.GetComponent<RawImage>().color = resetColor;
+                Item3Text.GetComponent<Text>().text = "";
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = null;
                 Item4Icon.GetComponent<RawImage>().color = resetColor;
+                Item4Text.GetComponent<Text>().text = "";
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = null;
                 Item1Icon.GetComponent<RawImage>().color = resetColor;
+                Item1Text.GetComponent<Text>().text = "";
                 break;
         }
     }
