@@ -23,7 +23,7 @@ Material:
   m_Name: URP_OutlineNew
   m_Shader: {fileID: 4800000, guid: ede595d2d18ff7947a30094e65d10ad4, type: 3}
   m_Parent: {fileID: 2100000, guid: 0cdf36378d78aeb40a216e7b2d1f7a89, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 8
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -40,6 +40,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _OutlineThickness: 0.0331
-    m_Colors: []
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 1, b: 0.12549019, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
