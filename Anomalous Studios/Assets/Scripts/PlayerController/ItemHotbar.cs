@@ -1,6 +1,7 @@
 using ItemSystem;
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -149,14 +150,14 @@ public class ItemHotbar : MonoBehaviour
                 Item2Icon.GetComponent<RawImage>().color = Color.yellow;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
                 {
-                    Item2Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item2Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
                 }
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item3Icon.GetComponent<RawImage>().color = Color.yellow;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>()){
-                    Item3Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item3Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
                 }
                 break;
             case 3:
@@ -164,7 +165,7 @@ public class ItemHotbar : MonoBehaviour
                 Item4Icon.GetComponent<RawImage>().color = Color.yellow;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
                 {
-                    Item4Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item4Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
                 }
                 break;
             default:
@@ -172,7 +173,7 @@ public class ItemHotbar : MonoBehaviour
                 Item1Icon.GetComponent<RawImage>().color = Color.yellow;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
                 {
-                    Item1Text.GetComponent<Text>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item1Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
                 }
                 break;
         }
@@ -191,19 +192,19 @@ public class ItemHotbar : MonoBehaviour
             {
                 case 1:
                     Item2Icon.GetComponent<RawImage>().color = resetColor;
-                    Item2Text.GetComponent<Text>().text = "";
+                    Item2Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
                 case 2:
                     Item3Icon.GetComponent<RawImage>().color = resetColor;
-                    Item3Text.GetComponent<Text>().text = "";
+                    Item3Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
                 case 3:
                     Item4Icon.GetComponent<RawImage>().color = resetColor;
-                    Item4Text.GetComponent<Text>().text = "";
+                    Item4Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
                 default:
                     Item1Icon.GetComponent<RawImage>().color = resetColor;
-                    Item1Text.GetComponent<Text>().text = "";
+                    Item1Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
             }
         }
@@ -221,22 +222,22 @@ public class ItemHotbar : MonoBehaviour
             case 1:
                 Item2Icon.GetComponent<RawImage>().texture = null;
                 Item2Icon.GetComponent<RawImage>().color = resetColor;
-                Item2Text.GetComponent<Text>().text = "";
+                Item2Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = null;
                 Item3Icon.GetComponent<RawImage>().color = resetColor;
-                Item3Text.GetComponent<Text>().text = "";
+                Item3Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = null;
                 Item4Icon.GetComponent<RawImage>().color = resetColor;
-                Item4Text.GetComponent<Text>().text = "";
+                Item4Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = null;
                 Item1Icon.GetComponent<RawImage>().color = resetColor;
-                Item1Text.GetComponent<Text>().text = "";
+                Item1Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
         }
     }

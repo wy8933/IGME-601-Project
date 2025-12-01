@@ -5,8 +5,8 @@ using AudioSystem;
 public class Key : ItemInstance
 {
     private BoxCollider _boxCollider;
-    [Header("Key ID")]
-    [SerializeField] string _keyID;
+    //[Header("Key ID")]
+    //[SerializeField] string _keyID;
 
     private Quaternion equipRotOffset = Quaternion.Euler(-30, 80, 0);
 
@@ -20,7 +20,7 @@ public class Key : ItemInstance
 
     public string GetKeyID()
     {
-        return _keyID;
+        return this.item.itemID;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,7 +31,7 @@ public class Key : ItemInstance
         _rb = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
 
-        this.item.itemID = _keyID; 
+        //this.item.itemID = _keyID; 
     }
 
     public override void Interact()
