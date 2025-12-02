@@ -97,6 +97,8 @@ public class ElevatorButton : MonoBehaviour, IInteractable
     /// </summary>
     public void Disable()
     {
+        RemoveHighlight();
+
         _canInteract = false;
     }
 }

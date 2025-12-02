@@ -114,7 +114,13 @@ public class UserInteraction : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out AutoOutline outline) && 
             other.gameObject.TryGetComponent(out IInteractable interaction) &&
-            interaction.CanInteract) { outline.ShouldRender = true; }
+            interaction.CanInteract) 
+        {
+            Physics.Raycast(transform.position, transform.position - other.transform.position, 
+                out RaycastHit hit, _interactRange, _ignorePlayerMask);
+
+            outline.ShouldRender = hit.collider == other; 
+        }
     }
 
     public void OnTriggerExit(Collider other)

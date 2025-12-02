@@ -74,11 +74,10 @@ public class AutoOutline: MonoBehaviour
 
     private void OnBeginCameraRendering(ScriptableRenderContext ctx, Camera cam)
     {
-        if (!shouldRender) return;
         if (!outlineMat) return;
+        if (!shouldRender) return;
 
         outlineMat.SetColor("_OutlineColor", isHighlighted ? highlightColor : outlineColor);
-
 
         foreach (var mf in meshFilters)
         {
