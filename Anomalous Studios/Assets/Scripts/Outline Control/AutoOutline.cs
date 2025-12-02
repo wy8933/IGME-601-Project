@@ -22,12 +22,12 @@ public class AutoOutline: MonoBehaviour
     private bool isHighlighted = false;
 
     /// <summary>
-    /// Applies a proximity highlight to the item when true
+    /// Whether the object should be highlighted, based on proximity
     /// </summary>
     public bool ShouldRender { get => shouldRender; set => shouldRender = value; }
 
     /// <summary>
-    /// Applies a looking-at highlight to the item when true
+    /// Determines if the highlight to the item when true
     /// </summary>
     public bool IsHighlighted { get => isHighlighted; set => isHighlighted = value; }
 
