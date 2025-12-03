@@ -66,6 +66,7 @@ public class Key : ItemInstance
                 if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
                     dc.CanInteract = true;
+                    dc.ToggleDoor();
                     Destroy(this.gameObject);
                 }
             }

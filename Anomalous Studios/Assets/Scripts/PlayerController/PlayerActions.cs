@@ -348,12 +348,11 @@ public class PlayerActions : MonoBehaviour
                 if (dc.CanInteract)
                 {
                     dc.ToggleDoor();
+                    return;
                 }
             }
-            else
-            {
-                _playerController.GetItemHotbar().UseItem();
-            }
+
+            _playerController.GetItemHotbar().UseItem();
         }
     }
 

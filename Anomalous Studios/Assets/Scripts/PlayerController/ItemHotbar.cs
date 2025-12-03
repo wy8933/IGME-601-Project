@@ -35,6 +35,7 @@ public class ItemHotbar : MonoBehaviour
     public bool _watchActive = false;
 
     // Getter Methods
+    public GameObject[] GetHotbar() { return  _itemHotbar; }
     public int GetSelectedItemIndex() { return _selectedItemIndex; }
 
     public void Start()
