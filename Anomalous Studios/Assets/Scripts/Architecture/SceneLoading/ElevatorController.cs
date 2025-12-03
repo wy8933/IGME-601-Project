@@ -1,5 +1,6 @@
 using AudioSystem;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 /// <summary>
@@ -10,7 +11,6 @@ public struct TasksComplete : IEvent { }
 public class ElevatorController : MonoBehaviour
 {
     [Header("Sound Effects")]
-    [SerializeField] private SoundDataSO _floorChime;
     [SerializeField] private SoundDataSO _doorsMoving;
 
     private Animator _animator;
@@ -25,10 +25,12 @@ public class ElevatorController : MonoBehaviour
     [SerializeField] private PaperDataSO[] _papersB2;
 
     private static ElevatorButton _openButton;
+    private static ElevatorButton _closeButton;
+
     /// <summary>
     /// Stores all the buttons on the elevator, 
     /// </summary>
-    private Dictionary<Level, ElevatorButton> _buttons;
+    private Dictionary<Level, TMP_Text> _indicators;
     private Dictionary<Level, PaperDataSO[]> _paperData;
 
     private EventBinding<TasksComplete> _tasksComplete;
@@ -41,13 +43,14 @@ public class ElevatorController : MonoBehaviour
         _handbook = GameObject.Find("MainUI").transform.Find("Handbook").GetComponent<Handbook_UI>();
 
         _openButton = transform.Find("Buttons/Open").GetComponent<ElevatorButton>();
+        _closeButton = transform.Find("Buttons/Close").GetComponent<ElevatorButton>();
 
         // Keeps references to each of the Elevator floor buttons to enable / disable them
-        _buttons = new Dictionary<Level, ElevatorButton>
+        _indicators = new Dictionary<Level, TMP_Text>
         {
-            { Level.B1, transform.Find("Buttons/B1").GetComponent<ElevatorButton>() },
-            { Level.B2, transform.Find("Buttons/B2").GetComponent<ElevatorButton>() },
-            { Level.endGame, transform.Find("Buttons/B3").GetComponent<ElevatorButton>() }
+            { Level.B1, transform.Find("LevelIndicators/1").GetComponentInChildren<TMP_Text>() },
+            { Level.B2, transform.Find("LevelIndicators/5").GetComponentInChildren<TMP_Text>() },
+            { Level.endGame, transform.Find("LevelIndicators/10").GetComponentInChildren<TMP_Text>() }
         };
 
         _paperData = new Dictionary<Level, PaperDataSO[]>
@@ -69,8 +72,6 @@ public class ElevatorController : MonoBehaviour
     {
         AudioManager.Instance.Play(_doorsMoving, transform.position);
 
-        AudioManager.Instance.Play(_floorChime, transform.position);
-
         _animator.SetTrigger("moveDoors");
     }
 
@@ -88,10 +89,13 @@ public class ElevatorController : MonoBehaviour
     /// <summary>
     /// Instantiates the papers on the corkboard per each level
     /// </summary>
-    public void SpawnNotes(LevelLoaded e)
+    private void SpawnNotes(LevelLoaded e)
     {
         // The player will continue to hold onto handbook info, no need to spawn it again
         if (e.prevLevel == SceneLoader.CurrentLevel) { return; }
+
+        if (e.prevLevel != Level.mainMenu && e.prevLevel != null) _indicators[(Level)e.prevLevel].color = Color.white;
+        _indicators[(Level)SceneLoader.CurrentLevel].color = Color.yellow;
 
         // TODO: Paper positions are hardcoded, make this dynamic to corkboard dimensions, random spawn pattern
 
@@ -121,13 +125,14 @@ public class ElevatorController : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when the task of the level is complete, enabling the next floor's button
+    /// Called when the task of the level is complete, enabling progression to the next floor
     /// </summary>
-    public void EnableElevatorButtons()
+    private void EnableNextLevel()
     {
-        _buttons[(Level)SceneLoader.CurrentLevel+1].Enable();
-    }
+        Level lvl = (Level)SceneLoader.CurrentLevel+1;
 
+        _closeButton.Enable(lvl);
+    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -141,7 +146,7 @@ public class ElevatorController : MonoBehaviour
 
     public void OnEnable()
     {
-        _tasksComplete = new EventBinding<TasksComplete>(EnableElevatorButtons);
+        _tasksComplete = new EventBinding<TasksComplete>(EnableNextLevel);
         EventBus<TasksComplete>.Register(_tasksComplete);
         _levelLoaded = new EventBinding<LevelLoaded>(SpawnNotes);
         EventBus<LevelLoaded>.Register(_levelLoaded);

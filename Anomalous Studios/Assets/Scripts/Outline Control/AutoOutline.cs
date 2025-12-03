@@ -4,9 +4,6 @@ using UnityEngine.Rendering.Universal;
 
 public class AutoOutline: MonoBehaviour
 {
-    [Header("Distance Trigger")]
-    public float triggerDistance = 5f;
-
     [Header("Outline Appearance")]
     public Color outlineColor = Color.yellow;
     public Color highlightColor = Color.green;
@@ -34,8 +31,6 @@ public class AutoOutline: MonoBehaviour
 
     void Start()
     {
-        //player = GameObject.FindGameObjectWithTag("Player")?.transform;
-
         Shader s = Shader.Find("Custom/OutlineExtrudeGlow");
         if (s == null)
         {
@@ -57,15 +52,6 @@ public class AutoOutline: MonoBehaviour
 
     void Update()
     {
-        //if (!player)
-        //{
-        //    Debug.LogWarning("Player not found. Add tag Player.");
-        //    return;
-        //}
-
-        //float dist = Vector3.Distance(player.position, transform.position);
-        //shouldRender = dist <= triggerDistance;
-
         // Keep updating the variables for testing purposes, able ot change while playing the game
         outlineMat.SetColor("_OutlineColor", outlineColor);
         outlineMat.SetFloat("_Thickness", thickness);
