@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 498160292106833007}
   - component: {fileID: 8090538759118479726}
   - component: {fileID: 214478332321416748}
-  - component: {fileID: 6986696013691380832}
+  - component: {fileID: 1937815538657867952}
   m_Layer: 6
   m_Name: Trap
   m_TagString: Untagged
@@ -160,7 +160,7 @@ MonoBehaviour:
   _slowAmount: 1
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
---- !u!114 &6986696013691380832
+--- !u!114 &1937815538657867952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -169,10 +169,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8718811632184179554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  highlightColor: {r: 0, g: 1, b: 0, a: 1}
+  thickness: 0.03
+  glowIntensity: 4

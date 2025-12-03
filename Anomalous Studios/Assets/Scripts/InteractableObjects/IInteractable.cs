@@ -37,7 +37,6 @@ public interface IInteractable
 
     /// <summary>
     /// Decides whether an item can be interacted with
-    /// TODO: call in UserInteraction to trigger SFX
     /// </summary>
     public bool CanInteract { get; set; }
 

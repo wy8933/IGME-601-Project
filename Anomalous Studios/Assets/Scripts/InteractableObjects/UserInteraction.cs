@@ -112,15 +112,31 @@ public class UserInteraction : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out AutoOutline outline) && 
-            other.gameObject.TryGetComponent(out IInteractable interaction) &&
-            interaction.CanInteract) { outline.ShouldRender = true; }
+        print("Object stays");
+        if (other.gameObject.TryGetComponent(out AutoOutline outline))
+        {
+            // Only if the object is interactable and is not blocked by another object does it add the highlight
+            if (other.gameObject.TryGetComponent(out IInteractable interaction) && interaction.CanInteract &&
+                Physics.Raycast(transform.position, other.transform.position - transform.position,
+                out RaycastHit hit, _interactRange, _ignorePlayerMask))
+            {
+                // Is there anything between the player and the object?
+                outline.ShouldRender = hit.collider == other;
+            }
+            else
+            {
+                outline.ShouldRender = false;
+            }
+        }
     }
 
     public void OnTriggerExit(Collider other)
     {
+        // Removes the highlight when far enough away
         if (other.gameObject.TryGetComponent(out AutoOutline outline) &&
-            other.gameObject.TryGetComponent(out IInteractable interaction) &&
-            interaction.CanInteract) { outline.ShouldRender = false; }
+            other.gameObject.TryGetComponent(out IInteractable interaction)) 
+        {
+            outline.ShouldRender = false; 
+        }
     }
 }
