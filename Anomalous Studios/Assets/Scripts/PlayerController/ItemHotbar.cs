@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ItemHotbar : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class ItemHotbar : MonoBehaviour
     /// <param name="item">Item Gameobject</param>
     public void AddItem(GameObject item)
     {
+        //item.GetComponent<ItemInstance>().CanInteract = false;
+
         if (_itemHotbar[_selectedItemIndex] != null)
         {
             int i = CheckAvailableItemSlots();
@@ -59,7 +62,7 @@ public class ItemHotbar : MonoBehaviour
                 SwitchToItem(i);
             }
         }
-        
+
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
 
@@ -93,6 +96,7 @@ public class ItemHotbar : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
+            //_itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().CanInteract = true;
 
             if (_itemHotbar[_selectedItemIndex].GetComponent<Watch>())
             {
