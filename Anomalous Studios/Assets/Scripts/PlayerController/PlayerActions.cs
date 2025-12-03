@@ -101,7 +101,7 @@ public class PlayerActions : MonoBehaviour
         CheckCrouch();
 
         // Lean Left/Right
-        LeanLeftRight();
+        //LeanLeftRight();
     }
 
     private void FixedUpdate()
@@ -214,8 +214,6 @@ public class PlayerActions : MonoBehaviour
                 SoundEffectTrigger.Instance.StopFootsteps();
                 SoundEffectTrigger.Instance.PlayFootsteps(0.5f);
             }
-
-            
 
             if (Stamina > 50.0f)
             {
@@ -343,6 +341,17 @@ public class PlayerActions : MonoBehaviour
     {
         if (!_playerController.GetPlayerJournal().GetInJournal())
         {
+            DoorController dc = RayCastDoor();
+
+            if (dc != null)
+            {
+                if (dc.CanInteract)
+                {
+                    dc.ToggleDoor();
+                    return;
+                }
+            }
+
             _playerController.GetItemHotbar().UseItem();
         }
     }
@@ -356,5 +365,25 @@ public class PlayerActions : MonoBehaviour
         {
             _playerController.GetItemHotbar().DropItem();
         }
+    }
+
+    /// <summary>
+    /// Raycasts to door game object. Used to enable door 
+    /// opening/closing with LMB click when door is unlocked
+    /// </summary>
+    /// <returns>returns the door controller script if raycast on door successful</returns>
+    public DoorController RayCastDoor()
+    {
+        float interactRange = 10.0f;
+
+        if(Physics.Raycast(_playerController.GetPlayerCamera().transform.position, 
+            _playerController.GetPlayerCamera().transform.forward, 
+            out RaycastHit hit, interactRange, _playerController.IgnorePlayerMask))
+        {
+            // on successful raycast
+            return hit.collider.gameObject.GetComponent<DoorController>();
+        }
+
+        return null;
     }
 }
