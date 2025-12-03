@@ -10,7 +10,6 @@ public class Paper : MonoBehaviour, IInteractable
 
     private ElevatorController _elevator;
     private string _taskID;
-    private Renderer _renderer;
     private bool _isTask;
 
     // TODO: Change the initialization of the first level to be dynamic, raise an event
@@ -37,7 +36,6 @@ public class Paper : MonoBehaviour, IInteractable
     public void Start()
     {
         _elevator = transform.parent.parent.GetComponent<ElevatorController>();
-        _renderer = GetComponent<Renderer>();
     }
 
     public void Highlight()
@@ -56,8 +54,9 @@ public class Paper : MonoBehaviour, IInteractable
     {
         _elevator.RemoveNote(this);
 
-        this.gameObject.SetActive(false);
         AddToHandbook();
+
+        Destroy(gameObject);
     }
 
     /// <summary>

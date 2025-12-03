@@ -26,32 +26,32 @@ public class FirstFloorTempManager : MonoBehaviour
 
         GameVariables.Verbose = false;
         StartCoroutine(UpdateGame());
-
         _bedRoomLights = GameObject.FindGameObjectsWithTag("Room1Light");
         _allLights = GameObject.FindGameObjectsWithTag("Light");
     }
 
     public void AllTaskCompleted() 
     {
-        Debug.Log("You Win!");
         SceneManager.LoadScene("GameOver");
     }
 
-    private IEnumerator UpdateGame() 
+    public IEnumerator UpdateGame()
     {
+        Debug.Log("Update Game");
         if (!_isTrashCompleted && VariableConditionManager.Instance.Get("Trash") == "3") 
         {
             _isTrashCompleted = true;
             VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
+            EventBus<OpenPopup>.Raise(new OpenPopup { RuleName = "Cleaning Trash" });
         }
 
         if (!_isCleanCompleted && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
         {
             _isCleanCompleted = true;
             VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
+            EventBus<OpenPopup>.Raise(new OpenPopup { RuleName = "Cleaning Dirty Spot" });
         }
 
-        Debug.Log("hi");
 
         if (VariableConditionManager.Instance.Get("Trash") == "3" && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
         {

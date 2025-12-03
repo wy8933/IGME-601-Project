@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2566990456060103656}
   - component: {fileID: 7341400481744655380}
   - component: {fileID: 2433718050789513975}
-  - component: {fileID: 6227993279881518345}
   - component: {fileID: 1541105541715423082}
+  - component: {fileID: 2989660010570847461}
   m_Layer: 6
   m_Name: bottle
   m_TagString: Untagged
@@ -140,22 +140,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6227993279881518345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194647380855422312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75400db3a2871094888e8e1bf930771d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rend: {fileID: 0}
-  originalMats: []
-  outlineMatInstance: {fileID: 0}
-  IsHighlighted: 0
 --- !u!114 &1541105541715423082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,3 +164,19 @@ MonoBehaviour:
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
   _breakSO: {fileID: 0}
+--- !u!114 &2989660010570847461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194647380855422312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  highlightColor: {r: 0, g: 1, b: 0, a: 1}
+  thickness: 0.03
+  glowIntensity: 4
