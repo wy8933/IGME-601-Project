@@ -78,7 +78,12 @@ public class ElevatorButton : MonoBehaviour, IInteractable
 
             // The close button in the elevator is a joke, might make an electrical sounds when pressed, or fall off the wall
             case ButtonType.Close:
-                Debug.Log("Lmao");
+                GameObject obj = GameObject.Find("CinematicCamera");
+                if (obj != null)
+                {
+                    obj.SetActive(true);
+                }
+                Disable();
                 break;
         }
 

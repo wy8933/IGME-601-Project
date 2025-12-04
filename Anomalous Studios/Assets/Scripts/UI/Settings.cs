@@ -179,6 +179,7 @@ public class Settings : MonoBehaviour
     {
         //SceneManager.LoadScene(0);
         EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = Level.mainMenu });
+        GameObject.FindWithTag("Player").GetComponent<PlayerController>().GetPlayerJournal().ToggleHandbook();
     }
 
     /// <summary>
