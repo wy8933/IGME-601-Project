@@ -84,7 +84,6 @@ public class CleaningManager : MonoBehaviour
         {
             float progress = cleaner.GetCleanProgress();
 
-            Debug.Log(progress);
             if (progress >= cleanThreshold)
             {
                 OnSurfaceCleaned(cleaner);
@@ -99,6 +98,5 @@ public class CleaningManager : MonoBehaviour
     {
         Debug.Log($"{cleaner.name} is clean enough! (> {cleanThreshold * 100f:F0}%)");
         GameVariables.Set("floor-cleaned", "true");
-        // Place your own function calls or game events here.
     }
 }

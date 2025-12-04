@@ -81,8 +81,6 @@ namespace ItemSystem
         public void Highlight()
         {
             if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
-
-
         }
         public void RemoveHighlight()
         {
@@ -93,6 +91,11 @@ namespace ItemSystem
 
         public void PickUp()
         {
+            // Usually the OnTrigger events edit these first two values,
+            // but once an object is picked up it does not trigger, so we just set them to false manually
+            RemoveHighlight();
+            GetComponent<AutoOutline>().ShouldRender = false;
+            
             _canInteract = false;
             _pickedUp = true;
             Equip();

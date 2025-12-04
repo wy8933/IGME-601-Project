@@ -156,6 +156,13 @@ public class PlayerController : MonoBehaviour
         if (!_playerJournal.GetInJournal() && IInteractable.Target != null)
         {
             //IInteractable.isPressed = true;
+            if (_itemHotbar.GetHotbar()[_itemHotbar.GetSelectedItemIndex()])
+            {
+                if (_itemHotbar.GetHotbar()[_itemHotbar.GetSelectedItemIndex()].GetComponent<Key>())
+                {
+                    _itemHotbar.UseItem();
+                }
+            }
             IInteractable.Instigator = this.gameObject; // Save a reference of player inside interacted object
         }
     }

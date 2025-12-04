@@ -33,6 +33,7 @@ public class OnboardingManager : MonoBehaviour
             VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
             EventBus<TasksComplete>.Raise(new TasksComplete { });
             _taskCompleted = true;
+            EventBus<OpenPopup>.Raise(new OpenPopup {RuleName = "Cleaning Trash"});
         }
         
     }

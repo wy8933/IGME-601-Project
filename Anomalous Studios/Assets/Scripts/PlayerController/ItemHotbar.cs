@@ -1,8 +1,10 @@
 using ItemSystem;
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ItemHotbar : MonoBehaviour
 {
@@ -19,6 +21,11 @@ public class ItemHotbar : MonoBehaviour
     [SerializeField] private GameObject Item3Icon;
     [SerializeField] private GameObject Item4Icon;
 
+    [SerializeField] private GameObject Item1Text;
+    [SerializeField] private GameObject Item2Text;
+    [SerializeField] private GameObject Item3Text;
+    [SerializeField] private GameObject Item4Text;
+
     private float _fadeDuration = 1.0f;
     private Coroutine _fadeCoroutine;
 
@@ -28,6 +35,7 @@ public class ItemHotbar : MonoBehaviour
     public bool _watchActive = false;
 
     // Getter Methods
+    public GameObject[] GetHotbar() { return  _itemHotbar; }
     public int GetSelectedItemIndex() { return _selectedItemIndex; }
 
     public void Start()
@@ -46,6 +54,8 @@ public class ItemHotbar : MonoBehaviour
     /// <param name="item">Item Gameobject</param>
     public void AddItem(GameObject item)
     {
+        //item.GetComponent<ItemInstance>().CanInteract = false;
+
         if (_itemHotbar[_selectedItemIndex] != null)
         {
             int i = CheckAvailableItemSlots();
@@ -59,7 +69,7 @@ public class ItemHotbar : MonoBehaviour
                 SwitchToItem(i);
             }
         }
-        
+
         _itemHotbar[_selectedItemIndex] = item;
         item.GetComponent<ItemInstance>().AttachToParent(this.gameObject);
 
@@ -93,6 +103,7 @@ public class ItemHotbar : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
+            //_itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().CanInteract = true;
 
             if (_itemHotbar[_selectedItemIndex].GetComponent<Watch>())
             {
@@ -142,18 +153,33 @@ public class ItemHotbar : MonoBehaviour
             case 1:
                 Item2Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item2Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
+                {
+                    Item2Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item3Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>()){
+                    Item3Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item4Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
+                {
+                    Item4Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
                 Item1Icon.GetComponent<RawImage>().color = Color.yellow;
+                if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
+                {
+                    Item1Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                }
                 break;
         }
     }
@@ -171,15 +197,19 @@ public class ItemHotbar : MonoBehaviour
             {
                 case 1:
                     Item2Icon.GetComponent<RawImage>().color = resetColor;
+                    Item2Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
                 case 2:
                     Item3Icon.GetComponent<RawImage>().color = resetColor;
+                    Item3Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
                 case 3:
                     Item4Icon.GetComponent<RawImage>().color = resetColor;
+                    Item4Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
                 default:
                     Item1Icon.GetComponent<RawImage>().color = resetColor;
+                    Item1Text.GetComponent<TextMeshProUGUI>().text = "";
                     break;
             }
         }
@@ -197,18 +227,22 @@ public class ItemHotbar : MonoBehaviour
             case 1:
                 Item2Icon.GetComponent<RawImage>().texture = null;
                 Item2Icon.GetComponent<RawImage>().color = resetColor;
+                Item2Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = null;
                 Item3Icon.GetComponent<RawImage>().color = resetColor;
+                Item3Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = null;
                 Item4Icon.GetComponent<RawImage>().color = resetColor;
+                Item4Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = null;
                 Item1Icon.GetComponent<RawImage>().color = resetColor;
+                Item1Text.GetComponent<TextMeshProUGUI>().text = "";
                 break;
         }
     }

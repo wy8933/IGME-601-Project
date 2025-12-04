@@ -3904,6 +3904,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab_Pizza
       objectReference: {fileID: 0}
+    - target: {fileID: 3645814700464551510, guid: c63954e080b8e4c4c9d9b9a977e03d90, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3788894794100823520, guid: c63954e080b8e4c4c9d9b9a977e03d90, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8272948064921773860, guid: c63954e080b8e4c4c9d9b9a977e03d90, type: 3}
       propertyPath: m_LocalPosition.x
       value: 60.843163
@@ -4008,38 +4016,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 197380163270865392, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: thickness
-      value: 0.0005
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: outlineColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: outlineColor.g
-      value: 0.4341126
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: outlineColor.r
-      value: 0.4716981
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: highlightColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: highlightColor.g
-      value: 0.42767292
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164480865143074417, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
-      propertyPath: highlightColor.r
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1970723029315211880, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
@@ -8074,7 +8050,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2127779595270487555, guid: efbf444ee47247f409b68ef3db249e4b, type: 3}
       propertyPath: DoorID
-      value: 003
+      value: 101
       objectReference: {fileID: 0}
     - target: {fileID: 8246146375969561983, guid: efbf444ee47247f409b68ef3db249e4b, type: 3}
       propertyPath: m_Name
@@ -8856,6 +8832,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab_Applecore1
       objectReference: {fileID: 0}
+    - target: {fileID: 7892052805698589147, guid: accbb7760ea4d3e4db66a2f18f8b0e53, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8874,13 +8854,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1040118766}
     m_Modifications:
+    - target: {fileID: 418109293814605518, guid: 3ab2f3fc414ae0e40a4ff1cfac56ec65, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 668576737456316230, guid: 3ab2f3fc414ae0e40a4ff1cfac56ec65, type: 3}
       propertyPath: m_Name
       value: Flashlight
-      objectReference: {fileID: 0}
-    - target: {fileID: 2753094715018810970, guid: 3ab2f3fc414ae0e40a4ff1cfac56ec65, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3912491400752223998, guid: 3ab2f3fc414ae0e40a4ff1cfac56ec65, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8922,10 +8902,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -185.484
       objectReference: {fileID: 0}
-    - target: {fileID: 9048641158306637452, guid: 3ab2f3fc414ae0e40a4ff1cfac56ec65, type: 3}
-      propertyPath: 'm_Materials.Array.data[2]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0359ef15cbbe3fb4283275bae8d1e41e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

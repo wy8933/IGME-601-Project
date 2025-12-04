@@ -76,6 +76,8 @@ public class SceneLoader : MonoBehaviour
     {
         _scenesToLoad.Clear();
 
+        yield return new WaitForSeconds(0.5f);
+
         // If we are in the main menu going to a level, load the elevator
 
         if (CurrentLevel == Level.mainMenu && e.newLevel != Level.mainMenu)
