@@ -6,12 +6,20 @@ namespace RuleViolationSystem
     [CreateAssetMenu(fileName = "EmitRuleBrokenEventActionSO", menuName = "Rules/Actions/EmitRuleBrokenEventActionSO")]
     public class EmitRuleBrokenEventActionSO : RuleActionSO
     {
-        [SerializeField] private bool _isBroken;
+        [SerializeField] private bool _isBroken = false;
 
         public override void Execute(IRuleQuery query, RuleAssetSO rule) 
         {
-            EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = _isBroken, 
-                target = ElevatorController.Player.transform.position });
+            if (ElevatorController.Player)
+            {
+                EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = _isBroken, 
+                    target = ElevatorController.Player.transform.position });
+            }
+            else
+            {
+                EventBus<RuleBroken>.Raise(new RuleBroken { isBroken = _isBroken });
+            }
+
 
             if (_isBroken)
             {
