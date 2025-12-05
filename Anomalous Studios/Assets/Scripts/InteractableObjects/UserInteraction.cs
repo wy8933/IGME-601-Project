@@ -112,7 +112,6 @@ public class UserInteraction : MonoBehaviour
 
     public void OnTriggerStay(Collider other)
     {
-        print("Object stays");
         if (other.gameObject.TryGetComponent(out AutoOutline outline))
         {
             // Only if the object is interactable and is not blocked by another object does it add the highlight

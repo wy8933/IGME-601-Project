@@ -7,6 +7,7 @@ public class FirstFloorTempManager : MonoBehaviour
 {
     private GameObject _player;
     public float updateCooldown;
+    public float updateTick = 0;
 
     [SerializeField] private GameObject[] _bedRoomLights;
     [SerializeField] private GameObject[] _allLights;
@@ -25,9 +26,10 @@ public class FirstFloorTempManager : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player");
 
         GameVariables.Verbose = false;
-        StartCoroutine(UpdateGame());
+        //StartCoroutine(UpdateGame());
         _bedRoomLights = GameObject.FindGameObjectsWithTag("Room1Light");
         _allLights = GameObject.FindGameObjectsWithTag("Light");
+        Debug.Log("Done Init");
     }
 
     public void AllTaskCompleted() 
@@ -35,9 +37,100 @@ public class FirstFloorTempManager : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
+    public void Update()
+    {
+        updateTick += Time.deltaTime;
+
+        if (updateTick > updateCooldown) 
+        {
+            updateTick -= updateCooldown;
+        }
+        else 
+        {
+            return;
+        }
+
+        if (!_isTrashCompleted && VariableConditionManager.Instance.Get("Trash") == "3")
+        {
+            _isTrashCompleted = true;
+            VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
+            EventBus<OpenPopup>.Raise(new OpenPopup { RuleName = "Cleaning Trash" });
+        }
+
+        if (!_isCleanCompleted && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
+        {
+            _isCleanCompleted = true;
+            VariableConditionManager.Instance.Set("task_completed:int", (int.Parse(VariableConditionManager.Instance.Get("task_completed:int")) + 1).ToString());
+            EventBus<OpenPopup>.Raise(new OpenPopup { RuleName = "Cleaning Dirty Spot" });
+        }
+
+
+        if (VariableConditionManager.Instance.Get("Trash") == "3" && VariableConditionManager.Instance.Get("floor-cleaned") == "true")
+        {
+            AllTaskCompleted();
+        }
+
+        //Time calculation
+        float currentTime = float.Parse(VariableConditionManager.Instance.Get("watchTimer"));
+
+        // Set the bedroom lights
+        if (currentTime % 60 <= 1)
+        {
+            if (currentTime / 60 % 2 == 0)
+            {
+                foreach (GameObject obj in _bedRoomLights)
+                {
+                    obj.SetActive(true);
+                }
+            }
+            else
+            {
+                foreach (GameObject obj in _bedRoomLights)
+                {
+                    obj.SetActive(false);
+                }
+            }
+        }
+
+        if (!isPowerOut)
+        {
+            if (currentTime % powerOutCheckTime <= 1)
+            {
+                int num = Random.Range(0, 10);
+
+                if (num < 3)
+                {
+                    isPowerOut = true;
+                    powerOutTime = currentTime;
+                    foreach (GameObject lights in _allLights)
+                    {
+                        lights.SetActive(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (currentTime - powerOutTime >= powerResetTime)
+            {
+                isPowerOut = false;
+
+                foreach (GameObject lights in _allLights)
+                {
+                    lights.SetActive(true);
+                }
+            }
+        }
+
+
+        // Light Calculation
+        float lightValue = _player.GetComponent<LightDetection>().lightTotal;
+        GameVariables.Set("player-light-value:float", lightValue.ToString());
+    }
+
     public IEnumerator UpdateGame()
     {
-        Debug.Log("Update Game");
+        Debug.LogError("Update Game");
         if (!_isTrashCompleted && VariableConditionManager.Instance.Get("Trash") == "3") 
         {
             _isTrashCompleted = true;
@@ -118,5 +211,7 @@ public class FirstFloorTempManager : MonoBehaviour
         yield return new WaitForSeconds(updateCooldown);
 
         StartCoroutine(UpdateGame());
+        Debug.LogError("Update Done");
+        yield return null;
     }
 }
