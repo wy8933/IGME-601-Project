@@ -10,6 +10,11 @@ public struct TasksComplete : IEvent { }
 
 public class ElevatorController : MonoBehaviour
 {
+    /// <summary>
+    /// EXTREMELY Temporary field, used to pass the player's position to the rulebroken event. 
+    /// </summary>
+    static public GameObject Player;
+
     [Header("Sound Effects")]
     [SerializeField] private SoundDataSO _doorsMoving;
 
@@ -48,9 +53,9 @@ public class ElevatorController : MonoBehaviour
         // Keeps references to each of the Elevator floor buttons to enable / disable them
         _indicators = new Dictionary<Level, TMP_Text>
         {
-            { Level.B1, transform.Find("LevelIndicators/1").GetComponentInChildren<TMP_Text>() },
-            { Level.B2, transform.Find("LevelIndicators/5").GetComponentInChildren<TMP_Text>() },
-            { Level.endGame, transform.Find("LevelIndicators/10").GetComponentInChildren<TMP_Text>() }
+            { Level.B1, transform.Find("LevelIndicators/18").GetComponentInChildren<TMP_Text>() },
+            { Level.B2, transform.Find("LevelIndicators/10").GetComponentInChildren<TMP_Text>() },
+            { Level.endGame, transform.Find("LevelIndicators/6").GetComponentInChildren<TMP_Text>() }
         };
 
         _paperData = new Dictionary<Level, PaperDataSO[]>
@@ -58,6 +63,8 @@ public class ElevatorController : MonoBehaviour
             { Level.B1, _papersB1 },
             { Level.B2, _papersB2 }
         };
+
+        Player = GameObject.Find("Player");
     }
 
     /// <summary>

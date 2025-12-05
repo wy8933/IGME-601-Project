@@ -18,9 +18,8 @@ public partial class AttackAction : Action
     /// <returns></returns>
     protected override Status OnStart()
     {
-        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = Level.mainMenu });
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = (Level)SceneLoader.CurrentLevel });
+
         return Status.Running;
     }
 

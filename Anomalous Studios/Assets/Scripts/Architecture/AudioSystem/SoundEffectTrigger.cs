@@ -70,7 +70,7 @@ public class SoundEffectTrigger : MonoBehaviour
     {
         isPlayingAmbience = true;
 
-        while (true)
+        while (isPlayingAmbience)
         {
             _audioManager.Stop(_audioManager.gameObject, _ruleKeeperAmbience);
             _audioManager.Play(_ruleKeeperAmbience, _ruleKeeperTransform.position);

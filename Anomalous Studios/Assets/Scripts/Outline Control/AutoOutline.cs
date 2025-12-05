@@ -5,11 +5,11 @@ using UnityEngine.Rendering.Universal;
 public class AutoOutline: MonoBehaviour
 {
     [Header("Outline Appearance")]
-    public Color outlineColor = Color.yellow;
-    public Color highlightColor = Color.green;
+    private Color outlineColor = Color.gray;
+    private Color highlightColor = Color.yellow;
+    private float glowIntensity = 1f;
 
     public float thickness = 0.03f;
-    public float glowIntensity = 4f;
 
     //private Transform player;
     private MeshFilter[] meshFilters;

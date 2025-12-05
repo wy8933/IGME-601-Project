@@ -203,7 +203,11 @@ PrefabInstance:
       value: Elevator v2.0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8034957469837913921, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+    - {fileID: 1401871715080488689, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+    - {fileID: 2209882221313280213, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
+    - {fileID: 2144939026759754462, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bf76fe3c3273a24daf30eb9e5d40771, type: 3}
@@ -330,6 +334,10 @@ PrefabInstance:
     - target: {fileID: 7101745350206811663, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7451806642488428133, guid: 688db9a812acb3549ba77cdb2b7c005d, type: 3}
+      propertyPath: _interactRange
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

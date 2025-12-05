@@ -26,7 +26,6 @@ public enum Level
 
 public class SceneLoader : MonoBehaviour
 {
-    // TODO: Fade in and fade out a black screen BEFORE the loading process and AFTER the loading is fully done
     public static Level? CurrentLevel { get; private set; }
 
     [Header("Level Listings")]
@@ -44,6 +43,8 @@ public class SceneLoader : MonoBehaviour
     private EventBinding<LoadLevel> _levelLoading;
 
     private GameObject _blackScreenTEMP;
+
+    private NavMeshData _navMeshData;
 
     public void Start()
     {
@@ -76,10 +77,16 @@ public class SceneLoader : MonoBehaviour
     {
         _scenesToLoad.Clear();
 
+        // Store the navmesh data of this level if it has it
+        if (CurrentLevel == e.newLevel &&
+            GameObject.Find("Level").TryGetComponent(out NavMeshSurface s1)) 
+        { 
+            _navMeshData = s1.navMeshData; 
+        }
+
         yield return new WaitForSeconds(0.5f);
 
         // If we are in the main menu going to a level, load the elevator
-
         if (CurrentLevel == Level.mainMenu && e.newLevel != Level.mainMenu)
         {
             _scenesToLoad.Add(SceneManager.LoadSceneAsync(_elevator, LoadSceneMode.Additive));
@@ -107,6 +114,14 @@ public class SceneLoader : MonoBehaviour
 
         // Add an artifical amount of loading time to smooth everything over
         yield return new WaitForSeconds(0.5f);
+
+        // On the same level, reset the navmesh data otherwise it deletes itself
+        if (_navMeshData && CurrentLevel == e.newLevel) 
+        {
+            GameObject.Find("Level").TryGetComponent(out NavMeshSurface s2);
+            s2.navMeshData = _navMeshData; // Storing the data in the navMeshSurface
+            NavMesh.AddNavMeshData(_navMeshData); // Actually adding that data to the scene
+        }
 
         EventBus<LevelLoaded>.Raise(new LevelLoaded { prevLevel = prevLevel });
 
