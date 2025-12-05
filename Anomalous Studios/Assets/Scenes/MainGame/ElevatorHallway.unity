@@ -29146,6 +29146,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1970723029315211880, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 11400000, guid: 0ea66141e5ac2fd4fb768a8cf6b28abb, type: 2}
+    - target: {fileID: 1970723029315211880, guid: 8a85b9c1fd532434c845c659e82257ff, type: 3}
       propertyPath: _keyID
       value: 10086
       objectReference: {fileID: 0}
@@ -58151,6 +58155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateCooldown: 0.5
+  updateTick: 0
   _bedRoomLights:
   - {fileID: 1081208560}
   - {fileID: 2007822227}

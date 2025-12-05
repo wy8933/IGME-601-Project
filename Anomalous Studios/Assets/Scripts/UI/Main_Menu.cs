@@ -5,6 +5,7 @@ using UnityEngine.Video;
 public class Main_Menu : MonoBehaviour
 {
     public VideoPlayer player;
+    public GameObject CutSceneImage;
     public GameObject MainMenuUI;
 
     [SerializeField] GameObject credits;
@@ -27,6 +28,7 @@ public class Main_Menu : MonoBehaviour
         {
             player.Stop();
             MainMenuUI.SetActive(true);
+            CutSceneImage.SetActive(false);
         }
     }
 
@@ -56,6 +58,7 @@ public class Main_Menu : MonoBehaviour
         //credits.SetActive(isVisible);
         player.Play();
         MainMenuUI.SetActive(false);
+        CutSceneImage.SetActive(true);
     }
 
 }
