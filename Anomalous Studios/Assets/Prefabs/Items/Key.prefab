@@ -148,7 +148,6 @@ MonoBehaviour:
   durabilityLeft: 0
   lastUseTime: 0
   isUseable: 1
-  _keyID: 
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 11400000, guid: 7013cee988f67e64a84c4e30cb8fc5be, type: 2}
 --- !u!114 &1164480865143074417
@@ -163,11 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerDistance: 5
-  outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  thickness: 0.005
-  glowIntensity: 4
+  thickness: 0.002
 --- !u!1001 &4034335312536398206
 PrefabInstance:
   m_ObjectHideFlags: 0
