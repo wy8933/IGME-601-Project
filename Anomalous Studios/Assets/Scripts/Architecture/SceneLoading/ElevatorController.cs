@@ -10,6 +10,11 @@ public struct TasksComplete : IEvent { }
 
 public class ElevatorController : MonoBehaviour
 {
+    /// <summary>
+    /// EXTREMELY Temporary field, used to pass the player's position to the rulebroken event. 
+    /// </summary>
+    static public GameObject Player;
+
     [Header("Sound Effects")]
     [SerializeField] private SoundDataSO _doorsMoving;
 
@@ -58,6 +63,8 @@ public class ElevatorController : MonoBehaviour
             { Level.B1, _papersB1 },
             { Level.B2, _papersB2 }
         };
+
+        Player = GameObject.Find("Player");
     }
 
     /// <summary>

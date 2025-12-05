@@ -26,7 +26,6 @@ public enum Level
 
 public class SceneLoader : MonoBehaviour
 {
-    // TODO: Fade in and fade out a black screen BEFORE the loading process and AFTER the loading is fully done
     public static Level? CurrentLevel { get; private set; }
 
     [Header("Level Listings")]
