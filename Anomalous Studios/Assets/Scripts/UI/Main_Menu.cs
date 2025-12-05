@@ -4,29 +4,32 @@ using UnityEngine.SceneManagement;
 
 public class Main_Menu : MonoBehaviour
 {
-    [Tooltip("Where to go from the main menu, this should be the first level in the list")]
-    [SerializeField] private Level _startLevel;
+    
 
     [SerializeField] GameObject credits;
     
     bool isVisible = false;
 
-    private void Start()
+    private void OnEnable()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        SoundEffectTrigger.Instance.StopAllCoroutines();
+        if(SoundEffectTrigger.Instance != null)
+        {
+            SoundEffectTrigger.Instance.StopAllCoroutines();
+        }
     }
 
     /// <summary>
     /// Start game by loading first scene
     /// </summary>
-    public void StartGame()
+    public void StartGame(GameObject cinematicCanvas)
     {
+        cinematicCanvas.SetActive(true);
         //SceneManager.LoadScene(1);
-        EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _startLevel });
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //EventBus<LoadLevel>.Raise(new LoadLevel { newLevel = _startLevel });
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
     public void QuitGame()
     {
