@@ -50,6 +50,9 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     [Header("Reaction SFX")]
     [SerializeField] private SoundDataSO _failedSFX;
     [SerializeField] private SoundDataSO _successSFX;
+    [SerializeField] private SoundDataSO _ambianceSFX;
+    [SerializeField] private SoundDataSO _screamSFX;
+    [SerializeField] private SoundDataSO _staticSFX;
     public SoundDataSO InitialSFX => null;
     public SoundDataSO FailedSFX { get => _failedSFX; }
     public SoundDataSO CancelSFX => null;
@@ -79,7 +82,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
             BaseWalkSpeed = _navAgent.speed;
         }
 
-        SoundEffectTrigger.Instance.PlayAmbience(transform);
+        //SoundEffectTrigger.Instance.PlayAmbience(transform);
+        AudioManager.Instance.Play(_ambianceSFX, gameObject, transform.position);
     }
 
     public void Highlight()
@@ -113,7 +117,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         else
         {
             _behaviorAgent.SetVariableValue("playerSeen", false);
-
         }
     }
 
@@ -134,7 +137,18 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         // One giant OR statement of dictionary values
         _behaviorAgent.SetVariableValue("ruleBroken", _rulesLibrary.Values.Any(value => value));
 
-        SoundEffectTrigger.Instance.PlayScream(transform);
+        //SoundEffectTrigger.Instance.PlayScream(transform);
+        if (e.isBroken)
+        {
+            AudioManager.Instance.Play(_screamSFX, gameObject, transform.position);
+            AudioManager.Instance.Stop(gameObject, _ambianceSFX);
+            AudioManager.Instance.Play(_staticSFX, gameObject, transform.position);
+        }
+        else
+        {
+            AudioManager.Instance.Stop(gameObject, _staticSFX);
+            AudioManager.Instance.Play(_ambianceSFX, gameObject, transform.position);
+        }
     }
 
     /// <summary>
@@ -159,7 +173,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         // TODO: I forsee some issues with the target location having INSTANT priority
         // Might need to introduce a priority queue of target positions, nodes to "check out"
         _behaviorAgent.SetVariableValue("TargetLocation", e.target);
-        SoundEffectTrigger.Instance.StopAmbience();
+        //SoundEffectTrigger.Instance.StopAmbience();
     }
 
 
@@ -181,5 +195,11 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         EventBus<LoadLevel>.DeRegister(_loadLevel);
         EventBus<LevelLoaded>.DeRegister(_levelLoaded);
         EventBus<MakeNoise>.DeRegister(_makeNoise);
+    }
+
+    public void OnDestroy()
+    {
+        AudioManager.Instance.Stop(gameObject, _staticSFX);
+        AudioManager.Instance.Stop(gameObject, _ambianceSFX);
     }
 }
