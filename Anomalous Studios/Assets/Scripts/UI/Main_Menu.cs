@@ -28,7 +28,7 @@ public class Main_Menu : MonoBehaviour
         {
             player.Stop();
             MainMenuUI.SetActive(true);
-            CutSceneImage.SetActive(false);
+            //CutSceneImage.SetActive(false);
         }
     }
 
@@ -58,7 +58,7 @@ public class Main_Menu : MonoBehaviour
         //credits.SetActive(isVisible);
         player.Play();
         MainMenuUI.SetActive(false);
-        CutSceneImage.SetActive(true);
+        //CutSceneImage.SetActive(true);
     }
 
 }
