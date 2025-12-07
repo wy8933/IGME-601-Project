@@ -20,11 +20,17 @@ public class ItemHotbar : MonoBehaviour
     [SerializeField] private GameObject Item3Icon;
     [SerializeField] private GameObject Item4Icon;
 
+    [SerializeField] private GameObject Item1BG;
+    [SerializeField] private GameObject Item2BG;
+    [SerializeField] private GameObject Item3BG;
+    [SerializeField] private GameObject Item4BG;
+
     [SerializeField] private GameObject Item1Text;
     [SerializeField] private GameObject Item2Text;
     [SerializeField] private GameObject Item3Text;
     [SerializeField] private GameObject Item4Text;
 
+    [SerializeField] private Texture placeholderImage;
     private float _fadeDuration = 1.0f;
     private Coroutine _fadeCoroutine;
 
@@ -147,37 +153,47 @@ public class ItemHotbar : MonoBehaviour
     /// </summary>
     private void UpdateHotbarItemIcon()
     {
+        Color bgColor = new Color(0, 0, 0, 0.5f);
         switch (_selectedItemIndex)
         {
             case 1:
                 Item2Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item2Icon.GetComponent<RawImage>().color = Color.yellow;
+                Item2Icon.GetComponent<RawImage>().color = Color.white;
+                
+                Item2BG.GetComponent<RawImage>().color = bgColor;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
                 {
                     Item2Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item2Text.GetComponent<TextMeshProUGUI>().color = Color.white;
                 }
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item3Icon.GetComponent<RawImage>().color = Color.yellow;
+                Item3Icon.GetComponent<RawImage>().color = Color.white;
+                Item3BG.GetComponent<RawImage>().color = bgColor;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>()){
                     Item3Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item3Text.GetComponent<TextMeshProUGUI>().color = Color.white;
                 }
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item4Icon.GetComponent<RawImage>().color = Color.yellow;
+                Item4Icon.GetComponent<RawImage>().color = Color.white;
+                Item4BG.GetComponent<RawImage>().color = bgColor;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
                 {
                     Item4Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item4Text.GetComponent<TextMeshProUGUI>().color = Color.white;
                 }
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().item.itemIcon.texture;
-                Item1Icon.GetComponent<RawImage>().color = Color.yellow;
+                Item1Icon.GetComponent<RawImage>().color = Color.white;
+                Item1BG.GetComponent<RawImage>().color = bgColor;
                 if (_itemHotbar[_selectedItemIndex].GetComponent<Key>())
                 {
                     Item1Text.GetComponent<TextMeshProUGUI>().text = _itemHotbar[_selectedItemIndex].GetComponent<Key>().GetKeyID();
+                    Item1Text.GetComponent<TextMeshProUGUI>().color = Color.white;
                 }
                 break;
         }
@@ -188,6 +204,7 @@ public class ItemHotbar : MonoBehaviour
     /// </summary>
     public void ResetPreviousEmptySlot()
     {
+        Color bgColor = new Color(0, 0, 0, 0.5f);
         if (_itemHotbar[_selectedItemIndex] == null)
         {
             Color resetColor = new Color(0, 0, 0, 0.5f);
@@ -197,21 +214,42 @@ public class ItemHotbar : MonoBehaviour
                 case 1:
                     Item2Icon.GetComponent<RawImage>().color = resetColor;
                     Item2Text.GetComponent<TextMeshProUGUI>().text = "";
+                    Item2BG.GetComponent<RawImage>().color = bgColor;
                     break;
                 case 2:
                     Item3Icon.GetComponent<RawImage>().color = resetColor;
                     Item3Text.GetComponent<TextMeshProUGUI>().text = "";
+                    Item3BG.GetComponent<RawImage>().color = bgColor;
                     break;
                 case 3:
                     Item4Icon.GetComponent<RawImage>().color = resetColor;
                     Item4Text.GetComponent<TextMeshProUGUI>().text = "";
+                    Item4BG.GetComponent<RawImage>().color = bgColor;
                     break;
                 default:
                     Item1Icon.GetComponent<RawImage>().color = resetColor;
                     Item1Text.GetComponent<TextMeshProUGUI>().text = "";
+                    Item1BG.GetComponent<RawImage>().color = bgColor;
                     break;
             }
         }
+
+        switch (_selectedItemIndex)
+        {
+            case 1:
+                Item2BG.GetComponent<RawImage>().color = bgColor;
+                break;
+            case 2:
+                Item3BG.GetComponent<RawImage>().color = bgColor;
+                break;
+            case 3:
+                Item4BG.GetComponent<RawImage>().color = bgColor;
+                break;
+            default:
+                Item1BG.GetComponent<RawImage>().color = bgColor;
+                break;
+        }
+        
     }
     
     /// <summary>
@@ -220,6 +258,7 @@ public class ItemHotbar : MonoBehaviour
     private void RemoveHotbarItemIcon()
     {
         Color resetColor = new Color(0, 0, 0, 0.5f);
+        Color bgColor = new Color(0, 0, 0, 0.5f);
 
         switch (_selectedItemIndex)
         {
@@ -227,21 +266,25 @@ public class ItemHotbar : MonoBehaviour
                 Item2Icon.GetComponent<RawImage>().texture = null;
                 Item2Icon.GetComponent<RawImage>().color = resetColor;
                 Item2Text.GetComponent<TextMeshProUGUI>().text = "";
+                Item2BG.GetComponent<RawImage>().color = bgColor;
                 break;
             case 2:
                 Item3Icon.GetComponent<RawImage>().texture = null;
                 Item3Icon.GetComponent<RawImage>().color = resetColor;
                 Item3Text.GetComponent<TextMeshProUGUI>().text = "";
+                Item3BG.GetComponent<RawImage>().color = bgColor;
                 break;
             case 3:
                 Item4Icon.GetComponent<RawImage>().texture = null;
                 Item4Icon.GetComponent<RawImage>().color = resetColor;
                 Item4Text.GetComponent<TextMeshProUGUI>().text = "";
+                Item4BG.GetComponent<RawImage>().color = bgColor;
                 break;
             default:
                 Item1Icon.GetComponent<RawImage>().texture = null;
                 Item1Icon.GetComponent<RawImage>().color = resetColor;
                 Item1Text.GetComponent<TextMeshProUGUI>().text = "";
+                Item1BG.GetComponent<RawImage>().color = bgColor;
                 break;
         }
     }
@@ -271,7 +314,6 @@ public class ItemHotbar : MonoBehaviour
     private IEnumerator DoFade(float startAlpha, float endAlpha)
     {
         float timer = 0;
-
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
@@ -314,25 +356,42 @@ public class ItemHotbar : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
-        else
+        Color highlightColor = new Color(255,0,0,1f);
+        Color unHighlightColor = new Color(0, 0, 0, 1f);
+        switch (_selectedItemIndex)
         {
-            switch (i)
-            {
-                case 0:
-                    Item1Icon.GetComponent<RawImage>().color = Color.red;
-                    break;
-                case 1:
-                    Item2Icon.GetComponent<RawImage>().color = Color.red;
-                    break;
-                case 2:
-                    Item3Icon.GetComponent<RawImage>().color = Color.red;
-                    break;
-                default:
-                    Item4Icon.GetComponent<RawImage>().color = Color.red;
-                    break;
-            }
-            
+            case 0:
+                Item1BG.GetComponent<RawImage>().color = highlightColor;
+                Item2BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item3BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item4BG.GetComponent<RawImage>().color = unHighlightColor;
+                //Item1Icon.GetComponent<RawImage>().texture = placeholderImage;
+                break;
+            case 1:
+                Item2BG.GetComponent<RawImage>().color = highlightColor;
+                Item1BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item3BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item4BG.GetComponent<RawImage>().color = unHighlightColor;
+                //Item2Icon.GetComponent<RawImage>().texture = placeholderImage;
+                break;
+            case 2:
+                Item3BG.GetComponent<RawImage>().color = highlightColor;
+                Item1BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item2BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item4BG.GetComponent<RawImage>().color = unHighlightColor;
+                //Item3Icon.GetComponent<RawImage>().texture = placeholderImage;
+                break;
+            default:
+                Item4BG.GetComponent<RawImage>().color = highlightColor;
+                Item1BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item2BG.GetComponent<RawImage>().color = unHighlightColor;
+                Item3BG.GetComponent<RawImage>().color = unHighlightColor;
+                //Item4Icon.GetComponent<RawImage>().texture = placeholderImage;
+                break;
         }
+            
+
+        
 
         if (_fadeCoroutine != null)
         {
