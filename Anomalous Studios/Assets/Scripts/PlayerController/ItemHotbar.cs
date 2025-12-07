@@ -30,6 +30,12 @@ public class ItemHotbar : MonoBehaviour
     [SerializeField] private GameObject Item3Text;
     [SerializeField] private GameObject Item4Text;
 
+    public GameObject GetItem1Text() { return Item1Text; }
+    public GameObject GetItem2Text() { return Item2Text; }
+    public GameObject GetItem3Text() { return Item3Text; }
+    public GameObject GetItem4Text() { return Item4Text; }
+
+
     [SerializeField] private Texture placeholderImage;
     private float _fadeDuration = 1.0f;
     private Coroutine _fadeCoroutine;

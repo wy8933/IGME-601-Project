@@ -1,6 +1,7 @@
-using UnityEngine;
-using ItemSystem;
 using AudioSystem;
+using ItemSystem;
+using TMPro;
+using UnityEngine;
 
 public class Key : ItemInstance
 {
@@ -68,6 +69,11 @@ public class Key : ItemInstance
                     dc.CanInteract = true;
                     dc.ToggleDoor();
                     Destroy(this.gameObject);
+
+                    pc.GetItemHotbar().GetItem1Text().GetComponent<TextMeshProUGUI>().text = "";
+                    pc.GetItemHotbar().GetItem2Text().GetComponent<TextMeshProUGUI>().text = "";
+                    pc.GetItemHotbar().GetItem3Text().GetComponent<TextMeshProUGUI>().text = "";
+                    pc.GetItemHotbar().GetItem4Text().GetComponent<TextMeshProUGUI>().text = "";
                 }
             }
         }
