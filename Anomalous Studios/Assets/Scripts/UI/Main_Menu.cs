@@ -5,7 +5,6 @@ using UnityEngine.Video;
 public class Main_Menu : MonoBehaviour
 {
     public VideoPlayer player;
-    public GameObject CutSceneImage;
     public GameObject MainMenuUI;
 
     [SerializeField] GameObject credits;

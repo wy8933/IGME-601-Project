@@ -52,10 +52,17 @@ public class AutoOutline: MonoBehaviour
 
     void Update()
     {
-        // Keep updating the variables for testing purposes, able ot change while playing the game
-        outlineMat.SetColor("_OutlineColor", outlineColor);
-        outlineMat.SetFloat("_Thickness", thickness);
-        outlineMat.SetFloat("_GlowIntensity", glowIntensity);
+        if (outlineMat != null)
+        {
+            // Keep updating the variables for testing purposes, able ot change while playing the game
+            outlineMat.SetColor("_OutlineColor", outlineColor);
+            outlineMat.SetFloat("_Thickness", thickness);
+            outlineMat.SetFloat("_GlowIntensity", glowIntensity);
+        }
+        else 
+        {
+            //outlineMat = new Material(Shader.Find("Custom/OutlineExtrudeGlow"));
+        }
     }
 
     private void OnBeginCameraRendering(ScriptableRenderContext ctx, Camera cam)

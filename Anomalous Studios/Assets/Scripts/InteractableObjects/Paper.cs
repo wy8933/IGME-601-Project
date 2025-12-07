@@ -40,11 +40,26 @@ public class Paper : MonoBehaviour, IInteractable
 
     public void Highlight()
     {
-        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
+        if (!this) return;
+        if (_canInteract) 
+        {
+            var highlight = GetComponent<AutoOutline>();
+            if (highlight != null)
+            {
+                highlight.IsHighlighted = true;
+            }
+        }
     }
     public void RemoveHighlight()
     {
-        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = false; }
+        if (!this) return;
+        if (_canInteract) { 
+            var highlight = GetComponent<AutoOutline>();
+            if (highlight != null) 
+            {
+                highlight.IsHighlighted = false;
+            }
+        }
     }
 
     /// <summary>
@@ -56,7 +71,7 @@ public class Paper : MonoBehaviour, IInteractable
 
         AddToHandbook();
 
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
     }
 
     /// <summary>
