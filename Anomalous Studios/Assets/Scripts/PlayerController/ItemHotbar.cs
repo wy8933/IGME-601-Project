@@ -159,7 +159,7 @@ public class ItemHotbar : MonoBehaviour
     /// </summary>
     private void UpdateHotbarItemIcon()
     {
-        Color bgColor = new Color(0, 0, 0, 0.5f);
+        Color bgColor = new Color(255, 0, 0, 1f);
         switch (_selectedItemIndex)
         {
             case 1:
@@ -211,6 +211,7 @@ public class ItemHotbar : MonoBehaviour
     public void ResetPreviousEmptySlot()
     {
         Color bgColor = new Color(0, 0, 0, 0.5f);
+
         if (_itemHotbar[_selectedItemIndex] == null)
         {
             Color resetColor = new Color(0, 0, 0, 0.5f);
@@ -362,8 +363,10 @@ public class ItemHotbar : MonoBehaviour
         {
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().Equip();
         }
-        Color highlightColor = new Color(255,0,0,1f);
+
+        Color highlightColor = new Color(255, 0, 0, 1f);
         Color unHighlightColor = new Color(0, 0, 0, 1f);
+
         switch (_selectedItemIndex)
         {
             case 0:
@@ -371,33 +374,26 @@ public class ItemHotbar : MonoBehaviour
                 Item2BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item3BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item4BG.GetComponent<RawImage>().color = unHighlightColor;
-                //Item1Icon.GetComponent<RawImage>().texture = placeholderImage;
                 break;
             case 1:
                 Item2BG.GetComponent<RawImage>().color = highlightColor;
                 Item1BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item3BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item4BG.GetComponent<RawImage>().color = unHighlightColor;
-                //Item2Icon.GetComponent<RawImage>().texture = placeholderImage;
                 break;
             case 2:
                 Item3BG.GetComponent<RawImage>().color = highlightColor;
                 Item1BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item2BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item4BG.GetComponent<RawImage>().color = unHighlightColor;
-                //Item3Icon.GetComponent<RawImage>().texture = placeholderImage;
                 break;
             default:
                 Item4BG.GetComponent<RawImage>().color = highlightColor;
                 Item1BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item2BG.GetComponent<RawImage>().color = unHighlightColor;
                 Item3BG.GetComponent<RawImage>().color = unHighlightColor;
-                //Item4Icon.GetComponent<RawImage>().texture = placeholderImage;
                 break;
         }
-            
-
-        
 
         if (_fadeCoroutine != null)
         {
@@ -482,11 +478,6 @@ public class ItemHotbar : MonoBehaviour
     /// </summary>
     public void ResetItemHotbar()
     {
-        /*for (int i = 0; i < 4; i++)
-        {
-            _itemHotbar[i] = null;
-        }*/
-
         Array.Clear(_itemHotbar, 0, 4);
     }
 }
