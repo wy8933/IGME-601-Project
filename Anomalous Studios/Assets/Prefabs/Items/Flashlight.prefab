@@ -176,10 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineColor: {r: 0.48427665, g: 0.44568887, b: 0, a: 1}
-  highlightColor: {r: 0, g: 0.36477977, b: 0, a: 1}
   thickness: 0.03
-  glowIntensity: 4
 --- !u!1 &2949226002875351128
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,8 +221,8 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 200
-  m_Range: 100
+  m_Intensity: 50
+  m_Range: 150
   m_SpotAngle: 60.54366
   m_InnerSpotAngle: 37.520596
   m_CookieSize: 10

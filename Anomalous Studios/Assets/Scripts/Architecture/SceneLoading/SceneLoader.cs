@@ -46,6 +46,12 @@ public class SceneLoader : MonoBehaviour
 
     private NavMeshData _navMeshData;
 
+    public void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;
+    }
+
     public void Start()
     {
         _floorLibrary = new Dictionary<Level, SceneField>

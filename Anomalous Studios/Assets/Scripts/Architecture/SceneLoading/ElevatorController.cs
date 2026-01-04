@@ -54,8 +54,8 @@ public class ElevatorController : MonoBehaviour
         _indicators = new Dictionary<Level, TMP_Text>
         {
             { Level.B1, transform.Find("LevelIndicators/18").GetComponentInChildren<TMP_Text>() },
-            { Level.B2, transform.Find("LevelIndicators/10").GetComponentInChildren<TMP_Text>() },
-            { Level.endGame, transform.Find("LevelIndicators/6").GetComponentInChildren<TMP_Text>() }
+            { Level.B2, transform.Find("LevelIndicators/9").GetComponentInChildren<TMP_Text>() },
+            { Level.endGame, transform.Find("LevelIndicators/4").GetComponentInChildren<TMP_Text>() }
         };
 
         _paperData = new Dictionary<Level, PaperDataSO[]>

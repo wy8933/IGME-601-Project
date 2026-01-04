@@ -59,7 +59,7 @@ public class SpeakerManager : MonoBehaviour
     {
         foreach (Speaker speaker in _speakers)
         {
-            speaker.PlayStatic();
+            if (speaker != null) { speaker.PlayStatic(); }
         }
     }
 
@@ -70,7 +70,7 @@ public class SpeakerManager : MonoBehaviour
     {
         foreach (Speaker speaker in _speakers)
         {
-            speaker.StopStatic();
+            if (speaker != null) { speaker.StopStatic(); }
         }
     }
 
@@ -81,7 +81,7 @@ public class SpeakerManager : MonoBehaviour
     {
         foreach (Speaker speaker in _speakers)
         {
-            speaker.PlayMusic();
+            if (speaker != null) { speaker.PlayMusic(); }
         }
     }
 
@@ -92,7 +92,7 @@ public class SpeakerManager : MonoBehaviour
     {
         foreach (Speaker speaker in _speakers)
         {
-            speaker.StopMusic();
+            if (speaker != null) { speaker.StopMusic(); }
         }
     }
 }

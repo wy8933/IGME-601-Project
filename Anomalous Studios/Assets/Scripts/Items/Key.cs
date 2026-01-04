@@ -1,12 +1,13 @@
-using UnityEngine;
-using ItemSystem;
 using AudioSystem;
+using ItemSystem;
+using TMPro;
+using UnityEngine;
 
 public class Key : ItemInstance
 {
     private BoxCollider _boxCollider;
     //[Header("Key ID")]
-    //[SerializeField] string _keyID;
+    [SerializeField] string _keyID;
 
     private Quaternion equipRotOffset = Quaternion.Euler(-30, 80, 0);
 
@@ -31,7 +32,7 @@ public class Key : ItemInstance
         _rb = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
 
-        //this.item.itemID = _keyID; 
+        this.item.itemID = _keyID; 
     }
 
     public override void Interact()
@@ -68,6 +69,11 @@ public class Key : ItemInstance
                     dc.CanInteract = true;
                     dc.ToggleDoor();
                     Destroy(this.gameObject);
+
+                    pc.GetItemHotbar().GetItem1Text().GetComponent<TextMeshProUGUI>().text = "";
+                    pc.GetItemHotbar().GetItem2Text().GetComponent<TextMeshProUGUI>().text = "";
+                    pc.GetItemHotbar().GetItem3Text().GetComponent<TextMeshProUGUI>().text = "";
+                    pc.GetItemHotbar().GetItem4Text().GetComponent<TextMeshProUGUI>().text = "";
                 }
             }
         }

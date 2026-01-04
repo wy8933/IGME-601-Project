@@ -1,10 +1,11 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class Main_Menu : MonoBehaviour
 {
-    
+    public VideoPlayer player;
+    public GameObject MainMenuUI;
 
     [SerializeField] GameObject credits;
     
@@ -17,6 +18,16 @@ public class Main_Menu : MonoBehaviour
         if(SoundEffectTrigger.Instance != null)
         {
             SoundEffectTrigger.Instance.StopAllCoroutines();
+        }
+    }
+
+    public void Update()
+    {
+        if (Input.anyKeyDown) 
+        {
+            player.Stop();
+            MainMenuUI.SetActive(true);
+            //CutSceneImage.SetActive(false);
         }
     }
 
@@ -42,8 +53,11 @@ public class Main_Menu : MonoBehaviour
 
     public void ToggleCredits()
     {
-        isVisible = !isVisible;
-        credits.SetActive(isVisible);
+        //isVisible = !isVisible;
+        //credits.SetActive(isVisible);
+        player.Play();
+        MainMenuUI.SetActive(false);
+        //CutSceneImage.SetActive(true);
     }
 
 }
