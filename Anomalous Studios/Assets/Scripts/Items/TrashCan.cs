@@ -3,12 +3,12 @@ using ItemSystem;
 
 public class TrashCan : MonoBehaviour
 {
-    private CapsuleCollider _capsuleCollider;
+    private BoxCollider _boxCollider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _capsuleCollider = GetComponent<CapsuleCollider>();
+        _boxCollider = GetComponent<BoxCollider>();
     }
 
     private void OnCollisionEnter(Collision collision)

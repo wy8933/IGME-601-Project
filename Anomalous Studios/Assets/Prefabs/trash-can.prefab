@@ -14,15 +14,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5
+      value: 2.4381251
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.5
+      value: 2.4381251
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.5
+      value: 2.4381251
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -30,11 +30,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -13.0714245
+      value: -13.073
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.37
+      value: 7.4261
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -102,7 +102,7 @@ PrefabInstance:
       addedObject: {fileID: 5166556262852236295}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2028322950302550456}
+      addedObject: {fileID: 957575267456956314}
   m_SourcePrefab: {fileID: 100100000, guid: 50e267d43f3228a4fab0a3cb8c59455c, type: 3}
 --- !u!1 &681956367923265552 stripped
 GameObject:
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abe5880742207fb40ab4eb8d9d025a27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &2028322950302550456
-CapsuleCollider:
+--- !u!65 &957575267456956314
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,8 +139,6 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.19
-  m_Height: 0.0001
-  m_Direction: 1
-  m_Center: {x: 0.0033209801, y: 0.22, z: -0.0019254684}
+  serializedVersion: 3
+  m_Size: {x: 0.35, y: 0.07, z: 0.35}
+  m_Center: {x: 0, y: 0.205, z: 0}
