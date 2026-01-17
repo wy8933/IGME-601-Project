@@ -1,7 +1,6 @@
 using RuleViolationSystem;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class RuleManager : MonoBehaviour
@@ -278,6 +277,15 @@ public class RuleManager : MonoBehaviour
         return Math.Max(0.0, cooldownSeconds - elapsed);
     }
 
+    public void SetRuleContext(GameObject instigator, GameObject target, Vector3 worldPosition)
+    {
+        if (_query == null) return;
+        _query.SetContext(instigator, target, worldPosition);
+    }
+    public void SetRuleContext(GameObject instigator, Vector3 worldPosition)
+    {
+        SetRuleContext(instigator, instigator, worldPosition);
+    }
 
     private sealed class RuleRuntimeState
     {

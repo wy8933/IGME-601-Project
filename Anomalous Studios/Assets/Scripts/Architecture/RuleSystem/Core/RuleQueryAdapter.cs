@@ -9,6 +9,16 @@ public class RuleQueryAdapter : MonoBehaviour, IRuleQuery
     public string FloorId => _floorId;
 
     public DateTime UtcNow => DateTime.UtcNow;
+    public GameObject Instigator { get; private set; }
+    public GameObject Target { get; private set; }
+    public Vector3 WorldPosition { get; private set; }
+
+    public void SetContext(GameObject instigator, GameObject target, Vector3 worldPosition)
+    {
+        Instigator = instigator;
+        Target = target;
+        WorldPosition = worldPosition;
+    }
 
     /// <summary>
     /// Checks a single variable condition.
