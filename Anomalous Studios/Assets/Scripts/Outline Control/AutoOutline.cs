@@ -6,8 +6,8 @@ public class AutoOutline: MonoBehaviour
 {
     [Header("Outline Appearance")]
     private Color outlineColor = Color.gray;
-    private Color highlightColor = Color.yellow;
-    private float glowIntensity = 1f;
+    private Color highlightColor = Color.white;
+    private float glowIntensity = 0.25f;
 
     public float thickness = 0.03f;
 
