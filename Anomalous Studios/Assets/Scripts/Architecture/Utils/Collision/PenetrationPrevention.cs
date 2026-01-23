@@ -25,10 +25,10 @@ public class PenetrationPrevention : MonoBehaviour
         OnPenetrationStart += correction =>
         {
             float penetrationDepth = correction.magnitude;
-            Debug.Log($"Started Penetration, MTV = {penetrationDepth:F3}");
+            //Debug.Log($"Started Penetration, MTV = {penetrationDepth:F3}");
         };
 
-        OnPenetrationEnd += () => { Debug.Log("Penetration resolved"); };
+        //OnPenetrationEnd += () => { Debug.Log("Penetration resolved"); };
 
 
     }
@@ -54,7 +54,7 @@ public class PenetrationPrevention : MonoBehaviour
                 transform.position += delta;
             }
 
-            Debug.Log($"Colliding. MTV = {correction.magnitude:F3}");
+           // Debug.Log($"Colliding. MTV = {correction.magnitude:F3}");
         }
         else 
         {
