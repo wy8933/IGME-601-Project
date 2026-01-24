@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RuleViolationSystem { 
     public interface IRuleQuery
@@ -17,5 +18,9 @@ namespace RuleViolationSystem {
         public DateTime UtcNow { get; }
 
         void setFloorID(string id);
+
+        GameObject Instigator { get; }
+        GameObject Target { get; }
+        Vector3 WorldPosition { get; }
     }
 }
