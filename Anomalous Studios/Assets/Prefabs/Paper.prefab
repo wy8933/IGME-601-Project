@@ -384,6 +384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3719587444220566610}
+  - component: {fileID: 1292070697158249165}
   m_Layer: 0
   m_Name: PaperMesh
   m_TagString: Untagged
@@ -407,6 +408,19 @@ Transform:
   - {fileID: 8771409296262481510}
   m_Father: {fileID: 7712740322185925672}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1292070697158249165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005159478179782243}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thickness: 0.001
 --- !u!1 &8247500365295783521
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +434,7 @@ GameObject:
   - component: {fileID: 191617482429489020}
   - component: {fileID: 6558053461169900325}
   - component: {fileID: 8226039405100605265}
-  - component: {fileID: 5377387684591760780}
+  - component: {fileID: 6344599354608155883}
   m_Layer: 6
   m_Name: Paper
   m_TagString: Interactable
@@ -539,7 +553,7 @@ MonoBehaviour:
   _failedSFX: {fileID: 11400000, guid: 303b9e98fb19e944387307913a0c9586, type: 2}
   _cancelSFX: {fileID: 11400000, guid: ec75088a96623ef48950bd5d5ab5b53e, type: 2}
   _successSFX: {fileID: 11400000, guid: cd059715c928dc14eaa68dd508673cf2, type: 2}
---- !u!114 &5377387684591760780
+--- !u!114 &6344599354608155883
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -551,11 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerDistance: 5
-  outlineColor: {r: 0.28235295, g: 0.24313726, b: 0, a: 1}
-  highlightColor: {r: 0, g: 0.41509432, b: 0, a: 1}
-  thickness: 0.001
-  glowIntensity: 4
+  thickness: -0.001
 --- !u!1001 &9093039455974302093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -629,14 +639,39 @@ PrefabInstance:
       value: Paper
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1236474848989768309}
   m_SourcePrefab: {fileID: 100100000, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+--- !u!1 &8282575894652427484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+  m_PrefabInstance: {fileID: 9093039455974302093}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1236474848989768309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282575894652427484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thickness: 0.001
 --- !u!4 &8771409296262481510 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
