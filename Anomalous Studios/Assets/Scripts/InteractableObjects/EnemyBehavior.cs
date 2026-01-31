@@ -24,8 +24,6 @@ public struct MakeNoise : IEvent { public Vector3 target; }
 public class EnemyBehavior : MonoBehaviour, IInteractable
 {
     private EventBinding<RuleBroken> _ruleBroken;
-    private EventBinding<LevelLoaded> _levelLoaded;
-    private EventBinding<LoadLevel> _loadLevel;
     private EventBinding<MakeNoise> _makeNoise;
 
     private BehaviorGraphAgent _behaviorAgent;
@@ -35,7 +33,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     private bool _canInteract = true;
 
-    public float BaseWalkSpeed;
+    public float BaseWalkSpeed { get; private set; }
 
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
@@ -62,8 +60,8 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     private Dictionary<string, bool> _rulesLibrary = new Dictionary<string, bool>
     {
         { "lights", false },
-        { "camera", false },
-        { "action!", false }
+        { "camera", false }, // Temp rule
+        { "action!", false } // Temp rule
     };
 
     private Vector3[] _sightCone;
@@ -76,11 +74,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
             GameObject.FindGameObjectWithTag("Player"));
 
         _ignoreLayers = ~LayerMask.GetMask("RuleKeeper", "Ignore Raycast");
-
-        if (_navAgent)
-        {
-            BaseWalkSpeed = _navAgent.speed;
-        }
+        BaseWalkSpeed = _navAgent.speed;
 
         //SoundEffectTrigger.Instance.PlayAmbience(transform);
         AudioManager.Instance.Play(_ambianceSFX, gameObject, transform.position);
@@ -113,6 +107,7 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
             out RaycastHit hit, 1000, _ignoreLayers) && hit.collider.CompareTag("Player"))
         {
             _behaviorAgent.SetVariableValue("playerSeen", true);
+            UpdateTargetLocation(new MakeNoise { target = hit.transform.position });
         }
         else
         {
@@ -151,23 +146,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
         }
     }
 
-    /// <summary>
-    /// Brings the Rulekeepr back to spawn, resets their behaviors in between levels
-    /// </summary>
-    private void DisableRulekeeper(LoadLevel e)
-    {
-        _behaviorAgent.enabled = false;
-        _navAgent.enabled = false;
-        _behaviorAgent.SetVariableValue("ruleBroken", false);
-        _behaviorAgent.Restart();
-    }
-
-    private void EnableRuleKeeper(LevelLoaded e)
-    {
-        _behaviorAgent.enabled = true;
-        _navAgent.enabled = true;
-    }
-
     private void UpdateTargetLocation(MakeNoise e)
     {
         // TODO: I forsee some issues with the target location having INSTANT priority
@@ -181,10 +159,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     {
         _ruleBroken = new EventBinding<RuleBroken>(OnRuleBroken);
         EventBus<RuleBroken>.Register(_ruleBroken);
-        _loadLevel = new EventBinding<LoadLevel>(DisableRulekeeper);
-        EventBus<LoadLevel>.Register(_loadLevel);
-        _levelLoaded = new EventBinding<LevelLoaded>(EnableRuleKeeper);
-        EventBus<LevelLoaded>.Register(_levelLoaded);
         _makeNoise = new EventBinding<MakeNoise>(UpdateTargetLocation);
         EventBus<MakeNoise>.Register(_makeNoise);
     }
@@ -192,8 +166,6 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
     public void OnDisable()
     {
         EventBus<RuleBroken>.DeRegister(_ruleBroken);
-        EventBus<LoadLevel>.DeRegister(_loadLevel);
-        EventBus<LevelLoaded>.DeRegister(_levelLoaded);
         EventBus<MakeNoise>.DeRegister(_makeNoise);
     }
 
