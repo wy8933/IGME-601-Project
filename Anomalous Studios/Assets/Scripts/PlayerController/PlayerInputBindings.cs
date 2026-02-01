@@ -154,8 +154,6 @@ public class PlayerInputBindings : MonoBehaviour
 
     private void OnOpenHandbookPerformed(InputAction.CallbackContext ctx)
     {
-        // Set PlayerController's ViewedHandbook variable to true
-        _playerController.ViewedHandbook = true;
         _playerController.GetPlayerJournal().ToggleHandbook();
     }
 
