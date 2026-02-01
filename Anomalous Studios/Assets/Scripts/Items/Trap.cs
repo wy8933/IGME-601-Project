@@ -93,10 +93,10 @@ public class Trap : ItemInstance
         if(eb != null)
         {
             // RuleKeeper logic
-            eb.Speed = _slowAmount;
+            eb.CurrentSpeed = _slowAmount;
             yield return new WaitForSeconds(_slowDuration);
 
-            eb.Speed = eb.BaseWalkSpeed;
+            eb.CurrentSpeed = eb.OriginalSpeed;
 
             Destroy(this.gameObject);
         }

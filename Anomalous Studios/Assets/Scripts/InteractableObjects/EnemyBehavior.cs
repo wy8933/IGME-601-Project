@@ -17,6 +17,11 @@ public struct RuleBroken : IEvent
 
 public struct MakeNoise : IEvent { public Vector3 target; }
 
+// Some notes about unexpected behaviors:
+    // To update the RuleKeeper's speed, use the value found in the RulekeeperBehaviors graph. In code, 
+        // The speed value under Steering in the navmesh agent component has no effect, and should not be modified.
+    // Make sure to update the prefab with any changes before doing testing, doing so has fixed unexpected behavior in the past.
+
 
 /// <summary>
 /// A controller for the Rulekeeper's unique rules-dependent behaviors
@@ -33,12 +38,15 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
 
     private bool _canInteract = true;
 
-    public float BaseWalkSpeed { get; private set; }
+    /// <summary>
+    /// Used 
+    /// </summary>
+    public float OriginalSpeed { get; private set; }
 
     public float HoldTime { get => 0.0f; }
     public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
-    public float Speed
+    public float CurrentSpeed
     {
         get { _behaviorAgent.GetVariable("Speed", out BlackboardVariable<float> speed); return speed; }
 
@@ -74,7 +82,10 @@ public class EnemyBehavior : MonoBehaviour, IInteractable
             GameObject.FindGameObjectWithTag("Player"));
 
         _ignoreLayers = ~LayerMask.GetMask("RuleKeeper", "Ignore Raycast");
-        BaseWalkSpeed = _navAgent.speed;
+
+        // Only use behaviorgraphagent's speed value, see explanation above
+        _behaviorAgent.GetVariable("Speed", out BlackboardVariable speed); 
+        OriginalSpeed = (float)speed.ObjectValue;
 
         //SoundEffectTrigger.Instance.PlayAmbience(transform);
         AudioManager.Instance.Play(_ambianceSFX, gameObject, transform.position);
