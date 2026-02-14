@@ -341,7 +341,7 @@ public class PlayerActions : MonoBehaviour
     {
         if (!_playerController.GetPlayerJournal().GetInJournal())
         {
-            DoorController dc = RayCastDoor();
+            /*DoorController dc = RayCastDoor();
 
             if (dc != null)
             {
@@ -350,7 +350,7 @@ public class PlayerActions : MonoBehaviour
                     dc.ToggleDoor();
                     return;
                 }
-            }
+            }*/
 
             _playerController.GetItemHotbar().UseItem();
         }
@@ -372,7 +372,7 @@ public class PlayerActions : MonoBehaviour
     /// opening/closing with LMB click when door is unlocked
     /// </summary>
     /// <returns>returns the door controller script if raycast on door successful</returns>
-    public DoorController RayCastDoor()
+    /*public DoorController RayCastDoor()
     {
         float interactRange = 10.0f;
 
@@ -385,5 +385,5 @@ public class PlayerActions : MonoBehaviour
         }
 
         return null;
-    }
+    }*/
 }

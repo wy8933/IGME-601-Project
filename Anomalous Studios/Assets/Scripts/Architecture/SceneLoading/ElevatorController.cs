@@ -15,6 +15,9 @@ public class ElevatorController : MonoBehaviour
     /// </summary>
     static public GameObject Player;
 
+    // Reference the PlayerController script on the Player
+    private PlayerController _playerController;
+
     [Header("Sound Effects")]
     [SerializeField] private SoundDataSO _doorsMoving;
 
@@ -31,6 +34,9 @@ public class ElevatorController : MonoBehaviour
 
     private static ElevatorButton _openButton;
     private static ElevatorButton _closeButton;
+
+    public int NotesCount() { return _notes.Count; }
+    public ElevatorButton GetOpenButton() { return _openButton; }
 
     /// <summary>
     /// Stores all the buttons on the elevator, 
@@ -65,6 +71,9 @@ public class ElevatorController : MonoBehaviour
         };
 
         Player = GameObject.Find("Player");
+
+        // Find the PlayerController script
+        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     /// <summary>
@@ -90,7 +99,8 @@ public class ElevatorController : MonoBehaviour
     {
         _notes.Remove(note);
 
-        if (_notes.Count <= 0 ) { _openButton.Enable(); }
+        // Add a check to make sure the player viewed the handbook
+        if (_notes.Count <= 0 && _playerController.ViewedHandbook) { _openButton.Enable(); }
     }
 
     /// <summary>
@@ -128,7 +138,8 @@ public class ElevatorController : MonoBehaviour
             x += 0.6f;
         }
 
-        if (_notes.Count <= 0) { _openButton.Enable(); }
+        // Add a check to make sure the player viewed the handbook
+        if (_notes.Count <= 0 && _playerController.ViewedHandbook) { _openButton.Enable(); }
     }
 
     /// <summary>

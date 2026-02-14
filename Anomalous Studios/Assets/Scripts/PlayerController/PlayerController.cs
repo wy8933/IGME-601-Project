@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private float _gravity = -9.81f;
     private float _groundedThreshold = 0.05f;
 
+    
+
     /// <summary>
     /// LEGACY: has been moved to UserInteraction. Remove when key obj becomes IInteractable
     /// </summary>
@@ -49,6 +51,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform _spawnPoint;
 
+    // Variable for checking the player has viewed their handbook
+    private bool _viewedHandbook = false;
+
     // Getter Methods
     public ItemHotbar GetItemHotbar() { return _itemHotbar; }
     public PlayerJournal GetPlayerJournal() {  return _playerJournal; }
@@ -58,6 +63,9 @@ public class PlayerController : MonoBehaviour
     public Rigidbody GetRB() { return _rb; }
     public CapsuleCollider GetCapsuleCollider() { return _capsuleCollider; }
     public Camera GetPlayerCamera() { return PlayerCamera; }
+
+    // Getter && Setter for _viewedHandbook variable
+    public bool ViewedHandbook { get; set; } = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start()
