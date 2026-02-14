@@ -24,6 +24,11 @@ public class PlayerJournal : MonoBehaviour
         handbook.gameObject.SetActive(_inJournal);
         if (_inJournal)
         {
+            if (GameObject.FindGameObjectWithTag("Popup") != null)
+            {
+                GameObject popup = GameObject.FindGameObjectWithTag("Popup");
+                popup.SetActive(false);
+            }
             UnityEngine.Cursor.lockState = CursorLockMode.None;
             UnityEngine.Cursor.visible = true;
         }
