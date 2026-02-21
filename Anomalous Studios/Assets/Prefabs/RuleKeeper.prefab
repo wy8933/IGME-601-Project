@@ -485,7 +485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0134577619308c847a99fba4adc43f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseWalkSpeed: 0
   _failedSFX: {fileID: 0}
   _successSFX: {fileID: 0}
   _ambianceSFX: {fileID: 11400000, guid: 4fb54559d53954c41b71bd430c276652, type: 2}
@@ -500,7 +499,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 9205146073855690417}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 10
   m_Acceleration: 20
   avoidancePriority: 50
@@ -511,7 +510,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
 --- !u!54 &7857318635967428489
 Rigidbody:
