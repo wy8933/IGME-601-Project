@@ -13,6 +13,7 @@ public class PlayerJournal : MonoBehaviour
     private PlayerController _playerController;
     private ElevatorController _elevatorController;
 
+    private bool _firstTimeViewed = false;
     // Getter Methods
     public bool GetInJournal() { return _inJournal; }
 
@@ -42,6 +43,11 @@ public class PlayerJournal : MonoBehaviour
         }
 
         // Ensures that the player must view the handbook and have collected all policies in the elevator before elevator's open button is enabled
-        if (_elevatorController.NotesCount() <= 0 && _playerController.ViewedHandbook) _elevatorController.GetOpenButton().Enable();
+        if (_elevatorController.NotesCount() <= 0 && !_playerController.ViewedHandbook)
+        {
+            // Set PlayerController's ViewedHandbook variable to true
+            _playerController.ViewedHandbook = true;
+            _elevatorController.GetOpenButton().Enable();
+        }
     }
 }

@@ -41,15 +41,22 @@ public class SpeakerManager : MonoBehaviour
     /// <param name="mode"></param>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _speakers.Clear();
-        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Speaker"))
+        if(scene.name == "MainMenu")
         {
-            _speakers.Add(obj.GetComponent<Speaker>());
+            return;
         }
-        
-        //Debug.Log("<color=red>Speaker Count " + _speakers.Count + "</color>");
-        
-        StartMusic();
+        else
+        {
+            _speakers.Clear();
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Speaker"))
+            {
+                _speakers.Add(obj.GetComponent<Speaker>());
+            }
+
+            //Debug.Log("<color=red>Speaker Count " + _speakers.Count + "</color>");
+
+            StartMusic();
+        }  
     }
 
     /// <summary>

@@ -385,6 +385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3719587444220566610}
   - component: {fileID: 1292070697158249165}
+  - component: {fileID: 1642628936628468952}
   m_Layer: 0
   m_Name: PaperMesh
   m_TagString: Untagged
@@ -421,6 +422,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thickness: 0.001
+--- !u!114 &1642628936628468952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8005159478179782243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27068809be786214cae242e81936b82b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: c7cca284db09b8649bc5d05c01e51f3d, type: 2}
+  highlightOnStart: 0
+  includeChildren: 1
 --- !u!1 &8247500365295783521
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +669,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1236474848989768309}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9033739823476243496}
   m_SourcePrefab: {fileID: 100100000, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}
 --- !u!1 &8282575894652427484 stripped
 GameObject:
@@ -666,12 +685,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8282575894652427484}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 388fc4554d6c76b46b644272875ee8dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   thickness: 0.001
+--- !u!114 &9033739823476243496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8282575894652427484}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27068809be786214cae242e81936b82b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 2100000, guid: c7cca284db09b8649bc5d05c01e51f3d, type: 2}
+  highlightOnStart: 0
+  includeChildren: 1
 --- !u!4 &8771409296262481510 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 63992d4bec0d54e40b5667ffffb24806, type: 3}

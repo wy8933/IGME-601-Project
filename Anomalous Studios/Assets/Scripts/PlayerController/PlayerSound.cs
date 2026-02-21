@@ -50,18 +50,18 @@ public class PlayerSound : MonoBehaviour
         if (InStamina <= 33.0f)
         {
             PlaySound(BreathingLong);
-            print("breathing long");
+            //print("breathing long");
         }
         else if (InStamina <= 66.0f)
         {
             PlaySound(BreathingMedium);
-            print("breathing medium");
+            //print("breathing medium");
 
         }
         else if (InStamina < 100)
         {
             PlaySound(BreathingShort);
-            print("breathing short");
+            //print("breathing short");
 
         }
     }
