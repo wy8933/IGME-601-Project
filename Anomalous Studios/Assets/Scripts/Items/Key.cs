@@ -66,6 +66,9 @@ public class Key : ItemInstance
             {
                 if (this.item.itemID == dc.DoorID && !dc.CanInteract)
                 {
+                    // Hide helper UI on item use
+                    pc.HideUseItemUI();
+
                     dc.CanInteract = true;
                     dc.ToggleDoor();
                     Destroy(this.gameObject);

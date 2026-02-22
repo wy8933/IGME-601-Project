@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Paper : MonoBehaviour, IInteractable
 {
+    private GameObject _playerGO;
+    private PlayerController _playerController;
+   
     [SerializeField] private TextMeshProUGUI _description;
     [SerializeField] private Handbook_UI _handbook = null;
     [SerializeField] private float _holdTime = 0.0f;
@@ -36,6 +39,10 @@ public class Paper : MonoBehaviour, IInteractable
     public void Start()
     {
         _elevator = transform.parent.parent.GetComponent<ElevatorController>();
+
+        // Get references to player and player controller
+        _playerGO = GameObject.FindGameObjectWithTag("Player");
+        _playerController = _playerGO.GetComponent<PlayerController>();
     }
 
     public void Highlight()
@@ -43,6 +50,9 @@ public class Paper : MonoBehaviour, IInteractable
         if (!this) return;
         if (_canInteract) 
         {
+            // Displays Helper UI Text
+            IInteractable.DisplayHelperText(_playerController);
+
             var highlight = GetComponent<AutoOutline>();
             if (highlight != null)
             {
@@ -53,7 +63,10 @@ public class Paper : MonoBehaviour, IInteractable
     public void RemoveHighlight()
     {
         if (!this) return;
-        if (_canInteract) { 
+        if (_canInteract) {
+            // Hides Helper UI Text
+            IInteractable.HideHelperText(_playerController);
+
             var highlight = GetComponent<AutoOutline>();
             if (highlight != null) 
             {
@@ -67,6 +80,9 @@ public class Paper : MonoBehaviour, IInteractable
     /// </summary>
     public void Interact()
     {
+        // Hides Helper UI Text on paper collect
+        _playerController.ActionLabel.SetActive(false);
+
         _elevator.RemoveNote(this);
 
         AddToHandbook();

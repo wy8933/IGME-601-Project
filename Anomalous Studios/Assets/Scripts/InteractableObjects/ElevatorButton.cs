@@ -6,6 +6,9 @@ using UnityEngine;
 /// </summary>
 public class ElevatorButton : MonoBehaviour, IInteractable
 {
+    private GameObject _playerGO;
+    private PlayerController _playerController;
+
     [Tooltip("Whether this button opens or closes the doors")]
     [SerializeField] private bool _isOpenButton = true;
 
@@ -36,16 +39,30 @@ public class ElevatorButton : MonoBehaviour, IInteractable
     public void Start()
     {
         _elevator = transform.parent.parent.GetComponent<ElevatorController>();
+
+        // Get references to player and player controller
+        _playerGO = GameObject.FindGameObjectWithTag("Player");
+        _playerController = _playerGO.GetComponent<PlayerController>();
     }
 
     public void Highlight()
     {
-        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
+        if (_canInteract) 
+        { 
+            GetComponent<AutoOutline>().IsHighlighted = true;
+            // Displays Helper UI Text
+            IInteractable.DisplayHelperText(_playerController);
+        }
     }
 
     public void RemoveHighlight()
     {
-        if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = false; }
+        if (_canInteract) 
+        { 
+            GetComponent<AutoOutline>().IsHighlighted = false;
+            // Hides Helper UI Text
+            IInteractable.HideHelperText(_playerController);
+        }
     }
 
     public void Interact()

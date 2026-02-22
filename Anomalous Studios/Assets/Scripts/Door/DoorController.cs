@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class DoorController : MonoBehaviour, IInteractable
 {
+    private GameObject _playerGO;
+    private PlayerController _playerController;
+
     [Header("Parameters")]
     public float openAngle = 110f;       // Door Angle
     public float duration = 1f;       // Anim Time
@@ -68,6 +71,9 @@ public class DoorController : MonoBehaviour, IInteractable
         // Unlocked doors should not be treated as obstacles by the Rulekeeper
         _obstacle = GetComponent<NavMeshObstacle>();
         _obstacle.enabled = !_canInteract;
+
+        _playerGO = GameObject.FindGameObjectWithTag("Player");
+        _playerController = _playerGO.GetComponent<PlayerController>();
     }
 
     void Update()
@@ -118,11 +124,15 @@ public class DoorController : MonoBehaviour, IInteractable
     public void Highlight()
     {
         // Highlight!
+        // Display Helper UI
+        IInteractable.DisplayHelperText(_playerController);
     }
 
     public void RemoveHighlight()
     {
         // Remove Highlight!
+        // Hide Helper UI
+        IInteractable.HideHelperText(_playerController);
     }
 
     public void OnTriggerEnter(Collider other)
