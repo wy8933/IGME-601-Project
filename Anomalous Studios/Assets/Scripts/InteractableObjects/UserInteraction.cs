@@ -1,6 +1,7 @@
 using AudioSystem;
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,7 @@ public class UserInteraction : MonoBehaviour
     [SerializeField] private float _interactRange = 4.0f;
 
     private PlayerInputActions _playerInputActions;
-
+    
     private IEnumerator _co;
 
     private int _ignorePlayerMask;
@@ -51,6 +52,7 @@ public class UserInteraction : MonoBehaviour
                 OnInteractCanceled(new InputAction.CallbackContext());
                 IInteractable.SetPriorityTarget(obj);
             }
+            
         }
         // If the target is already null, don't bother
         else if (IInteractable.Target != null)

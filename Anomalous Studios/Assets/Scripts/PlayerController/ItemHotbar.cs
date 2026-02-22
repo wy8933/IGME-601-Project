@@ -112,6 +112,9 @@ public class ItemHotbar : MonoBehaviour
     {
         if (_itemHotbar[_selectedItemIndex] != null)
         {
+            // Hides Helper UI Text on drop item
+            this.gameObject.GetComponent<PlayerController>().HideUseItemUI();
+
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().DetachFromParent(this.gameObject);
             _itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().EnableRigidBodyCollisions();
             //_itemHotbar[_selectedItemIndex].GetComponent<ItemInstance>().CanInteract = true;

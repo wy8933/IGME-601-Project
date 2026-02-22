@@ -44,6 +44,8 @@ public interface IInteractable
     /// By default zero; how long it takes the player to hold the interaction until it takes effect
     /// </summary>
     public float HoldTime { get; }
+    
+    
 
     /// <summary>
     /// The public accessor to change the priority Target's interaction values. Called when obj is different than the Target.
@@ -79,4 +81,22 @@ public interface IInteractable
     /// Performs the unique interaction of this object
     /// </summary>
     public void Interact();
+
+    /// <summary>
+    /// Displays the Helper UI Text
+    /// </summary>
+    /// <param name="pc">Player Controller</param>
+    public static void DisplayHelperText(PlayerController pc)
+    {
+        pc.ActionLabel.SetActive(true);
+    }
+
+    /// <summary>
+    /// Hides the Helper UI Text
+    /// </summary>
+    /// <param name="pc">Player Controller</param>
+    public static void HideHelperText(PlayerController pc)
+    {
+        pc.ActionLabel.SetActive(false);
+    }
 }

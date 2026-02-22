@@ -8,6 +8,9 @@ namespace ItemSystem
     [System.Serializable]
     public abstract class ItemInstance: MonoBehaviour, IInteractable
     {
+        private GameObject _playerGO;
+        private PlayerController _playerController;
+
         protected Transform _cameraTransform;
         protected float _dropDistanceOffset = 1.5f;
         protected Rigidbody _rb;
@@ -34,6 +37,8 @@ namespace ItemSystem
         public float HoldTime { get => _holdTime; }
         public bool CanInteract { get => _canInteract; set => _canInteract = value; }
 
+        public PlayerController GetPlayerController() { return _playerController; }
+
         public abstract SoundDataSO InitialSFX { get; }
         public abstract SoundDataSO FailedSFX { get; }
         public abstract SoundDataSO CancelSFX { get; }
@@ -48,6 +53,10 @@ namespace ItemSystem
             durabilityLeft = Mathf.Max(1, item.durability);
             lastUseTime = -9999f;
             isUseable = true;
+
+            // Get references to player and player controller
+            _playerGO = GameObject.FindGameObjectWithTag("Player");
+            _playerController = _playerGO.GetComponent<PlayerController>();
         }
 
         /// <summary>
@@ -80,11 +89,21 @@ namespace ItemSystem
 
         public void Highlight()
         {
-            if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = true; }
+            if (_canInteract) 
+            {
+                // Displays Helper UI Text
+                IInteractable.DisplayHelperText(_playerController);
+                GetComponent<AutoOutline>().IsHighlighted = true;
+            }
         }
         public void RemoveHighlight()
         {
-            if (_canInteract) { GetComponent<AutoOutline>().IsHighlighted = false; }
+            if (_canInteract) 
+            {
+                // Hides Helper UI Text
+                IInteractable.HideHelperText(_playerController);
+                GetComponent<AutoOutline>().IsHighlighted = false;
+            }
         }
 
         public abstract void Interact();
@@ -105,12 +124,16 @@ namespace ItemSystem
         {
             _isEquipped = true;
             Mesh.SetActive(true);
+            // Displays Helper UI Text
+            _playerController.DisplayUseItemUI();
         }
 
         public virtual void UnEquip()
         {
             _isEquipped = false;
             Mesh.SetActive(false);
+            // Hides Helper UI Text
+            _playerController.HideUseItemUI();
         }
 
         public virtual void Use(GameObject user)

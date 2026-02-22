@@ -35,6 +35,9 @@ public class Garbage : ItemInstance
         TryUse(user);
 
         Throw(user);
+
+        // Hide helper UI on item use
+        GetPlayerController().HideUseItemUI();
     }
 
     /// <summary>

@@ -37,7 +37,12 @@ public class PlayerController : MonoBehaviour
     private float _gravity = -9.81f;
     private float _groundedThreshold = 0.05f;
 
-    
+    [Header("Action Label UI Reference")]
+    [SerializeField] public GameObject ActionLabel;
+
+    [Header("Use Item UI References")]
+    [SerializeField] public GameObject UseItemIcon;
+    [SerializeField] public GameObject UseItemLabel;
 
     /// <summary>
     /// LEGACY: has been moved to UserInteraction. Remove when key obj becomes IInteractable
@@ -181,5 +186,23 @@ public class PlayerController : MonoBehaviour
         {
             other.transform.parent.GetComponent<EnemyBehavior>().CheckLineOfSight(transform);
         }
+    }
+
+    /// <summary>
+    /// Displays Helper UI Text for Use Item
+    /// </summary>
+    public void DisplayUseItemUI()
+    {
+        UseItemIcon.SetActive(true);
+        UseItemLabel.SetActive(true);
+    }
+
+    /// <summary>
+    /// Hides Helper UI Text for Use Item
+    /// </summary>
+    public void HideUseItemUI()
+    {
+        UseItemIcon.SetActive(false);
+        UseItemLabel.SetActive(false);
     }
 }
