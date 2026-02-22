@@ -16,7 +16,7 @@ public class Popup : MonoBehaviour
             // Ignore this game object
             if (obj == this.gameObject) 
             {
-                StartCoroutine(DoFade(1, 0, 5));
+                //StartCoroutine(DoFade(1, 0, 5));
             }
             else
             {
@@ -34,7 +34,7 @@ public class Popup : MonoBehaviour
     /// <param name="endAlpha"></param>
     /// <param name="_fadeDuration"></param>
     /// <returns></returns>
-    private IEnumerator DoFade(float startAlpha, float endAlpha, float _fadeDuration)
+    public IEnumerator DoFade(float startAlpha, float endAlpha, float _fadeDuration)
     {
         float timer = 0;
 
